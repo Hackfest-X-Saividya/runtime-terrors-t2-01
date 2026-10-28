@@ -35,11 +35,16 @@ async def lifespan(app: FastAPI):
             import app.models.finding
             import app.models.mitigation
             import app.models.scan
-            async with engine.begin() as conn:
-                await conn.run_sync(Base.metadata.create_all)
-            logger.info("Database schema initialized.")
+            # Only create tables via metadata in development/testing with SQLite.
+            # In PostgreSQL / Supabase, schema is managed safely via Alembic migrations.
+            if settings.DATABASE_URL.startswith("sqlite"):
+                async with engine.begin() as conn:
+                    await conn.run_sync(Base.metadata.create_all)
+                logger.info("Database schema initialized via Base.metadata.create_all (SQLite).")
+            else:
+                logger.info("Using PostgreSQL / production database. Schema is managed via Alembic migrations.")
         except Exception as exc:
-            logger.warning("Database schema initialization skipped: %s", exc)
+            logger.warning("Database schema check skipped: %s", exc)
     else:
         logger.warning(
             "Database connectivity check failed on startup. Server running in degraded mode."
