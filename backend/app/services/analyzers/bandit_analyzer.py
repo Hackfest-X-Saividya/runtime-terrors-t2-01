@@ -3,6 +3,7 @@ import logging
 import os
 import shutil
 import subprocess
+import sys
 from typing import List
 
 from app.services.analyzers.base import FindingDraft
@@ -33,9 +34,17 @@ def run_bandit_analysis(target_dir: str) -> List[FindingDraft]:
     bandit_bin = shutil.which("bandit")
     if not bandit_bin:
         # Fall back to active virtualenv path if available
-        venv_bin = os.path.join(os.path.dirname(__file__), "..", "..", "..", ".venv", "Scripts", "bandit.exe")
-        if os.path.exists(venv_bin):
-            bandit_bin = os.path.abspath(venv_bin)
+        exe_dir = os.path.dirname(sys.executable)
+        candidates = [
+            os.path.join(exe_dir, "bandit.exe"),
+            os.path.join(exe_dir, "bandit"),
+            os.path.join(os.path.dirname(__file__), "..", "..", "..", ".venv", "Scripts", "bandit.exe"),
+            os.path.join(os.path.dirname(__file__), "..", "..", "..", ".venv", "bin", "bandit"),
+        ]
+        for candidate in candidates:
+            if os.path.exists(candidate):
+                bandit_bin = os.path.abspath(candidate)
+                break
         else:
             logger.warning("Bandit binary not found on PATH or in .venv.")
             return []
