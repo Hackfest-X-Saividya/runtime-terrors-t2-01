@@ -1,0 +1,162 @@
+{
+  "metadata": {
+    "command": "python ml/eval_holdout.py",
+    "random_seed": 42,
+    "model_version": "0.1.0",
+    "timestamp": "2026-10-28T09:09:32.541970+00:00",
+    "threshold": 0.53
+  },
+  "dataset_counts": {
+    "train_total": 75,
+    "train_benign": 47,
+    "train_vulnerable": 28,
+    "val_total": 18,
+    "val_benign": 11,
+    "val_vulnerable": 7,
+    "test_total": 18,
+    "test_benign": 10,
+    "test_vulnerable": 8
+  },
+  "full_model_test_metrics": {
+    "precision": 1.0,
+    "recall": 0.75,
+    "f1": 0.8571,
+    "roc_auc": 0.925,
+    "threshold": 0.53,
+    "confusion_matrix": {
+      "true_negatives": 10,
+      "false_positives": 0,
+      "false_negatives": 2,
+      "true_positives": 6
+    },
+    "per_type_performance": {
+      "benign": {
+        "total": 10,
+        "clean_correct": 10,
+        "false_positives": 0,
+        "clean_accuracy": 1.0
+      },
+      "command_injection": {
+        "total": 1,
+        "detected": 1,
+        "detection_rate": 1.0,
+        "avg_risk_score": 0.665
+      },
+      "open_redirect": {
+        "total": 1,
+        "detected": 1,
+        "detection_rate": 1.0,
+        "avg_risk_score": 0.624
+      },
+      "path_disclosure": {
+        "total": 1,
+        "detected": 1,
+        "detection_rate": 1.0,
+        "avg_risk_score": 0.661
+      },
+      "remote_code_execution": {
+        "total": 1,
+        "detected": 1,
+        "detection_rate": 1.0,
+        "avg_risk_score": 0.63
+      },
+      "sql": {
+        "total": 1,
+        "detected": 1,
+        "detection_rate": 1.0,
+        "avg_risk_score": 0.627
+      },
+      "xsrf": {
+        "total": 2,
+        "detected": 0,
+        "detection_rate": 0.0,
+        "avg_risk_score": 0.451
+      },
+      "xss": {
+        "total": 1,
+        "detected": 1,
+        "detection_rate": 1.0,
+        "avg_risk_score": 0.66
+      }
+    }
+  },
+  "held_out_zero_day_results": {
+    "sql": {
+      "vulnerability_type": "sql",
+      "cwe": "CWE-89",
+      "trained_on_types_count": 6,
+      "detection_rate": 1.0,
+      "detection_fraction": "1/1",
+      "fpr_benign": 0.0,
+      "roc_auc": 1.0,
+      "unseen_test_samples": 1,
+      "benign_test_samples": 10
+    },
+    "xss": {
+      "vulnerability_type": "xss",
+      "cwe": "CWE-79",
+      "trained_on_types_count": 6,
+      "detection_rate": 1.0,
+      "detection_fraction": "1/1",
+      "fpr_benign": 0.0,
+      "roc_auc": 1.0,
+      "unseen_test_samples": 1,
+      "benign_test_samples": 10
+    },
+    "command_injection": {
+      "vulnerability_type": "command_injection",
+      "cwe": "CWE-78",
+      "trained_on_types_count": 6,
+      "detection_rate": 1.0,
+      "detection_fraction": "1/1",
+      "fpr_benign": 0.0,
+      "roc_auc": 1.0,
+      "unseen_test_samples": 1,
+      "benign_test_samples": 10
+    },
+    "xsrf": {
+      "vulnerability_type": "xsrf",
+      "cwe": "CWE-352",
+      "trained_on_types_count": 6,
+      "detection_rate": 0.0,
+      "detection_fraction": "0/2",
+      "fpr_benign": 0.0,
+      "roc_auc": 0.7,
+      "unseen_test_samples": 2,
+      "benign_test_samples": 10
+    },
+    "remote_code_execution": {
+      "vulnerability_type": "remote_code_execution",
+      "cwe": "CWE-94",
+      "trained_on_types_count": 6,
+      "detection_rate": 1.0,
+      "detection_fraction": "1/1",
+      "fpr_benign": 0.0,
+      "roc_auc": 1.0,
+      "unseen_test_samples": 1,
+      "benign_test_samples": 10
+    },
+    "path_disclosure": {
+      "vulnerability_type": "path_disclosure",
+      "cwe": "CWE-22",
+      "trained_on_types_count": 6,
+      "detection_rate": 1.0,
+      "detection_fraction": "1/1",
+      "fpr_benign": 0.0,
+      "roc_auc": 1.0,
+      "unseen_test_samples": 1,
+      "benign_test_samples": 10
+    },
+    "open_redirect": {
+      "vulnerability_type": "open_redirect",
+      "cwe": "CWE-601",
+      "trained_on_types_count": 6,
+      "detection_rate": 1.0,
+      "detection_fraction": "1/1",
+      "fpr_benign": 0.0,
+      "roc_auc": 1.0,
+      "unseen_test_samples": 1,
+      "benign_test_samples": 10
+    }
+  }
+}

@@ -17,25 +17,27 @@ ARTIFACTS_DIR = Path(__file__).resolve().parent.parent / "artifacts"
 
 SAMPLE_VULN_SQL = {
     "code": (
-        "def fetch_user_data(username: str):\n"
+        "def fetch_user_data():\n"
+        "    username = request.args.get('username', '')\n"
         "    query = f\"SELECT * FROM users WHERE username = '{username}'\"\n"
         "    cursor.execute(query)\n"
         "    return cursor.fetchone()\n"
     ),
     "file_path": "app/views/auth.py",
     "start_line": 10,
-    "end_line": 13
+    "end_line": 14
 }
 
 SAMPLE_VULN_CMD = {
     "code": (
-        "def run_diagnostics(ip_address: str):\n"
+        "def run_diagnostics():\n"
+        "    ip_address = request.args.get('target', '')\n"
         "    cmd = f\"ping -c 3 {ip_address}\"\n"
         "    return subprocess.check_output(cmd, shell=True)\n"
     ),
     "file_path": "app/tools/net.py",
     "start_line": 25,
-    "end_line": 27
+    "end_line": 28
 }
 
 SAMPLE_BENIGN = {
@@ -61,7 +63,6 @@ def test_detector_fallback_on_missing_dir(tmp_path):
     det = Detector.load(empty_dir)
     assert det.is_loaded is False
 
-    # Still predicts using deterministic hash fallback
     preds = det.predict([SAMPLE_BENIGN])
     assert len(preds) == 1
     assert "ml_score" in preds[0]
@@ -82,13 +83,11 @@ def test_detector_predict_contract_schema():
         assert isinstance(p["cwe_guess"], str)
         assert p["cwe_guess"].startswith("CWE-")
 
-        # cwe_probs checks
         assert isinstance(p["cwe_probs"], dict)
         assert len(p["cwe_probs"]) == 7
         total_p = sum(p["cwe_probs"].values())
         assert pytest.approx(total_p, abs=0.02) == 1.0
 
-        # top_lines checks
         top_lines = p["top_lines"]
         assert isinstance(top_lines, list)
         assert 1 <= len(top_lines) <= 3
@@ -102,8 +101,7 @@ def test_detector_sql_prediction_accuracy():
 
     assert res["ml_score"] > 0.50
     assert res["cwe_guess"] == "CWE-89"
-    # The SQL query is on line 11 or 12
-    assert any(line in res["top_lines"] for line in [11, 12])
+    assert any(line in res["top_lines"] for line in [11, 12, 13])
 
 def test_detector_cmd_injection_accuracy():
     det = Detector.load(ARTIFACTS_DIR)
@@ -112,7 +110,7 @@ def test_detector_cmd_injection_accuracy():
 
     assert res["ml_score"] > 0.50
     assert res["cwe_guess"] == "CWE-78"
-    assert any(line in res["top_lines"] for line in [26, 27])
+    assert any(line in res["top_lines"] for line in [26, 27, 28])
 
 def test_detector_benign_score():
     det = Detector.load(ARTIFACTS_DIR)

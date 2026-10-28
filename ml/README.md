@@ -9,22 +9,31 @@ The `/ml` package provides the machine learning engine for ZeroSentinel, scoring
 ```
 ml/
 ├── data/
-│   ├── download_vudenc.py    # Fetches VUDENC or generates a realistic bootstrap sample
+│   ├── download_vudenc.py    # Fetches VUDENC or generates realistic multi-repo bootstrap sample
 │   ├── prepare.py            # AST parsing, function-level labeling, dedup, 70/15/15 repo split
 │   ├── raw/                  # Raw multi-repository code JSON
-│   └── processed/            # train.parquet, val.parquet, test.parquet
+│   ├── processed/            # train.parquet, val.parquet, test.parquet
+│   └── samples/              # vuln_demo.py (demo sample target)
 ├── detector/
-│   ├── __init__.py           # Detector class adhering to CONTRACT.md
+│   ├── __init__.py           # Detector class adhering to CONTRACT.md (3-tier progressive enhancement)
 │   └── tokenizer.py          # Code tokenizer (subwords, operators, calls)
 ├── artifacts/
 │   ├── label_map.json        # 7 vulnerability categories to CWE mappings
 │   ├── thresholds.json       # Optimal decision threshold maximizing validation F1
+│   ├── model_card.json       # Metadata & metrics for backend GET /api/model/info
 │   ├── tfidf_vectorizer.joblib
 │   ├── binary_model.joblib   # Vulnerable vs. benign classifier
-│   └── cwe_model.joblib      # Multiclass CWE classifier
+│   ├── cwe_model.joblib      # Multiclass CWE classifier
+│   └── codebert/             # Fine-tuned CodeBERT weights & configuration
+├── reports/
+│   ├── eval.json             # Machine-readable held-out zero-day & test benchmarks
+│   └── eval.md               # Markdown report table for judges & SOC review
 ├── tests/
-│   └── test_detector.py      # Contract compliance and accuracy unit tests
+│   ├── test_detector.py      # Contract compliance, artifact loading, and accuracy tests
+│   └── test_evaluation.py    # Held-out evaluation, model card, and demo scoring tests
 ├── train_baseline.py         # TF-IDF + class-weighted LogisticRegression pipeline
+├── train_codebert.py         # microsoft/codebert-base dual-head fine-tuning & line occlusion
+├── eval_holdout.py           # Leave-One-Type-Out Zero-Day Generalization benchmark
 └── pyproject.toml            # Editable package specification
 ```
 
@@ -44,25 +53,30 @@ ml/
 
 ---
 
-## 3. Data Preparation & Leakage Prevention
+## 3. Leave-One-Type-Out Zero-Day Evaluation
 
-- Functions are extracted from source files using Python's `ast` module (`FunctionDef` and `AsyncFunctionDef`).
-- Each function is labeled as vulnerable (`label = 1`) if its line span `[start_line, end_line]` overlaps with ground-truth vulnerability markers, otherwise benign (`label = 0`).
-- Functions longer than 400 lines are dropped; duplicates are pruned via SHA-256 normalized code hashing.
-- **Strict Repository Splitting (70 / 15 / 15):** Datasets are split strictly by **`repo`** (zero repository overlap across train, val, and test) to ensure zero data leakage.
+To simulate real-world zero-day discovery, the model is trained strictly on **6 known vulnerability types** and tested against functions exhibiting a **7th unseen vulnerability type**:
+
+| Held-Out (Unseen) Type | Target CWE | Training Types | Detection Rate (Recall) | Benign FPR | ROC-AUC |
+|---|---|---|---|---|---|
+| `sql` | **CWE-89** | 6 classes | **100.0% (1/1)** | 0.0% | **1.0000** |
+| `xss` | **CWE-79** | 6 classes | **100.0% (1/1)** | 0.0% | **1.0000** |
+| `command_injection` | **CWE-78** | 6 classes | **100.0% (1/1)** | 0.0% | **1.0000** |
+| `xsrf` | **CWE-352** | 6 classes | **0.0% (0/2)** | 0.0% | **0.7000** |
+| `remote_code_execution` | **CWE-94** | 6 classes | **100.0% (1/1)** | 0.0% | **1.0000** |
+| `path_disclosure` | **CWE-22** | 6 classes | **100.0% (1/1)** | 0.0% | **1.0000** |
+| `open_redirect` | **CWE-601** | 6 classes | **100.0% (1/1)** | 0.0% | **1.0000** |
+
+Full benchmarks are recorded in [`reports/eval.json`](file:///C:/Users/jyoti/runtime-terrors-t2-01/ml/reports/eval.json) and [`reports/eval.md`](file:///C:/Users/jyoti/runtime-terrors-t2-01/ml/reports/eval.md).
 
 ---
 
-## 4. Baseline Model & Performance
+## 4. Demo Sample (`data/samples/vuln_demo.py`)
 
-- **Features:** Code-aware TF-IDF vectorizer (splits identifiers on camelCase and underscores, preserves operators and call chains, $n$-grams 1–2).
-- **Classifiers:** Class-weighted `LogisticRegression(class_weight="balanced")` for binary vulnerability detection and multiclass CWE classification.
-- **Validation Results:**
-  - **ROC-AUC:** 1.0000 (Val) / 0.9500 (Test)
-  - **Optimal Threshold:** 0.50
-  - **Precision:** 0.8750
-  - **Recall:** 1.0000
-  - **F1 Score:** 0.9333
+Tailored for the 3-minute hackathon demo:
+- **Confirmed Findings (Rules + ML):** `search_users_classic`, `execute_system_ping`, `render_user_profile` $\rightarrow$ scored $\ge 0.53$ (high risk).
+- **Novel Findings (Zero-Day Candidates, ML Only):** `dynamic_query_assembler`, `dispatch_dynamic_worker`, `stream_tenant_log` $\rightarrow$ scored $\ge 0.53$ (high risk).
+- **Benign Controls:** `safe_get_user_by_id`, `safe_run_ping`, `compute_token_hash` $\rightarrow$ scored $< 0.53$ (clean).
 
 ---
 
@@ -71,7 +85,7 @@ ml/
 ```python
 from detector import Detector
 
-# Load model artifacts (gracefully falls back to mock if artifacts are missing)
+# Load model artifacts (Tier 1: CodeBERT -> Tier 2: TF-IDF -> Tier 3: Mock)
 det = Detector.load("ml/artifacts")
 
 # Predict vulnerability scores for a batch of functions
@@ -103,3 +117,4 @@ preds = det.predict(functions)
 ```bash
 pytest ml/tests -v
 ```
+All 11 tests passing: contract validation, artifact loading, held-out reports, model card, and demo sample classification.
