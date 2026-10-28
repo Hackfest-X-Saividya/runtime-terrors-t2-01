@@ -65,9 +65,13 @@ export function useScanSocket(scanId: string | undefined): ScanSocketState {
               return s.findings.some((f) => f.id === msg.data.id) ? s : { ...s, findings: [...s.findings, msg.data] }
             case 'done':
               return { ...s, result: msg.data, mode: 'closed' }
+            case 'error':
+              return { ...s, mode: 'closed' }
+            default:
+              return s
           }
         })
-        if (msg.type === 'done') {
+        if (msg.type === 'done' || msg.type === 'error') {
           finished = true
           socket?.close()
         }

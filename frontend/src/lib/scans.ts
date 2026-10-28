@@ -10,5 +10,10 @@ export function previousScanOf(scan: Scan, scans: Scan[]): Scan | null {
   )
 }
 
-export const isFinished = (scan: Pick<Scan, 'status'>) =>
-  scan.status === 'done' || scan.status === 'partial' || scan.status === 'failed'
+export const isFinished = (
+  scan: Pick<Scan, 'status'> | { status?: string | null } | string | null | undefined,
+): boolean => {
+  if (!scan) return false
+  const status = typeof scan === 'string' ? scan : scan.status
+  return status === 'completed' || status === 'done' || status === 'partial' || status === 'failed'
+}

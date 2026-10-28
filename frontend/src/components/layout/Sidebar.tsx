@@ -60,7 +60,7 @@ export function Sidebar() {
             <Icon name="restart_alt" /> Reset sample data
           </a>
         )}
-        <p className="font-label-code-sm text-label-code-sm text-outline">Zero-day detection · rules + ML</p>
+        <p className="font-label-code-sm text-label-code-sm text-outline">Candidate zero-day detection · rules + ML</p>
       </div>
     </aside>
   )

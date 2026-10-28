@@ -103,7 +103,7 @@ export default function DashboardPage() {
           badge={<NovelBadge label="Novel ML" />}
           value={s?.novel_count}
           valueClassName="text-primary"
-          footer="Zero-day candidates: ML only"
+          footer="Candidate zero-days: ML-only (requires manual triage)"
         />
         <KpiCard
           label="Risk score index"
@@ -121,13 +121,13 @@ export default function DashboardPage() {
           value={
             last && (
               <>
-                <span className={riskTextClass(last.risk_score)}>{last.risk_score.toFixed(1)}</span>
+                <span className={riskTextClass(last.risk_score)}>{typeof last.risk_score === 'number' ? last.risk_score.toFixed(1) : '-'}</span>
                 <span className="font-label-code-lg text-label-code-lg text-on-surface-variant"> / 10</span>
               </>
             )
           }
           footer={
-            delta !== null && (
+            delta !== null && typeof delta === 'number' && !isNaN(delta) && (
               <span className={delta > 0 ? 'text-error' : 'text-primary'}>
                 {delta > 0 ? '+' : ''}
                 {delta.toFixed(1)} vs previous scan

@@ -1,8 +1,9 @@
 const nf = new Intl.NumberFormat('en-US')
 
 export const fmtNumber = (n: number) => nf.format(n)
-export const fmtScore = (n: number) => n.toFixed(1)
-export const fmtPct = (n: number, digits = 1) => `${(n * 100).toFixed(digits)}%`
+export const fmtScore = (n?: number | null) => (typeof n === 'number' && !isNaN(n) ? n.toFixed(1) : '-')
+export const fmtPct = (n?: number | null, digits = 1) =>
+  typeof n === 'number' && !isNaN(n) ? `${(n * 100).toFixed(digits)}%` : '-'
 
 export function fmtDateTime(iso: string) {
   return new Date(iso).toLocaleString('en-GB', {

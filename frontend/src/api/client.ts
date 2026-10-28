@@ -103,8 +103,24 @@ export const api = {
   },
   listScans: () => request<Scan[]>('/api/scans'),
   getScan: (id: string) => request<Scan>(`/api/scans/${encodeURIComponent(id)}`),
-  listFindings: (scanId: string, query: FindingsQuery = {}) =>
-    request<FindingsPage>(`/api/scans/${encodeURIComponent(scanId)}/findings${toQuery(query)}`),
+  listFindings: async (scanId: string, query: FindingsQuery = {}): Promise<FindingsPage> => {
+    const raw = await request<FindingsPage | Finding[]>(
+      `/api/scans/${encodeURIComponent(scanId)}/findings${toQuery(query)}`,
+    )
+    if (Array.isArray(raw)) {
+      return {
+        items: raw,
+        total: raw.length,
+      }
+    }
+    if (raw && typeof raw === 'object' && Array.isArray((raw as FindingsPage).items)) {
+      return {
+        items: (raw as FindingsPage).items,
+        total: typeof (raw as FindingsPage).total === 'number' ? (raw as FindingsPage).total : (raw as FindingsPage).items.length,
+      }
+    }
+    return { items: [], total: 0 }
+  },
   getScanDiff: (scanId: string) => request<ScanDiff>(`/api/scans/${encodeURIComponent(scanId)}/diff`),
   getFinding: (id: string) => request<Finding>(`/api/findings/${encodeURIComponent(id)}`),
   updateFinding: (id: string, input: UpdateFindingInput) =>

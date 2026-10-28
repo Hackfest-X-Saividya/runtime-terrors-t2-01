@@ -1,4 +1,4 @@
-import { findingStatusMeta, scanStatusMeta, severityMeta } from '@/lib/labels'
+import { findingStatusMeta, getScanStatusMeta, severityMeta } from '@/lib/labels'
 import type { FindingSource, FindingStatus, ScanStatus, Severity } from '@/types/contract'
 import { Icon } from './Icon'
 
@@ -15,13 +15,14 @@ interface SeverityBadgeProps {
 
 /** Severity is always shown as text; the dot is decoration only. */
 export function SeverityBadge({ severity, score, muted }: SeverityBadgeProps) {
-  const m = severityMeta[severity]
+  const m = severityMeta[severity] ?? severityMeta.low
+  const hasScore = typeof score === 'number' && !isNaN(score)
   return (
     <span
       className={`${chip} ${muted ? 'bg-surface-container text-on-surface-variant line-through' : `${m.badge} ${m.text}`}`}
     >
       <span aria-hidden="true" className={`h-1.5 w-1.5 rounded-full ${muted ? 'bg-outline' : m.dot}`} />
-      {score === undefined ? m.label.toUpperCase() : `${m.short} ${score.toFixed(1)}`}
+      {!hasScore ? m.label.toUpperCase() : `${m.short} ${score.toFixed(1)}`}
       <span className="sr-only"> severity</span>
     </span>
   )
@@ -52,7 +53,7 @@ export function NovelBadge({ label = 'Novel' }: { label?: 'Novel' | 'Novel ML' }
   return (
     <span
       className={`${chip} bg-primary-container text-on-primary-container shadow-sm`}
-      title="Only the ML model detected this: a zero-day candidate"
+      title="Only the ML model detected this: a zero-day candidate pending independent validation"
     >
       <Icon name="auto_awesome" />
       {label}
@@ -66,7 +67,7 @@ export function SourceBadge({ source, ruleId }: { source: FindingSource; ruleId?
   return (
     <span className={`${chip} bg-surface-container-high text-on-surface-variant`} title={ruleId ?? undefined}>
       <Icon name={source === 'both' ? 'join' : 'rule'} />
-      {source === 'both' ? 'Rule + ML' : 'Rule'}
+      {source === 'both' ? 'Rule + ML corroborated' : 'Rule'}
     </span>
   )
 }
@@ -81,8 +82,8 @@ export function FindingStatusPill({ status }: { status: FindingStatus }) {
   )
 }
 
-export function ScanStatusPill({ status }: { status: ScanStatus }) {
-  const m = scanStatusMeta[status]
+export function ScanStatusPill({ status }: { status: ScanStatus | string }) {
+  const m = getScanStatusMeta(status)
   return (
     <span className={`${chip} ${m.chip}`}>
       <span aria-hidden="true" className={`h-1.5 w-1.5 rounded-full ${m.dot}`} />
@@ -104,15 +105,17 @@ export function SuppressedBadge() {
 }
 
 /** ML score lowered by feedback: "0.91 → 0.34". */
-export function ScoreChange({ before, after }: { before: number; after: number }) {
+export function ScoreChange({ before, after }: { before?: number | null; after?: number | null }) {
+  const b = typeof before === 'number' && !isNaN(before) ? before.toFixed(2) : '-'
+  const a = typeof after === 'number' && !isNaN(after) ? after.toFixed(2) : '-'
   return (
     <span
       className={`${chip} bg-surface-container-highest text-primary`}
       title="ML score lowered by feedback"
-      aria-label={`ML score lowered by feedback from ${before.toFixed(2)} to ${after.toFixed(2)}`}
+      aria-label={`ML score lowered by feedback from ${b} to ${a}`}
     >
       <Icon name="trending_down" />
-      {before.toFixed(2)} → {after.toFixed(2)}
+      {b} → {a}
     </span>
   )
 }

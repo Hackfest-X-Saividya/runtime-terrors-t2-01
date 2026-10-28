@@ -60,6 +60,15 @@ export default function ModelPage() {
             <Tag className="text-primary">
               <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-primary" /> Active: {learning.version}
             </Tag>
+            {d.status && (
+              <Tag className={d.status === 'ready' ? 'text-primary' : 'text-warning'}>
+                <span
+                  aria-hidden="true"
+                  className={`h-1.5 w-1.5 rounded-full ${d.status === 'ready' ? 'bg-primary' : 'bg-warning'}`}
+                />{' '}
+                Runtime: {d.status}
+              </Tag>
+            )}
             <Tag>threshold {card.threshold.toFixed(2)}</Tag>
             <Tag>{card.languages.join(', ')}</Tag>
           </>
@@ -113,7 +122,7 @@ export default function ModelPage() {
       <Card
         className="mb-space-lg"
         title="Held-out vulnerability types"
-        subtitle="Each row is a vulnerability type the model never saw in training: our zero-day proxy."
+        subtitle="Each row is a vulnerability type the model never saw in training: our zero-day proxy (requires independent validation)."
         action={
           <span className="flex flex-wrap items-center gap-space-sm">
             <SampleTag />

@@ -88,13 +88,13 @@ export default function FindingsPage() {
                 </div>
                 <div className="flex flex-col gap-1 border-l border-outline-variant pl-space-md font-label-code-sm text-label-code-sm">
                   <span className="text-on-surface">
-                    {fmtNumber(severityOrder.reduce((n, k) => n + s.counts_by_severity[k], 0))} findings ·{' '}
+                    {fmtNumber(severityOrder.reduce((n, k) => n + (s.counts_by_severity?.[k] ?? 0), 0))} findings ·{' '}
                     <span className="text-primary">{novel} Novel ML</span>
                   </span>
                   <span className="flex flex-wrap gap-space-sm">
                     {severityOrder.map((k) => (
-                      <span key={k} className={severityMeta[k].text}>
-                        ● {s.counts_by_severity[k]} {severityMeta[k].short}
+                      <span key={k} className={severityMeta[k]?.text ?? ''}>
+                        ● {s.counts_by_severity?.[k] ?? 0} {severityMeta[k]?.short ?? k.toUpperCase()}
                       </span>
                     ))}
                   </span>

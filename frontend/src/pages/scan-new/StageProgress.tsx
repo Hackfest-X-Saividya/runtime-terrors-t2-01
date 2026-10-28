@@ -2,7 +2,7 @@ import { Icon } from '@/components/Icon'
 import type { ScanProgress, SocketMode } from '@/hooks/useScanSocket'
 import { fmtNumber } from '@/lib/format'
 import { stageMeta, stageOrder } from '@/lib/labels'
-import type { Scan } from '@/types/contract'
+import type { Scan, ScanStage } from '@/types/contract'
 
 type StageState = 'done' | 'running' | 'waiting' | 'failed'
 
@@ -32,8 +32,9 @@ export function StageProgress({
   mode: SocketMode
 }) {
   const current = progress?.stage ?? scan.stage
-  const currentIdx = stageOrder.indexOf(current)
-  const finished = scan.status === 'done'
+  const normalizedCurrent = (current as string) === 'ingest' ? 'unpack' : (current as string) === 'aggregation' ? 'ranking' : current
+  const currentIdx = stageOrder.indexOf(normalizedCurrent as ScanStage)
+  const finished = scan.status === 'done' || scan.status === 'completed'
   const stopped = scan.status === 'failed' || scan.status === 'partial'
 
   return (

@@ -61,12 +61,13 @@ export function TriagePanel({ finding }: { finding: Finding }) {
                       {
                         onSuccess: (f) => {
                           setOpen(null)
-                          const learned = f.ml_score_before !== null && input.train
+                          const learned = typeof f.ml_score_before === 'number' && input.train
+                          const scoreStr = typeof f.ml_score === 'number' ? f.ml_score.toFixed(2) : '-'
                           toast(
                             'success',
                             `Marked ${findingStatusMeta[s].label.toLowerCase()}.` +
                               (learned
-                                ? ` Model ${f.feedback?.model_version} lowered the ML score to ${f.ml_score?.toFixed(2)}.`
+                                ? ` Model ${f.feedback?.model_version ?? ''} lowered the ML score to ${scoreStr}.`
                                 : ''),
                           )
                         },

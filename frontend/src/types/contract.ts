@@ -6,7 +6,7 @@ export type FindingSource = 'rule' | 'ml' | 'both'
 export type FindingStatus = 'open' | 'fixed' | 'false_positive' | 'accepted'
 
 export type ScanSourceType = 'zip' | 'git' | 'paste'
-export type ScanStatus = 'queued' | 'running' | 'done' | 'failed' | 'partial'
+export type ScanStatus = 'queued' | 'running' | 'scanning' | 'analyzing_ml' | 'completed' | 'done' | 'failed' | 'partial'
 export type ScanStage = 'unpack' | 'rules' | 'ml' | 'ranking'
 
 export type SeverityCounts = Record<Severity, number>
@@ -186,6 +186,12 @@ export interface ModelLearning {
 
 /** GET /api/model/info */
 export interface ModelInfo {
+  model_name?: string
+  version?: string
+  is_stub?: boolean
+  artifacts_present?: boolean
+  status?: 'ready' | 'stub_fallback' | 'load_failed' | string
+  feedback_supported?: boolean
   model_card: ModelCard
   eval: ModelEval
   /** (proposed) */
@@ -208,6 +214,7 @@ export interface Health {
 
 /** WebSocket /ws/scans/{id} */
 export type ScanSocketMessage =
-  | { type: 'progress'; data: { stage: ScanStage; done: number; total: number } }
+  | { type: 'progress'; data: { stage: ScanStage; done: number; total: number; [key: string]: unknown } }
   | { type: 'finding'; data: Finding }
   | { type: 'done'; data: Scan }
+  | { type: 'error'; data: { code: string; message: string } }

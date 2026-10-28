@@ -107,7 +107,7 @@ export function FindingsTable({ items, selected, onToggle, onToggleAll, sort, on
                   <SeverityBadge severity={f.severity} muted={f.suppressed} />
                 </td>
                 <td className="px-space-sm py-3 align-top font-mono text-label-code-lg text-on-surface">
-                  {f.risk_score.toFixed(1)}
+                  {typeof f.risk_score === 'number' ? f.risk_score.toFixed(1) : '-'}
                 </td>
                 <td className="max-w-md px-space-sm py-3 align-top">
                   <div className="flex flex-col gap-1">
@@ -120,10 +120,10 @@ export function FindingsTable({ items, selected, onToggle, onToggleAll, sort, on
                     <code className="truncate font-label-code-md text-label-code-md text-on-surface-variant">
                       {sinkLine(f.snippet)}
                     </code>
-                    {(isNovel(f) || f.ml_score_before !== null || f.suppressed) && (
+                    {(isNovel(f) || typeof f.ml_score_before === 'number' || f.suppressed) && (
                       <div className="flex flex-wrap gap-1">
                         {isNovel(f) && <NovelBadge />}
-                        {f.ml_score_before !== null && f.ml_score !== null && (
+                        {typeof f.ml_score_before === 'number' && typeof f.ml_score === 'number' && (
                           <ScoreChange before={f.ml_score_before} after={f.ml_score} />
                         )}
                         {f.suppressed && <SuppressedBadge />}

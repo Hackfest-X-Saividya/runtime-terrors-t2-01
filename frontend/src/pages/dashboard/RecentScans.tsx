@@ -5,7 +5,7 @@ import { RiskScore } from '@/components/RiskScore'
 import { fmtDateTime, fmtNumber } from '@/lib/format'
 import type { Scan } from '@/types/contract'
 
-const typeIcon = { zip: 'folder_zip', git: 'commit', paste: 'content_paste' }
+const typeIcon: Record<string, string> = { zip: 'folder_zip', git: 'commit', paste: 'content_paste', code: 'content_paste' }
 
 export function RecentScans({ scans }: { scans: Scan[] }) {
   return (
@@ -44,7 +44,7 @@ export function RecentScans({ scans }: { scans: Scan[] }) {
                     to={`/scans/${scan.id}/findings`}
                     className="flex items-center gap-space-sm rounded hover:text-primary"
                   >
-                    <Icon name={typeIcon[scan.source_type]} className="text-on-surface-variant" />
+                    <Icon name={typeIcon[scan.source_type] ?? 'description'} className="text-on-surface-variant" />
                     <span className="flex min-w-0 flex-col">
                       <span className="truncate font-body-md text-body-md text-on-surface">{scan.name}</span>
                       <span className="font-label-code-sm text-label-code-sm text-on-surface-variant">
@@ -61,9 +61,9 @@ export function RecentScans({ scans }: { scans: Scan[] }) {
                   {fmtNumber(scan.files_scanned)}
                 </td>
                 <td className="px-space-sm py-3 font-body-md text-body-md">
-                  <span className={c.critical ? 'text-error' : 'text-on-surface-variant'}>{c.critical} Crit</span>
+                  <span className={c?.critical ? 'text-error' : 'text-on-surface-variant'}>{c?.critical ?? 0} Crit</span>
                   <span className="text-on-surface-variant"> · </span>
-                  <span className={c.high ? 'text-tertiary-container' : 'text-on-surface-variant'}>{c.high} High</span>
+                  <span className={c?.high ? 'text-tertiary-container' : 'text-on-surface-variant'}>{c?.high ?? 0} High</span>
                 </td>
                 <td className="px-space-sm py-3">
                   <RiskScore score={scan.risk_score} />

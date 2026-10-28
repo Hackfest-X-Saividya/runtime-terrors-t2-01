@@ -38,12 +38,12 @@ function DetectedBy({ f }: { f: Finding }) {
         >
           <p className="font-label-code-sm text-label-code-sm uppercase text-on-surface-variant">ML model</p>
           <p className="font-label-code-lg text-label-code-lg text-primary">
-            {f.ml_score !== null ? `${fmtPct(f.ml_score)} vulnerable` : 'Not scored'}
+            {typeof f.ml_score === 'number' ? `${fmtPct(f.ml_score)} vulnerable` : 'Not scored'}
           </p>
           <p className="font-body-sm text-body-sm text-on-surface-variant">
-            {f.ml_score_before !== null
+            {typeof f.ml_score_before === 'number'
               ? `Was ${fmtPct(f.ml_score_before)} before feedback`
-              : ml
+              : typeof f.ml_score === 'number'
                 ? 'Function-level risk score'
                 : 'Rule-only finding'}
           </p>
@@ -51,7 +51,12 @@ function DetectedBy({ f }: { f: Finding }) {
       </div>
       {isNovel(f) && (
         <p className="mt-space-sm flex items-center gap-space-sm font-body-md text-body-md text-on-surface-variant">
-          <NovelBadge /> Only the model caught this: a zero-day candidate worth a manual look.
+          <NovelBadge /> Only the ML detector flagged this: a zero-day candidate requiring independent validation.
+        </p>
+      )}
+      {f.source === 'both' && (
+        <p className="mt-space-sm font-body-sm text-body-sm text-on-surface-variant">
+          Corroborated by both static rule checks and ML model scoring; requires manual triage before confirmation.
         </p>
       )}
     </Card>
@@ -153,7 +158,7 @@ export default function FindingDetailPage() {
         }
       />
 
-      {f.ml_score_before !== null && f.ml_score !== null && (
+      {typeof f.ml_score_before === 'number' && typeof f.ml_score === 'number' && (
         <div
           role="status"
           className="mb-space-lg flex flex-wrap items-center gap-space-sm rounded-xl bg-surface-container-low p-space-md shadow-sm"
@@ -221,7 +226,7 @@ export default function FindingDetailPage() {
               </span>
             }
           >
-            <RiskGauge score={f.risk_score} label={`${severityMeta[f.severity].label} severity`} />
+            <RiskGauge score={typeof f.risk_score === 'number' ? f.risk_score : 0} label={`${severityMeta[f.severity]?.label ?? 'Unknown'} severity`} />
           </Card>
           <Card title="Classification" icon="category">
             <div className="flex flex-col gap-space-sm">

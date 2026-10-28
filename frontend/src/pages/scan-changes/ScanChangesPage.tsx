@@ -190,9 +190,9 @@ export default function ScanChangesPage() {
         <KpiCard
           label="Net risk delta"
           icon="trending_down"
-          value={delta === null ? '–' : `${delta > 0 ? '+' : ''}${delta.toFixed(1)}`}
+          value={delta === null || typeof delta !== 'number' ? '–' : `${delta > 0 ? '+' : ''}${delta.toFixed(1)}`}
           valueClassName={delta !== null && delta > 0 ? 'text-error' : 'text-primary'}
-          footer={prev && `${prev.risk_score.toFixed(1)} → ${s.risk_score.toFixed(1)}`}
+          footer={prev && typeof prev.risk_score === 'number' && typeof s.risk_score === 'number' ? `${prev.risk_score.toFixed(1)} → ${s.risk_score.toFixed(1)}` : undefined}
         />
       </section>
 
@@ -216,7 +216,7 @@ export default function ScanChangesPage() {
                   f={f}
                   right={
                     <span className="rounded bg-error-container/40 px-2 py-0.5 font-label-code-sm text-label-code-sm text-error">
-                      +{f.risk_score.toFixed(1)} NEW
+                      +{typeof f.risk_score === 'number' ? f.risk_score.toFixed(1) : '-'} NEW
                     </span>
                   }
                 />
@@ -247,7 +247,7 @@ export default function ScanChangesPage() {
                 f={f}
                 muted
                 right={
-                  f.ml_score_before !== null && f.ml_score !== null ? (
+                  typeof f.ml_score_before === 'number' && typeof f.ml_score === 'number' ? (
                     <>
                       <ScoreChange before={f.ml_score_before} after={f.ml_score} />
                       {f.feedback && (

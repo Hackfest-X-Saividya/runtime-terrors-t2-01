@@ -42,10 +42,14 @@ export const severityMeta: Record<
 
 export const severityOrder: Severity[] = ['critical', 'high', 'medium', 'low']
 
-/** A finding is Novel (zero-day candidate) when only the ML model caught it. */
+/** A finding is Novel (candidate zero-day) when only the ML model caught it. Requires independent validation. */
 export const isNovel = (finding: Pick<Finding, 'source'>) => finding.source === 'ml'
 
-export const sourceLabel: Record<FindingSource, string> = { rule: 'Rule', ml: 'ML only', both: 'Rule + ML' }
+export const sourceLabel: Record<FindingSource, string> = {
+  rule: 'Rule',
+  ml: 'ML only',
+  both: 'Rule + ML corroborated',
+}
 
 interface ChipStyle {
   label: string
@@ -70,16 +74,33 @@ export const findingStatusOrder: FindingStatus[] = ['open', 'fixed', 'false_posi
 export const scanStatusMeta: Record<ScanStatus, ChipStyle> = {
   queued: { label: 'Queued', dot: 'bg-outline', chip: 'bg-surface-container-high text-on-surface-variant' },
   running: { label: 'Running', dot: 'bg-primary animate-pulse', chip: 'bg-primary/10 text-primary' },
+  scanning: { label: 'Scanning', dot: 'bg-primary animate-pulse', chip: 'bg-primary/10 text-primary' },
+  analyzing_ml: { label: 'ML Analysis', dot: 'bg-primary animate-pulse', chip: 'bg-primary/10 text-primary' },
+  completed: { label: 'Completed', dot: 'bg-primary', chip: 'bg-surface-container-high text-on-surface' },
   done: { label: 'Done', dot: 'bg-primary', chip: 'bg-surface-container-high text-on-surface' },
   failed: { label: 'Failed', dot: 'bg-error', chip: 'bg-error-container/40 text-error' },
   partial: { label: 'Partial', dot: 'bg-tertiary-container', chip: 'bg-tertiary-container/20 text-tertiary' },
 }
 
-export const stageMeta: Record<ScanStage, { label: string; unit: string }> = {
+/** Returns UI metadata for any scan status, safely falling back if unknown. */
+export function getScanStatusMeta(status: string | undefined | null): ChipStyle {
+  if (status && status in scanStatusMeta) {
+    return scanStatusMeta[status as ScanStatus]
+  }
+  return {
+    label: status ? String(status).replace(/_/g, ' ') : 'Unknown',
+    dot: 'bg-outline',
+    chip: 'bg-surface-container text-on-surface-variant',
+  }
+}
+
+export const stageMeta: Record<ScanStage | 'ingest' | 'aggregation', { label: string; unit: string }> = {
   unpack: { label: 'Unpack', unit: 'files' },
+  ingest: { label: 'Ingest', unit: 'files' },
   rules: { label: 'Rule scan', unit: 'rules evaluated' },
   ml: { label: 'ML analysis', unit: 'functions scored' },
   ranking: { label: 'Ranking', unit: 'findings ranked' },
+  aggregation: { label: 'Aggregation', unit: 'findings ranked' },
 }
 
 export const stageOrder: ScanStage[] = ['unpack', 'rules', 'ml', 'ranking']

@@ -47,4 +47,27 @@ describe('ApiError', () => {
     await api.updateFinding('f1', { status: 'false_positive', reason: 'test', note: 'n', train: true })
     expect(body).toEqual({ status: 'false_positive', reason: 'test', note: 'n', train: true })
   })
+
+  it('normalizes findings response from raw array or envelope', async () => {
+    const mockFinding = { id: 'f1', title: 'Test', severity: 'high', risk_score: 8.0, status: 'open' }
+
+    // Array response
+    server.use(
+      http.get('*/api/scans/:id/findings', () => HttpResponse.json([mockFinding])),
+    )
+    const resArray = await api.listFindings('scan-1')
+    expect(resArray.items).toHaveLength(1)
+    expect(resArray.total).toBe(1)
+    expect(resArray.items[0].id).toBe('f1')
+
+    // Envelope response
+    server.use(
+      http.get('*/api/scans/:id/findings', () =>
+        HttpResponse.json({ items: [mockFinding, { ...mockFinding, id: 'f2' }], total: 10 }),
+      ),
+    )
+    const resEnvelope = await api.listFindings('scan-1', { limit: 2, offset: 0 })
+    expect(resEnvelope.items).toHaveLength(2)
+    expect(resEnvelope.total).toBe(10)
+  })
 })
