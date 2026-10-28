@@ -298,3 +298,52 @@ async def test_pipeline_ml_low_score_discarded(isolated_test_db: AsyncSession, m
     await isolated_test_db.refresh(scan)
     assert scan.status == "completed"
     assert scan.findings_count == 0
+
+
+def test_ml_service_real_detector_mock_loading(tmp_path, monkeypatch):
+    """
+    Verifies that when Member 3's real detector is present, MLDetectorService
+    loads it, sets is_stub=False, status='ready', and delegates predict() to it.
+    """
+    art_dir = tmp_path / "artifacts"
+    art_dir.mkdir()
+    (art_dir / "weights.bin").write_text("weights")
+
+    class MockRealDetector:
+        def __init__(self):
+            pass
+
+        @classmethod
+        def load(cls, path):
+            return cls()
+
+        def predict(self, functions):
+            return [
+                {
+                    "ml_score": 0.88,
+                    "cwe_guess": "CWE-89",
+                    "cwe_probs": {"CWE-89": 0.88, "CWE-79": 0.12},
+                    "top_lines": [fn.get("start_line", 1)],
+                }
+                for fn in functions
+            ]
+
+    import sys
+    import types
+    mock_module = types.ModuleType("detector")
+    mock_module.Detector = MockRealDetector
+    monkeypatch.setitem(sys.modules, "detector", mock_module)
+
+    service = MLDetectorService(artifacts_path=str(art_dir))
+    info = service.get_runtime_info()
+
+    assert info["is_stub"] is False
+    assert info["status"] == "ready"
+    assert info["artifacts_present"] is True
+    assert info["model_name"] == "ZeroSentinel CodeBERT Detector"
+    assert info["version"] == "0.1.0"
+
+    preds = service.predict([{"code": "def foo(): pass", "start_line": 5, "end_line": 6}])
+    assert len(preds) == 1
+    assert preds[0]["ml_score"] == 0.88
+    assert preds[0]["cwe_guess"] == "CWE-89"

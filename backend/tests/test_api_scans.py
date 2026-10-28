@@ -155,3 +155,21 @@ async def test_create_scan_zip_missing_file(client_with_db: AsyncClient):
     assert response.status_code == 400
     res_data = response.json()
     assert res_data["error"]["code"] == "MISSING_FILE"
+
+
+@pytest.mark.asyncio
+async def test_create_scan_zip_oversized_fails(client_with_db: AsyncClient, monkeypatch):
+    """Verify POST /api/scans with ZIP file exceeding MAX_UPLOAD_SIZE_BYTES returns 400 ARCHIVE_LIMIT_EXCEEDED."""
+    from app.core.config import settings
+    monkeypatch.setattr(settings, "MAX_UPLOAD_SIZE_BYTES", 100)
+
+    files = {"file": ("oversized.zip", b"PK\x03\x04" + b"X" * 150, "application/zip")}
+    data = {
+        "submission_type": "zip",
+        "project_name": "OversizedProject",
+        "language": "python",
+    }
+    response = await client_with_db.post("/api/scans", data=data, files=files)
+    assert response.status_code == 400
+    res_data = response.json()
+    assert res_data["error"]["code"] == "ARCHIVE_LIMIT_EXCEEDED"
