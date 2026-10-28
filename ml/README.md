@@ -188,7 +188,7 @@ preds = det.predict(functions)
 pytest ml/tests -v
 ```
 
-All 16 unit tests passing cleanly in ~3.2 seconds:
+All 21 unit tests passing cleanly in ~7.8 seconds:
 - `test_detector.py`: 6 tests (artifact loading, fallback mock, contract schema, SQL/CMD accuracy, benign controls).
 - `test_evaluation.py`: 6 tests (`eval.json` schema, `eval.md` table, `model_card.json`, `vuln_demo.py` scoring, engine fallback, PyGoat scan speed < 5s).
-- `test_feedback.py`: 4 tests (RL false positive suppression, bug reinforcement, state persistence, mock fallback).
+- `test_feedback.py`: 9 tests (RL false positive suppression, bug reinforcement, accepted neutral triage, cross-process atomic file locking, corrupted/empty state recovery, missing state auto-init, mock fallback).
