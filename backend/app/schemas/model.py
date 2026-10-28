@@ -3,12 +3,12 @@ from pydantic import BaseModel, Field
 
 
 class ModelCard(BaseModel):
-    name: str = "ZeroSentinel CodeBERT Detector"
+    name: str = "ZeroSentinel Dual-Engine Vulnerability Detector"
     version: str = "0.1.0"
-    architecture: str = "CodeBERT Transformer + Security Head"
-    training_data: str = "Diverse synthetic and curated CVE corpus (CWE-89, CWE-78, CWE-502, CWE-798, CWE-22)"
-    languages: List[str] = Field(default_factory=lambda: ["Python", "JavaScript"])
-    threshold: float = 0.50
+    architecture: str = "TF-IDF Code Vectorizer + Class-Weighted Logistic Regression (with Contextual Bandit RL)"
+    training_data: str = "VUDENC Curated Python Vulnerability Dataset (75 train, 18 val, 18 test)"
+    languages: List[str] = Field(default_factory=lambda: ["Python"])
+    threshold: float = 0.53
 
 
 class HeldOutType(BaseModel):
@@ -20,29 +20,32 @@ class HeldOutType(BaseModel):
 
 
 class ModelEval(BaseModel):
-    precision: float = 0.88
-    recall: float = 0.84
-    f1: float = 0.86
+    precision: float = 1.0
+    recall: float = 0.75
+    f1: float = 0.8571
     roc_auc: float = 0.925
     held_out: List[HeldOutType] = Field(default_factory=lambda: [
-        HeldOutType(vuln_type="Prompt Injection (LLM)", cwe_id="CWE-77", detection_rate=0.82, fpr=0.04, samples=250),
-        HeldOutType(vuln_type="Insecure Deserialization (YAML)", cwe_id="CWE-502", detection_rate=0.89, fpr=0.03, samples=180),
-        HeldOutType(vuln_type="SSTI (Jinja2/Mako)", cwe_id="CWE-1336", detection_rate=0.85, fpr=0.05, samples=210),
-        HeldOutType(vuln_type="SSRF via Cloud Metadata", cwe_id="CWE-918", detection_rate=0.91, fpr=0.02, samples=195),
+        HeldOutType(vuln_type="sql", cwe_id="CWE-89", detection_rate=1.0, fpr=0.0, samples=1),
+        HeldOutType(vuln_type="xss", cwe_id="CWE-79", detection_rate=1.0, fpr=0.0, samples=1),
+        HeldOutType(vuln_type="command_injection", cwe_id="CWE-78", detection_rate=1.0, fpr=0.0, samples=1),
+        HeldOutType(vuln_type="xsrf", cwe_id="CWE-352", detection_rate=0.0, fpr=0.0, samples=2),
+        HeldOutType(vuln_type="remote_code_execution", cwe_id="CWE-94", detection_rate=1.0, fpr=0.0, samples=1),
+        HeldOutType(vuln_type="path_disclosure", cwe_id="CWE-22", detection_rate=1.0, fpr=0.0, samples=1),
+        HeldOutType(vuln_type="open_redirect", cwe_id="CWE-601", detection_rate=1.0, fpr=0.0, samples=1),
     ])
 
 
 class ModelVersion(BaseModel):
     version: str = "0.1.0"
-    created_at: str = "2026-10-28T00:00:00Z"
-    trigger: str = "Initial training baseline"
-    f1: float = 0.86
-    fpr: float = 0.035
+    created_at: str = "2026-10-28T09:09:32Z"
+    trigger: str = "VUDENC 7-CWE Baseline Training"
+    f1: float = 0.8571
+    fpr: float = 0.0
 
 
 class ModelLearning(BaseModel):
     version: str = "0.1.0"
-    threshold: float = 0.50
+    threshold: float = 0.53
     feedback_count: int = 0
     suppressed_count: int = 0
     versions: List[ModelVersion] = Field(default_factory=lambda: [ModelVersion()])

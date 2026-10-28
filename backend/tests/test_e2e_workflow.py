@@ -160,7 +160,7 @@ async def test_complete_end_to_end_workflow(
     assert model_data["status"] in ("ready", "stub_fallback")
     if model_data["status"] == "ready":
         assert model_data["is_stub"] is False
-        assert model_data["model_name"] == "ZeroSentinel CodeBERT Detector"
+        assert model_data["model_name"] in ("ZeroSentinel Dual-Engine Vulnerability Detector", "ZeroSentinel CodeBERT Detector")
         assert model_data["feedback_supported"] is True
     else:
         assert model_data["is_stub"] is True

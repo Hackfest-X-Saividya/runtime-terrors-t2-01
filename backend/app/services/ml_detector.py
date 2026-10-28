@@ -183,7 +183,7 @@ class MLDetectorService:
                 self._detector = loaded_det
                 self.is_stub = False
                 self.status = "ready"
-                self.model_name = "ZeroSentinel CodeBERT Detector"
+                self.model_name = "ZeroSentinel Dual-Engine Vulnerability Detector" if getattr(self._detector, "active_engine", "") != "codebert" else "ZeroSentinel CodeBERT Detector"
                 self.version = "0.1.0"
                 self.feedback_supported = hasattr(self._detector, "feedback") and callable(getattr(self._detector, "feedback"))
                 logger.info("ML detector loaded successfully (feedback_supported=%s).", self.feedback_supported)

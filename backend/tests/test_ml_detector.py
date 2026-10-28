@@ -340,7 +340,7 @@ def test_ml_service_real_detector_mock_loading(tmp_path, monkeypatch):
     assert info["is_stub"] is False
     assert info["status"] == "ready"
     assert info["artifacts_present"] is True
-    assert info["model_name"] == "ZeroSentinel CodeBERT Detector"
+    assert info["model_name"] in ("ZeroSentinel Dual-Engine Vulnerability Detector", "ZeroSentinel CodeBERT Detector")
     assert info["version"] == "0.1.0"
 
     preds = service.predict([{"code": "def foo(): pass", "start_line": 5, "end_line": 6}])

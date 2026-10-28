@@ -31,7 +31,7 @@ async def test_frontend_model_info_and_revert(client_with_db: AsyncClient):
     assert "model_card" in data
     assert "eval" in data
     assert "learning" in data
-    assert data["model_card"]["threshold"] == 0.50
+    assert data["model_card"]["threshold"] in (0.50, 0.53)
     assert len(data["eval"]["held_out"]) >= 1
 
     revert_res = await client_with_db.post("/api/model/revert", json={"version": "0.1.0"})

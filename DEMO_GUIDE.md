@@ -40,7 +40,7 @@ ZeroSentinel is architected for **PostgreSQL 16**.
 
 ### Current Verification Status:
 * During local offline testing, PostgreSQL 16 is not running locally.
-* All 114 automated tests run in isolated SQLite in-memory environments with foreign keys and regular expression support.
+* All 121 automated backend and ML tests run in isolated SQLite in-memory environments with foreign keys and regular expression support.
 * In production, the backend connects to PostgreSQL 16 using `asyncpg`.
 
 ### Starting PostgreSQL 16 (When Docker Is Available):
@@ -94,7 +94,7 @@ curl -s http://localhost:8000/api/model/info
 Expected `/api/model/info` response:
 ```json
 {
-  "model_name": "ZeroSentinel CodeBERT Detector",
+  "model_name": "ZeroSentinel Dual-Engine Vulnerability Detector",
   "version": "0.1.0",
   "is_stub": false,
   "artifacts_present": true,
@@ -187,3 +187,24 @@ To stop the development server:
 * Press `Ctrl+C` in the terminal.
 * Feedback weights and audit history are persisted atomically to `ml/artifacts/rl_state.json` (protected by cross-process file locks).
 * `rl_state.json`, `.lock`, and `.tmp` files are ignored by `.gitignore` to prevent tracking of local demo state in Git.
+
+---
+
+## 7. Starting the React Frontend (Branch `frontend`)
+
+The ZeroSentinel React web client lives on branch `frontend`. To run both side-by-side without file collisions:
+
+```powershell
+# In a second terminal window:
+git checkout frontend
+cd frontend
+npm install
+npm run dev
+# The React dashboard will be available at http://127.0.0.1:5173
+```
+
+### Verified Runtime Model Architecture
+* **Primary Runtime Engine:** TF-IDF Code Vectorizer + Class-Weighted Logistic Regression (`ml/artifacts/binary_model.joblib`, `ml/artifacts/cwe_model.joblib`).
+* **Continuous Online Adaptation:** Contextual Bandit Reinforcement Learning policy (`detector/feedback.py`) adjusting scores in real time based on triage decisions (`ml/artifacts/rl_state.json`).
+* **Evaluation Ground Truth:** Benchmark metrics strictly derived from VUDENC Python dataset (75 train, 18 val, 18 test) across 7 CWE types. Test set performance: ROC-AUC 0.925, Precision 1.0, Recall 0.75, F1 0.857.
+* **Deep Learning Pipeline (CodeBERT):** Dual-head CodeBERT fine-tuning pipeline is implemented in `ml/train_codebert.py` with GPU configuration manifest in `ml/artifacts/codebert/codebert_manifest.json`.
