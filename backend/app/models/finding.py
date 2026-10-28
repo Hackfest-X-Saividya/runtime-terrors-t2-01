@@ -1,7 +1,8 @@
 import uuid
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Any, Optional
 from sqlalchemy import Float, ForeignKey, Index, Integer, String, Text
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.types import JSON
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
@@ -44,6 +45,20 @@ class Finding(Base):
     risk_score: Mapped[float] = mapped_column(Float, nullable=False)
     mitigation: Mapped[str] = mapped_column(Text, nullable=False)
     status: Mapped[str] = mapped_column(String(20), nullable=False, default="open")
+
+    # Phase 16 Additive Fields: CVSS v3.1, Security Frameworks, Explainable Correlation
+    cvss_score: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    cvss_vector: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    cvss_severity: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
+    cvss_provenance: Mapped[str] = mapped_column(String(30), nullable=False, default="unassessed")
+    security_frameworks: Mapped[Optional[Any]] = mapped_column(
+        JSON().with_variant(JSONB, "postgresql"),
+        nullable=True,
+    )
+    correlation_data: Mapped[Optional[Any]] = mapped_column(
+        JSON().with_variant(JSONB, "postgresql"),
+        nullable=True,
+    )
 
     # Table indexes
     __table_args__ = (

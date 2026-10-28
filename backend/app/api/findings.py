@@ -90,26 +90,10 @@ async def get_finding(
                 created_at=mit.created_at,
             )
 
-    return FindingDetailResponse(
-        id=finding.id,
-        scan_id=finding.scan_id,
-        mitigation_id=finding.mitigation_id,
-        file_path=finding.file_path,
-        start_line=finding.start_line,
-        end_line=finding.end_line,
-        title=finding.title,
-        cwe_id=finding.cwe_id,
-        owasp=finding.owasp,
-        source=finding.source,
-        rule_id=finding.rule_id,
-        snippet=finding.snippet,
-        ml_score=finding.ml_score,
-        severity=finding.severity,
-        risk_score=finding.risk_score,
-        mitigation=finding.mitigation,
-        status=finding.status,
-        mitigation_detail=mitigation_detail,
-    )
+    resp = FindingDetailResponse.model_validate(finding)
+    if mitigation_detail:
+        resp.mitigation_detail = mitigation_detail
+    return resp
 
 
 @router.patch(

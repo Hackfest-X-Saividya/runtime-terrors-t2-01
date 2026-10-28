@@ -53,7 +53,9 @@ async def run_async_migrations() -> None:
     configuration["sqlalchemy.url"] = settings.DATABASE_URL
 
     connect_args = {}
-    if "supabase.com" in settings.DATABASE_URL or getattr(settings, "DB_SSL", None) == "require":
+    if not settings.DATABASE_URL.startswith("sqlite") and (
+        "supabase.com" in settings.DATABASE_URL or getattr(settings, "DB_SSL", None) == "require"
+    ):
         connect_args["ssl"] = "require"
 
     connectable = async_engine_from_config(

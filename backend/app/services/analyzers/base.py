@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Any, Dict, Optional
 
 
 @dataclass
@@ -18,3 +18,11 @@ class FindingDraft:
     source: str = "rule"           # "rule", "ml", "both"
     rule_id: Optional[str] = None
     ml_score: Optional[float] = None
+
+    # Phase 16 Additive Fields
+    cvss_score: Optional[float] = None
+    cvss_vector: Optional[str] = None
+    cvss_severity: Optional[str] = None
+    cvss_provenance: str = "unassessed"
+    security_frameworks: Optional[Dict[str, Any]] = None
+    correlation_data: Optional[Dict[str, Any]] = None
