@@ -1,0 +1,9 @@
+{
+  "sql": "CWE-89",
+  "xss": "CWE-79",
+  "command_injection": "CWE-78",
+  "xsrf": "CWE-352",
+  "remote_code_execution": "CWE-94",
+  "path_disclosure": "CWE-22",
+  "open_redirect": "CWE-601"
+}
