@@ -24,6 +24,22 @@ from detector.feedback import FeedbackLearner
 
 ARTIFACTS_DIR = Path(__file__).resolve().parent.parent / "artifacts"
 
+
+@pytest.fixture(autouse=True)
+def preserve_rl_state_artifact():
+    """Ensures test runs do not permanently alter the tracked production artifact rl_state.json."""
+    rl_file = ARTIFACTS_DIR / "rl_state.json"
+    lock_file = ARTIFACTS_DIR / "rl_state.lock"
+    orig = rl_file.read_text(encoding="utf-8") if rl_file.exists() else None
+    yield
+    if orig is not None:
+        rl_file.write_text(orig, encoding="utf-8")
+    if lock_file.exists():
+        try:
+            lock_file.unlink()
+        except Exception:
+            pass
+
 SAMPLE_CODE = (
     "def custom_template_builder(name: str):\n"
     "    # Complex formatting that might trigger false alarm in internal tool\n"
