@@ -123,7 +123,17 @@ class Detector:
 
     @classmethod
     def load(cls, path: str = "ml/artifacts") -> "Detector":
-        return cls(Path(path))
+        p = Path(path)
+        if not p.is_absolute() and not p.exists():
+            # Automatically resolve relative to the detector package location
+            pkg_artifacts = Path(__file__).resolve().parent.parent / "artifacts"
+            if pkg_artifacts.exists():
+                return cls(pkg_artifacts)
+            # Or relative to repo root
+            repo_artifacts = Path(__file__).resolve().parent.parent.parent / "ml" / "artifacts"
+            if repo_artifacts.exists():
+                return cls(repo_artifacts)
+        return cls(p)
 
     def _attribute_baseline_lines(self, code: str, start_line: int, end_line: int) -> List[int]:
         """
