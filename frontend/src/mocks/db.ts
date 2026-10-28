@@ -117,6 +117,70 @@ function makeFinding(id: string, scanId: string, key: string, filePath?: string,
     ml_score_before: null,
     suppressed: false,
     feedback: null,
+    cvss_score: t.severity === 'critical' ? 9.8 : t.severity === 'high' ? 7.5 : t.severity === 'medium' ? 5.3 : 3.1,
+    cvss_vector: t.severity === 'critical'
+      ? 'CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H'
+      : t.severity === 'high'
+        ? 'CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N'
+        : 'CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:N',
+    cvss_severity: t.severity === 'critical' ? 'Critical' : t.severity === 'high' ? 'High' : t.severity === 'medium' ? 'Medium' : 'Low',
+    cvss_provenance: 'rule_estimated',
+    cvss: {
+      version: '3.1',
+      score: t.severity === 'critical' ? 9.8 : t.severity === 'high' ? 7.5 : t.severity === 'medium' ? 5.3 : 3.1,
+      vector: t.severity === 'critical'
+        ? 'CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H'
+        : t.severity === 'high'
+          ? 'CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N'
+          : 'CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:N',
+      severity: t.severity === 'critical' ? 'Critical' : t.severity === 'high' ? 'High' : t.severity === 'medium' ? 'Medium' : 'Low',
+      provenance: 'rule_estimated',
+    },
+    owasp_mappings: [
+      {
+        version: '2025',
+        category_id: t.owasp.split(' ')[0],
+        category_name: t.owasp.split(' ').slice(1).join(' '),
+        confidence: 'high',
+        rationale: `Mapped to ${t.owasp} based on confirmed weakness classification for ${t.cwe_id}.`,
+        primary: true,
+        cwe_id: t.cwe_id,
+      },
+    ],
+    nist_csf_mappings: [
+      {
+        version: '2.0',
+        function_code: 'PR',
+        function_name: 'PROTECT',
+        category_code: 'PR.PS',
+        category_name: 'Platform Security',
+        subcategory_id: 'PR.PS-01',
+        subcategory_title: 'Configuration and software security vulnerabilities are managed',
+        rationale: `Defect in ${t.title} requires secure configuration and vulnerability mitigation per PR.PS-01.`,
+        reference: 'NIST SP 800-53 Rev. 5: SI-2, SI-10',
+      },
+    ],
+    correlation: {
+      cluster_id: `cl_${id.slice(0, 8)}`,
+      correlation_type: t.source === 'both' ? 'corroborated' : t.source === 'ml' ? 'standalone_candidate' : 'unassigned',
+      primary_finding_id: null,
+      is_primary: true,
+      confidence: t.source === 'both' ? 0.95 : 0.82,
+      rationale: t.source === 'both'
+        ? 'Both static AST patterns and ML inference corroborated this vulnerability.'
+        : t.source === 'ml'
+          ? 'Candidate zero-day flagged solely by ML model.'
+          : 'Rule-only pattern match.',
+      evidence: [
+        {
+          source: t.source,
+          evidence_type: 'ast_pattern',
+          detail: `Matched rule ${t.rule_id ?? 'ML embedding similarity'}`,
+        },
+      ],
+      limitations: t.source === 'ml' ? 'Unverified ML candidate — not a confirmed zero-day' : undefined,
+      related_finding_ids: [],
+    },
   }
 }
 

@@ -130,3 +130,115 @@ export function Tag({ children, className = '' }: { children: React.ReactNode; c
     </span>
   )
 }
+
+/** CVSS 3.1 qualitative badge distinguishing assessed scores from unassessed placeholders. */
+export function CVSSBadge({
+  score,
+  severity,
+  provenance = 'unassessed',
+}: {
+  score?: number | null
+  severity?: string | null
+  provenance?: 'analyst_assessed' | 'rule_estimated' | 'unassessed' | string | null
+}) {
+  const isAssessed = typeof score === 'number' && provenance !== 'unassessed'
+  if (!isAssessed) {
+    return (
+      <span
+        className={`${chip} bg-surface-container text-on-surface-variant/80 border border-outline/20`}
+        title="CVSS v3.1 Base Score unassessed - requires environmental and exploit metrics"
+      >
+        <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-outline/50" />
+        CVSS Unassessed
+      </span>
+    )
+  }
+
+  const sevLower = (severity || 'none').toLowerCase()
+  const sevColor =
+    sevLower === 'critical'
+      ? 'bg-error-container text-on-error-container'
+      : sevLower === 'high'
+        ? 'bg-tertiary-container/80 text-on-tertiary-container'
+        : sevLower === 'medium'
+          ? 'bg-surface-container-highest text-secondary'
+          : 'bg-surface-container-high text-on-surface-variant'
+
+  const provLabel =
+    provenance === 'analyst_assessed'
+      ? 'Analyst assessed'
+      : provenance === 'rule_estimated'
+        ? 'Rule estimated'
+        : 'Automated'
+
+  return (
+    <span
+      className={`${chip} ${sevColor}`}
+      title={`CVSS v3.1 Base Score: ${score?.toFixed(1)} (${severity ?? 'Unknown'}, ${provLabel})`}
+    >
+      <Icon name="verified_user" />
+      CVSS {score?.toFixed(1)}
+      <span className="opacity-80">({severity?.toUpperCase()})</span>
+    </span>
+  )
+}
+
+/** Explainable correlation badge (exact duplicate, corroborated, standalone candidate). */
+export function CorrelationBadge({
+  type,
+  isPrimary = true,
+}: {
+  type?: string | null
+  isPrimary?: boolean
+}) {
+  if (!type || type === 'unassigned') return null
+
+  if (type === 'exact_duplicate') {
+    if (!isPrimary) {
+      return (
+        <span
+          className={`${chip} bg-surface-container-highest text-on-surface-variant/70 border border-outline/30`}
+          title="Exact duplicate finding suppressed from scan risk inflation"
+        >
+          <Icon name="content_copy" />
+          Duplicate
+        </span>
+      )
+    }
+    return (
+      <span
+        className={`${chip} bg-secondary-container/30 text-secondary`}
+        title="Primary finding in duplicate cluster"
+      >
+        <Icon name="star" />
+        Primary Cluster Lead
+      </span>
+    )
+  }
+
+  if (type === 'corroborated') {
+    return (
+      <span
+        className={`${chip} bg-primary-container/60 text-on-primary-container`}
+        title="Corroborated by independent rule match and ML inference"
+      >
+        <Icon name="join_inner" />
+        Corroborated
+      </span>
+    )
+  }
+
+  if (type === 'standalone_candidate') {
+    return (
+      <span
+        className={`${chip} bg-primary-container text-on-primary-container`}
+        title="Novel ML candidate - unverified zero-day hypothesis"
+      >
+        <Icon name="auto_awesome" />
+        ML Novel
+      </span>
+    )
+  }
+
+  return null
+}

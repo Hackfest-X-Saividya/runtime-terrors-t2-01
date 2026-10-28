@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { FindingStatusPill, NovelBadge, ScoreChange, SeverityBadge, SuppressedBadge, Tag } from '@/components/Badges'
+import { CorrelationBadge, FindingStatusPill, NovelBadge, ScoreChange, SeverityBadge, SuppressedBadge, Tag } from '@/components/Badges'
 import { Icon } from '@/components/Icon'
 import { isNovel, splitOwasp } from '@/lib/labels'
 import { sinkLine } from '@/lib/snippet'
@@ -107,7 +107,12 @@ export function FindingsTable({ items, selected, onToggle, onToggleAll, sort, on
                   <SeverityBadge severity={f.severity} muted={f.suppressed} />
                 </td>
                 <td className="px-space-sm py-3 align-top font-mono text-label-code-lg text-on-surface">
-                  {typeof f.risk_score === 'number' ? f.risk_score.toFixed(1) : '-'}
+                  <div>{typeof f.risk_score === 'number' ? f.risk_score.toFixed(1) : '-'}</div>
+                  {typeof (f.cvss?.score ?? f.cvss_score) === 'number' && (
+                    <div className="text-[10px] text-primary font-sans font-medium" title="CVSS v3.1 Base Score">
+                      CVSS {(f.cvss?.score ?? f.cvss_score)?.toFixed(1)}
+                    </div>
+                  )}
                 </td>
                 <td className="max-w-md px-space-sm py-3 align-top">
                   <div className="flex flex-col gap-1">
@@ -120,9 +125,15 @@ export function FindingsTable({ items, selected, onToggle, onToggleAll, sort, on
                     <code className="truncate font-label-code-md text-label-code-md text-on-surface-variant">
                       {sinkLine(f.snippet)}
                     </code>
-                    {(isNovel(f) || typeof f.ml_score_before === 'number' || f.suppressed) && (
-                      <div className="flex flex-wrap gap-1">
+                    {(isNovel(f) || typeof f.ml_score_before === 'number' || f.suppressed || f.correlation || f.correlation_data) && (
+                      <div className="flex flex-wrap items-center gap-1">
                         {isNovel(f) && <NovelBadge />}
+                        {(f.correlation || f.correlation_data) && (
+                          <CorrelationBadge
+                            type={f.correlation?.correlation_type ?? (f.correlation_data?.correlation_type as string | undefined)}
+                            isPrimary={f.correlation?.is_primary ?? (f.correlation_data?.is_primary as boolean | undefined)}
+                          />
+                        )}
                         {typeof f.ml_score_before === 'number' && typeof f.ml_score === 'number' && (
                           <ScoreChange before={f.ml_score_before} after={f.ml_score} />
                         )}

@@ -21,6 +21,60 @@ export interface Feedback {
   model_version: string
 }
 
+export interface CVSSDetail {
+  version: string
+  score: number | null
+  vector: string | null
+  severity: string | null
+  provenance: 'analyst_assessed' | 'rule_estimated' | 'unassessed'
+  metrics?: Record<string, string> | null
+}
+
+export interface OWASPMapping {
+  version: string
+  category_id: string
+  category_name: string
+  confidence: 'high' | 'medium' | 'low'
+  rationale: string
+  primary: boolean
+  cwe_id?: string | null
+}
+
+export interface NISTCSFMapping {
+  version: string
+  function_code: string
+  function_name: string
+  category_code: string
+  category_name: string
+  subcategory_id: string
+  subcategory_title: string
+  rationale: string
+  reference: string
+}
+
+export interface CorrelationEvidenceItem {
+  source: string
+  evidence_type: string
+  detail: string
+}
+
+export interface CorrelationDetail {
+  cluster_id: string
+  correlation_type:
+    | 'exact_duplicate'
+    | 'corroborated'
+    | 'related_risk'
+    | 'standalone_candidate'
+    | 'unassigned'
+  primary_finding_id?: string | null
+  is_primary: boolean
+  confidence: number
+  rationale: string
+  evidence: CorrelationEvidenceItem[]
+  limitations?: string | null
+  related_finding_ids: string[]
+}
+
 export interface Finding {
   id: string
   scan_id: string
@@ -49,6 +103,27 @@ export interface Finding {
   suppressed: boolean
   /** (proposed) */
   feedback: Feedback | null
+
+  /** Phase 16 Additive Fields: CVSS v3.1 */
+  cvss_score?: number | null
+  cvss_vector?: string | null
+  cvss_severity?: string | null
+  cvss_provenance?: 'analyst_assessed' | 'rule_estimated' | 'unassessed'
+  cvss?: CVSSDetail | null
+
+  /** Phase 16 Additive Fields: Security Frameworks */
+  security_frameworks?: {
+    owasp_2025?: OWASPMapping[]
+    nist_csf_20?: NISTCSFMapping[]
+    [key: string]: unknown
+  } | null
+  owasp_mappings?: OWASPMapping[] | null
+  nist_csf_mappings?: NISTCSFMapping[] | null
+
+  /** Phase 16 Additive Fields: Explainable Correlation */
+  correlation_data?: Record<string, unknown> | null
+  correlation?: CorrelationDetail | null
+
 }
 
 export interface Scan {

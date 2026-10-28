@@ -75,6 +75,24 @@ export default function ModelPage() {
         }
       />
 
+            {/* Architecture and Zero-Day Disclaimer Banner */}
+      <div className="mb-space-lg rounded-xl bg-surface-container-low p-space-md border border-outline/20">
+        <div className="flex items-start gap-3">
+          <Icon name="info" className="text-primary text-xl mt-0.5 shrink-0" />
+          <div className="flex flex-col gap-1 text-sm">
+            <p className="font-semibold text-on-surface">
+              Inference Architecture & Research Disclaimer
+            </p>
+            <p className="text-on-surface-variant leading-relaxed">
+              <b>Production Pipeline:</b> High-speed sublinear TF-IDF feature extraction combined with a regularized Logistic Regression classifier and online contextual bandit reinforcement learning. CodeBERT is utilized as an offline deep-learning evaluation baseline.
+            </p>
+            <p className="text-on-surface-variant leading-relaxed">
+              <b>Zero-Day Generalization Proxy:</b> Held-out vulnerability types from the VUDENC benchmark evaluate cross-category detection transfer. All novel ML findings are candidates requiring manual triage and dynamic verification prior to vulnerability disclosure.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <Card className="mb-space-lg" title={card.name} subtitle={card.architecture} icon="smart_toy">
         <dl className="grid grid-cols-1 gap-space-sm md:grid-cols-2 xl:grid-cols-4">
           {[

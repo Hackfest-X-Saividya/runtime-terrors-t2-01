@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useFinding, useFindings, useScan } from '@/api/hooks'
-import { NovelBadge, SeverityBadge, SourceBadge, SuppressedBadge, Tag } from '@/components/Badges'
+import { CVSSBadge, CorrelationBadge, NovelBadge, SeverityBadge, SourceBadge, SuppressedBadge, Tag } from '@/components/Badges'
 import { Button, ButtonLink } from '@/components/Button'
 import { Card } from '@/components/Card'
 import { CodeViewer } from '@/components/CodeViewer'
@@ -13,10 +13,13 @@ import { ErrorState, Skeleton, SkeletonRows } from '@/components/States'
 import { useFindingFilters } from '@/hooks/useFindingFilters'
 import { useToast } from '@/hooks/useToast'
 import { fmtPct } from '@/lib/format'
-import { cweUrl, isNovel, owaspUrl, severityMeta, splitOwasp } from '@/lib/labels'
+import { isNovel, severityMeta, splitOwasp } from '@/lib/labels'
 import { sinkIndex } from '@/lib/snippet'
 import type { Finding } from '@/types/contract'
 import { TriagePanel } from './TriagePanel'
+import { CVSSPanel } from './CVSSPanel'
+import { FrameworksPanel } from './FrameworksPanel'
+import { CorrelationPanel } from './CorrelationPanel'
 
 function DetectedBy({ f }: { f: Finding }) {
   const rule = f.source !== 'ml'
@@ -122,6 +125,15 @@ export default function FindingDetailPage() {
         meta={
           <>
             <SeverityBadge severity={f.severity} score={f.risk_score} />
+            <CVSSBadge
+              score={f.cvss?.score ?? f.cvss_score}
+              severity={f.cvss?.severity ?? f.cvss_severity}
+              provenance={f.cvss?.provenance ?? f.cvss_provenance}
+            />
+            <CorrelationBadge
+              type={f.correlation?.correlation_type}
+              isPrimary={f.correlation?.is_primary}
+            />
             <Tag>{f.cwe_id}</Tag>
             <Tag>
               {owasp.code}:2025 {owasp.name}
@@ -228,54 +240,9 @@ export default function FindingDetailPage() {
           >
             <RiskGauge score={typeof f.risk_score === 'number' ? f.risk_score : 0} label={`${severityMeta[f.severity]?.label ?? 'Unknown'} severity`} />
           </Card>
-          <Card title="Classification" icon="category">
-            <div className="flex flex-col gap-space-sm">
-              <a
-                href={cweUrl(f.cwe_id)}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-between rounded-lg bg-surface-container p-space-sm hover:bg-surface-container-high"
-              >
-                <span>
-                  <span className="block font-label-code-sm text-label-code-sm uppercase text-on-surface-variant">
-                    Weakness (MITRE CWE)
-                  </span>
-                  <span className="font-label-code-lg text-label-code-lg text-on-surface">{f.cwe_id}</span>
-                </span>
-                <Icon name="open_in_new" className="text-on-surface-variant" />
-                <span className="sr-only">(opens in a new tab)</span>
-              </a>
-              <a
-                href={owaspUrl()}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-between rounded-lg bg-surface-container p-space-sm hover:bg-surface-container-high"
-              >
-                <span>
-                  <span className="block font-label-code-sm text-label-code-sm uppercase text-on-surface-variant">
-                    OWASP Top 10 (2025)
-                  </span>
-                  <span className="font-label-code-lg text-label-code-lg text-on-surface">{f.owasp}</span>
-                </span>
-                <Icon name="open_in_new" className="text-on-surface-variant" />
-                <span className="sr-only">(opens in a new tab)</span>
-              </a>
-              <Link
-                to={`/scans/${f.scan_id}/findings`}
-                className="flex items-center justify-between rounded-lg bg-surface-container p-space-sm hover:bg-surface-container-high"
-              >
-                <span>
-                  <span className="block font-label-code-sm text-label-code-sm uppercase text-on-surface-variant">
-                    Scan
-                  </span>
-                  <span className="font-label-code-lg text-label-code-lg text-on-surface">
-                    {scan.data?.name ?? f.scan_id}
-                  </span>
-                </span>
-                <Icon name="chevron_right" className="text-on-surface-variant" />
-              </Link>
-            </div>
-          </Card>
+          <CVSSPanel finding={f} />
+          <FrameworksPanel finding={f} />
+          <CorrelationPanel finding={f} />
           <TriagePanel finding={f} />
         </div>
       </div>
