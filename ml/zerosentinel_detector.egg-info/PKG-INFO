@@ -4,3 +4,5 @@ Version: 0.1.0
 Requires-Dist: scikit-learn>=1.3.0
 Requires-Dist: numpy
 Requires-Dist: pandas
+Requires-Dist: joblib
+Requires-Dist: pyarrow
