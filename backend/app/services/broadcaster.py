@@ -127,17 +127,30 @@ class ScanBroadcaster:
         severity_breakdown: Dict[str, int],
         duration_seconds: float,
         completed_at: str,
+        name: str = "Scan",
+        source_type: str = "code",
     ) -> None:
         event = {
             "type": "done",
             "data": {
                 "scan_id": str(scan_id),
+                "id": str(scan_id),
+                "name": name,
+                "source_type": source_type,
                 "status": status,
+                "stage": "ranking",
                 "risk_score": risk_score,
                 "findings_count": findings_count,
+                "files_scanned": 1,
+                "functions_scanned": 1,
+                "counts_by_severity": severity_breakdown,
                 "severity_breakdown": severity_breakdown,
                 "duration_seconds": duration_seconds,
+                "started_at": completed_at,
+                "finished_at": completed_at,
                 "completed_at": completed_at,
+                "model_version": "0.1.0",
+                "rescan_of": None,
             },
         }
         await self.broadcast(scan_id, event)

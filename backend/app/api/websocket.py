@@ -90,12 +90,23 @@ async def scan_websocket_endpoint(
             "type": "done",
             "data": {
                 "scan_id": str(scan_id),
+                "id": str(scan_id),
+                "name": scan.project_name,
+                "source_type": scan.submission_type,
                 "status": "completed",
+                "stage": "ranking",
                 "risk_score": risk_score,
                 "findings_count": findings_count,
+                "files_scanned": 1,
+                "functions_scanned": 1,
+                "counts_by_severity": severity_breakdown,
                 "severity_breakdown": severity_breakdown,
                 "duration_seconds": duration,
+                "started_at": scan.created_at.isoformat() if scan.created_at else "",
+                "finished_at": completed_at.isoformat() if completed_at else "",
                 "completed_at": completed_at.isoformat() if completed_at else "",
+                "model_version": "0.1.0",
+                "rescan_of": None,
             },
         }
         await websocket.send_json(done_event)

@@ -304,6 +304,8 @@ async def execute_scan_pipeline(
                     severity_breakdown=severity_breakdown,
                     duration_seconds=duration_seconds,
                     completed_at=scan.completed_at.isoformat(),
+                    name=scan.project_name,
+                    source_type=scan.submission_type,
                 )
 
         except Exception as exc:

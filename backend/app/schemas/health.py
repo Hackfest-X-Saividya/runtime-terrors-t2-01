@@ -10,6 +10,7 @@ class ErrorDetail(BaseModel):
 
 
 class HealthResponse(BaseModel):
+    ok: bool = True
     status: str = Field(..., description="'healthy' or 'degraded'")
     database: str = Field(..., description="'connected' or 'disconnected'")
     version: str

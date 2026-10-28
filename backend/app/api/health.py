@@ -28,6 +28,7 @@ async def get_health():
 
     if db_connected:
         return HealthResponse(
+            ok=True,
             status="healthy",
             database="connected",
             version=settings.APP_VERSION,
@@ -35,6 +36,7 @@ async def get_health():
         )
 
     response_content = HealthResponse(
+        ok=False,
         status="degraded",
         database="disconnected",
         version=settings.APP_VERSION,
