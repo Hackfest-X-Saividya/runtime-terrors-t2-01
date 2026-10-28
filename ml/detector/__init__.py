@@ -24,7 +24,7 @@ import joblib
 import numpy as np
 
 from detector.tokenizer import tokenize_code
-from detector.feedback import FeedbackLearner
+from detector.feedback import FeedbackLearner, compute_vocab_hash
 
 logger = logging.getLogger(__name__)
 
@@ -103,8 +103,9 @@ class Detector:
                 self.binary_model = joblib.load(bin_path)
                 self.cwe_model = joblib.load(cwe_path)
 
-                vocab_size = len(self.vectorizer.vocabulary_)
                 feature_names = self.vectorizer.get_feature_names_out()
+                vocab_size = len(feature_names)
+                vocab_hash = compute_vocab_hash(feature_names)
                 coefs = self.binary_model.coef_[0]
                 self.positive_feature_weights = {
                     feat: float(w) for feat, w in zip(feature_names, coefs) if w > 0
@@ -112,7 +113,11 @@ class Detector:
 
                 # Initialize / load RL feedback state
                 rl_state_file = self.artifacts_path / "rl_state.json"
-                self.feedback_learner = FeedbackLearner.load(rl_state_file, vocab_size=vocab_size)
+                self.feedback_learner = FeedbackLearner.load(
+                    rl_state_file,
+                    vocab_size=vocab_size,
+                    vocab_hash=vocab_hash
+                )
 
                 self.active_engine = "baseline"
                 self.is_loaded = True

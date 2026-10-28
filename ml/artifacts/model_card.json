@@ -1,4 +1,10 @@
 {
+  "name": "ZeroSentinel Dual-Engine Vulnerability Detector",
+  "version": "0.1.0",
+  "architecture": "TF-IDF Code Vectorizer + Class-Weighted Logistic Regression",
+  "training_data": "VUDENC Curated Python Vulnerability Dataset (301 train, 70 val, 70 test functions, repository-level split)",
+  "languages": ["python"],
+  "threshold": 0.5,
   "model_name": "ZeroSentinel Dual-Engine Vulnerability Detector",
   "model_version": "0.1.0",
   "model_type": "TF-IDF Code Vectorizer + Class-Weighted Logistic Regression",
@@ -6,10 +12,30 @@
   "default_threshold": 0.5,
   "dataset": {
     "name": "VUDENC Curated Python Vulnerability Dataset",
+    "total_functions": 441,
     "train_samples": 301,
+    "train_functions": 301,
+    "train_benign": 252,
+    "train_vulnerable": 49,
     "val_samples": 70,
+    "val_functions": 70,
+    "val_benign": 56,
+    "val_vulnerable": 14,
     "test_samples": 70,
-    "split_strategy": "Strict repository-level split (70/15/15) to prevent leakage"
+    "test_functions": 70,
+    "test_benign": 56,
+    "test_vulnerable": 14,
+    "split_strategy": "Strict repository-level split (70/15/15) to prevent leakage",
+    "per_type_test_counts": {
+      "benign": 56,
+      "sql": 2,
+      "xss": 2,
+      "command_injection": 2,
+      "xsrf": 2,
+      "remote_code_execution": 2,
+      "path_disclosure": 2,
+      "open_redirect": 2
+    }
   },
   "metrics": {
     "validation": {

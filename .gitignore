@@ -42,3 +42,8 @@ Thumbs.db
 # Locks & Temporary Files
 *.lock
 *.tmp
+
+# RL State
+rl_state.json
+**/rl_state.json
+*.lock

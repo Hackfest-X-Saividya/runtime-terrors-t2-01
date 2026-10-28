@@ -15,8 +15,73 @@
     "val_vulnerable": 14,
     "test_total": 70,
     "test_benign": 56,
-    "test_vulnerable": 14
+    "test_vulnerable": 14,
+    "per_type_test_counts": {
+      "benign": 56,
+      "sql": 2,
+      "xss": 2,
+      "command_injection": 2,
+      "xsrf": 2,
+      "remote_code_execution": 2,
+      "path_disclosure": 2,
+      "open_redirect": 2
+    }
   },
+  "precision": 1.0,
+  "recall": 1.0,
+  "f1": 1.0,
+  "roc_auc": 1.0,
+  "held_out": [
+    {
+      "vuln_type": "SQL Injection",
+      "cwe_id": "CWE-89",
+      "detection_rate": 1.0,
+      "fpr": 0.0,
+      "samples": 2
+    },
+    {
+      "vuln_type": "Cross-Site Scripting (XSS)",
+      "cwe_id": "CWE-79",
+      "detection_rate": 1.0,
+      "fpr": 0.0,
+      "samples": 2
+    },
+    {
+      "vuln_type": "Command Injection",
+      "cwe_id": "CWE-78",
+      "detection_rate": 1.0,
+      "fpr": 0.0,
+      "samples": 2
+    },
+    {
+      "vuln_type": "Cross-Site Request Forgery (CSRF)",
+      "cwe_id": "CWE-352",
+      "detection_rate": 1.0,
+      "fpr": 0.0,
+      "samples": 2
+    },
+    {
+      "vuln_type": "Remote Code Execution",
+      "cwe_id": "CWE-94",
+      "detection_rate": 1.0,
+      "fpr": 0.0,
+      "samples": 2
+    },
+    {
+      "vuln_type": "Path Traversal / Disclosure",
+      "cwe_id": "CWE-22",
+      "detection_rate": 1.0,
+      "fpr": 0.0,
+      "samples": 2
+    },
+    {
+      "vuln_type": "Open Redirect",
+      "cwe_id": "CWE-601",
+      "detection_rate": 1.0,
+      "fpr": 0.0,
+      "samples": 2
+    }
+  ],
   "full_model_test_metrics": {
     "precision": 1.0,
     "recall": 1.0,

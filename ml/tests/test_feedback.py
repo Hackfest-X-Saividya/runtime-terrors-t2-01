@@ -13,32 +13,41 @@ Verifies:
 6. Safe handling and recovery under concurrent writes.
 7. Safe recovery when state file is missing, empty, or corrupted.
 8. Safe handling when operating in mock mode without artifacts.
+9. Persistence and reload test after 3 false-positive feedback events.
+10. Automatic reinitialisation and saving when vocabulary dimensions or hash drift.
 """
 
 import concurrent.futures
 import json
 from pathlib import Path
+import numpy as np
 import pytest
 from detector import Detector
-from detector.feedback import FeedbackLearner
+from detector.feedback import FeedbackLearner, compute_vocab_hash
 
 ARTIFACTS_DIR = Path(__file__).resolve().parent.parent / "artifacts"
 
 
 @pytest.fixture(autouse=True)
 def preserve_rl_state_artifact():
-    """Ensures test runs do not permanently alter the tracked production artifact rl_state.json."""
+    """Ensures test runs do not permanently alter the production artifact rl_state.json."""
     rl_file = ARTIFACTS_DIR / "rl_state.json"
     lock_file = ARTIFACTS_DIR / "rl_state.lock"
     orig = rl_file.read_text(encoding="utf-8") if rl_file.exists() else None
     yield
     if orig is not None:
         rl_file.write_text(orig, encoding="utf-8")
+    elif rl_file.exists():
+        try:
+            rl_file.unlink()
+        except Exception:
+            pass
     if lock_file.exists():
         try:
             lock_file.unlink()
         except Exception:
             pass
+
 
 SAMPLE_CODE = (
     "def custom_template_builder(name: str):\n"
@@ -115,6 +124,17 @@ def test_feedback_accepted_neutral_no_suppression():
 
 
 def test_rl_state_persistence():
+    det = Detector.load(ARTIFACTS_DIR)
+    assert det.is_loaded is True
+
+    # Apply a feedback event to create / update state
+    det.feedback(
+        code=SAMPLE_CODE,
+        status="false_positive",
+        func_name="persist_test_builder",
+        cwe_id="CWE-79"
+    )
+
     rl_state_file = ARTIFACTS_DIR / "rl_state.json"
     assert rl_state_file.exists()
 
@@ -125,10 +145,105 @@ def test_rl_state_persistence():
     assert state["total_feedback_count"] > 0
     assert "weights" in state
     assert "recent_history" in state
+    assert "vocab_hash" in state
 
     # Reload fresh detector instance and assert weights persist
     det_reloaded = Detector.load(ARTIFACTS_DIR)
     assert det_reloaded.feedback_learner.total_feedback_count == state["total_feedback_count"]
+    assert det_reloaded.feedback_learner.vocab_size == len(det.vectorizer.get_feature_names_out())
+
+
+def test_train_vectorizer_feedback_persist_and_reload(tmp_path):
+    """
+    Verifies that:
+    1. A fresh vectorizer is trained.
+    2. 3 false-positive feedback events are recorded.
+    3. The policy state is saved to disk.
+    4. Upon reload, weights persist and the scores of those findings remain lowered.
+    """
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from detector.tokenizer import tokenize_code
+
+    corpus = [
+        "def custom_template_builder(name: str):\n    return f'Hello, {name}!'\n",
+        "def run_sql_query(user_id: int):\n    return f'SELECT * FROM users WHERE id = {user_id}'\n",
+        "def execute_task(cmd: str):\n    return f'Running {cmd}'\n",
+        "def calculate_total(prices: list):\n    return sum(prices)\n"
+    ]
+    vec = TfidfVectorizer(tokenizer=tokenize_code, token_pattern=None, ngram_range=(1, 2))
+    vec.fit(corpus)
+    feature_names = vec.get_feature_names_out()
+    vocab_size = len(feature_names)
+    vocab_hash = compute_vocab_hash(feature_names)
+
+    state_file = tmp_path / "rl_state.json"
+    learner = FeedbackLearner(vocab_size=vocab_size, vocab_hash=vocab_hash)
+
+    snippets = corpus[:3]
+    base_score = 0.85
+    initial_scores = []
+    for snip in snippets:
+        X_snip = vec.transform([snip])[0]
+        initial_scores.append(learner.adjust_score(base_score, X_snip))
+
+    # Apply 3 false-positive feedback events
+    for idx, snip in enumerate(snippets):
+        X_snip = vec.transform([snip])[0]
+        learner.record_feedback(
+            X_sparse=X_snip,
+            status="false_positive",
+            base_score=base_score,
+            func_name=f"test_func_{idx}",
+            cwe_id="CWE-79"
+        )
+
+    # Verify state saved
+    assert learner.save(state_file) is True
+    assert state_file.exists()
+
+    # Reload fresh instance
+    reloaded = FeedbackLearner.load(state_file, vocab_size=vocab_size, vocab_hash=vocab_hash)
+    assert reloaded.total_feedback_count == 3
+    assert reloaded.false_positive_count == 3
+    assert reloaded.vocab_size == vocab_size
+    assert reloaded.vocab_hash == vocab_hash
+    assert np.count_nonzero(reloaded.delta_weights) > 0
+
+    # Weights persist and the scores of those findings stay lowered
+    for idx, snip in enumerate(snippets):
+        X_snip = vec.transform([snip])[0]
+        reloaded_score = reloaded.adjust_score(base_score, X_snip)
+        assert reloaded_score < initial_scores[idx], (
+            f"Finding {idx} score not lowered: reloaded={reloaded_score} >= initial={initial_scores[idx]}"
+        )
+
+
+def test_feedback_vocabulary_mismatch_reinitialises(tmp_path):
+    """
+    Verifies that when vocabulary size or hash differs from vectorizer,
+    FeedbackLearner logs a warning, reinitialises clean weights once, and saves state.
+    """
+    state_file = tmp_path / "rl_state.json"
+    learner = FeedbackLearner(vocab_size=100, vocab_hash="old_hash_123")
+    learner.total_feedback_count = 5
+    learner.false_positive_count = 5
+    learner.delta_weights[10] = -0.75
+    assert learner.save(state_file) is True
+
+    # Load with mismatched dimension and hash
+    reloaded = FeedbackLearner.load(state_file, vocab_size=150, vocab_hash="new_hash_456")
+    assert reloaded.vocab_size == 150
+    assert reloaded.vocab_hash == "new_hash_456"
+    assert reloaded.total_feedback_count == 0
+    assert len(reloaded.delta_weights) == 150
+    assert np.all(reloaded.delta_weights == 0.0)
+
+    # Verify the clean reinitialised state was persisted to file
+    with open(state_file, "r", encoding="utf-8") as f:
+        persisted = json.load(f)
+    assert persisted["vocab_size"] == 150
+    assert persisted["vocab_hash"] == "new_hash_456"
+    assert persisted["total_feedback_count"] == 0
 
 
 def test_feedback_concurrent_writes(tmp_path):

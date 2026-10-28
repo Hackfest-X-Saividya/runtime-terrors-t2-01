@@ -8,14 +8,16 @@ Implements an Online Contextual Bandit with Policy Gradient adaptation:
   true positive detections.
 - Persists RL state (weights, reward history, suppression counts) to `ml/artifacts/rl_state.json`
   using atomic file replacement and cross-process file locking.
+- Dynamically derives vocabulary dimensions from vectorizer artifacts with automatic
+  hash verification to prevent dimension drift.
 """
 
 import contextlib
+import hashlib
 import json
 import logging
 import math
 import os
-import tempfile
 import uuid
 from pathlib import Path
 from typing import Dict, Any, List, Optional
@@ -36,6 +38,23 @@ REWARD_MAP = {
     "accepted": 0.0,        # Business risk accepted; real finding, neutral reward (0.0, no suppression)
     "false_positive": -1.5  # False alarm; strong penalty to suppress noise (-1.5)
 }
+
+
+def compute_vocab_hash(vectorizer_or_features) -> str:
+    """
+    Computes a deterministic hash of vocabulary feature names to detect dimension
+    or token vocabulary drift between training artifacts and RL feedback state.
+    """
+    if hasattr(vectorizer_or_features, "get_feature_names_out"):
+        names = vectorizer_or_features.get_feature_names_out()
+    elif hasattr(vectorizer_or_features, "vocabulary_"):
+        names = sorted(vectorizer_or_features.vocabulary_.keys())
+    elif isinstance(vectorizer_or_features, (list, tuple, np.ndarray)):
+        names = vectorizer_or_features
+    else:
+        names = []
+    content = "\n".join(str(n) for n in names).encode("utf-8")
+    return hashlib.sha256(content).hexdigest()[:16]
 
 
 @contextlib.contextmanager
@@ -70,11 +89,18 @@ def file_lock(lock_path: Path):
 
 
 class FeedbackLearner:
-    def __init__(self, vocab_size: int = 2552, learning_rate: float = 0.25, l2_reg: float = 0.0005):
-        self.vocab_size = vocab_size
+    def __init__(
+        self,
+        vocab_size: int,
+        learning_rate: float = 0.25,
+        l2_reg: float = 0.0005,
+        vocab_hash: Optional[str] = None
+    ):
+        self.vocab_size = int(vocab_size)
         self.learning_rate = learning_rate
         self.l2_reg = l2_reg
-        self.delta_weights = np.zeros(vocab_size, dtype=np.float32)
+        self.vocab_hash = vocab_hash
+        self.delta_weights = np.zeros(self.vocab_size, dtype=np.float32)
 
         self.total_feedback_count = 0
         self.false_positive_count = 0
@@ -88,6 +114,11 @@ class FeedbackLearner:
         if self.delta_weights is None or X_sparse is None:
             return 0.0
         if len(self.delta_weights) != X_sparse.shape[1]:
+            logger.warning(
+                "FeedbackLearner weights dimension mismatch against sample shape (%d vs %d). Adjusting internal size.",
+                len(self.delta_weights),
+                X_sparse.shape[1],
+            )
             self.vocab_size = X_sparse.shape[1]
             self.delta_weights = np.zeros(self.vocab_size, dtype=np.float32)
             return 0.0
@@ -202,6 +233,8 @@ class FeedbackLearner:
         """
         state = {
             "vocab_size": self.vocab_size,
+            "feature_count": self.vocab_size,
+            "vocab_hash": self.vocab_hash,
             "learning_rate": self.learning_rate,
             "l2_reg": self.l2_reg,
             "total_feedback_count": self.total_feedback_count,
@@ -238,13 +271,20 @@ class FeedbackLearner:
             return False
 
     @classmethod
-    def load(cls, filepath: Path, vocab_size: int = 2552) -> "FeedbackLearner":
+    def load(
+        cls,
+        filepath: Path,
+        vocab_size: int,
+        vocab_hash: Optional[str] = None
+    ) -> "FeedbackLearner":
         """
-        Loads RL state from JSON with cross-process locking and corruption recovery.
-        Safely falls back to fresh weights if the file is missing, empty, or corrupted.
+        Loads RL state from JSON with cross-process locking, dimension verification, and corruption recovery.
+        If feature counts or vocabulary hash differ from the vectorizer, logs a clear warning,
+        reinitialises a clean state once, persists it, and returns the fresh learner.
         """
-        learner = cls(vocab_size=vocab_size)
         filepath = Path(filepath)
+        learner = cls(vocab_size=vocab_size, vocab_hash=vocab_hash)
+
         if not filepath.exists():
             logger.info("RL feedback state file not found at %s. Initializing fresh policy.", filepath)
             return learner
@@ -260,68 +300,55 @@ class FeedbackLearner:
                     return learner
                 state = json.loads(content)
 
+            persisted_vocab_size = state.get("vocab_size") or state.get("feature_count")
+            persisted_hash = state.get("vocab_hash")
+            weights_list = state.get("weights", [])
+
+            # Check if feature count or vocabulary hash differ
+            dimension_mismatch = (persisted_vocab_size != vocab_size) or (len(weights_list) != vocab_size)
+            hash_mismatch = bool(vocab_hash and persisted_hash and persisted_hash != vocab_hash)
+
+            if dimension_mismatch or hash_mismatch:
+                logger.warning(
+                    "RL state vocabulary mismatch detected in %s: state has (vocab_size=%s, weights_len=%s, vocab_hash=%s) "
+                    "vs expected (vocab_size=%d, vocab_hash=%s). Reinitialising clean policy once and saving state.",
+                    filepath,
+                    persisted_vocab_size,
+                    len(weights_list),
+                    persisted_hash,
+                    vocab_size,
+                    vocab_hash,
+                )
+                learner.save(filepath)
+                return learner
+
+            # Compatible state: populate weights and history
             learner.vocab_size = vocab_size
+            learner.vocab_hash = persisted_hash or vocab_hash
             learner.learning_rate = state.get("learning_rate", 0.25)
             learner.l2_reg = state.get("l2_reg", 0.0005)
             learner.total_feedback_count = state.get("total_feedback_count", 0)
             learner.false_positive_count = state.get("false_positive_count", 0)
             learner.confirmed_count = state.get("confirmed_count", 0)
             learner.history = state.get("recent_history", [])
+            learner.delta_weights = np.array(weights_list, dtype=np.float32)
 
-            weights_list = state.get("weights", [])
-            if weights_list and len(weights_list) == vocab_size:
-                learner.delta_weights = np.array(weights_list, dtype=np.float32)
-            else:
-                logger.warning(
-                    "RL state weights size mismatch (%d vs expected %d). Resetting weights.",
-                    len(weights_list) if weights_list else 0,
-                    vocab_size,
-                )
-                learner.delta_weights = np.zeros(vocab_size, dtype=np.float32)
-
-            logger.info("Loaded existing RL feedback state with %d feedback cycles.", learner.total_feedback_count)
+            logger.info(
+                "Loaded existing RL feedback state (%d features, hash=%s) with %d feedback cycles.",
+                learner.vocab_size,
+                learner.vocab_hash,
+                learner.total_feedback_count
+            )
         except Exception as exc:
-            logger.warning("Could not load RL feedback state from %s (%s). Falling back to fresh weights.", filepath, exc)
-            learner = cls(vocab_size=vocab_size)
-        return learner
-        learner = cls(vocab_size=vocab_size)
-        filepath = Path(filepath)
-        if not filepath.exists():
-            logger.info("RL feedback state file not found at %s. Initializing fresh policy.", filepath)
-            return learner
+            logger.warning(
+                "Could not load RL feedback state from %s (%s). Falling back to fresh weights and persisting.",
+                filepath,
+                exc
+            )
+            learner = cls(vocab_size=vocab_size, vocab_hash=vocab_hash)
+            try:
+                learner.save(filepath)
+            except Exception:
+                pass
 
-        lock_path = filepath.with_suffix(".lock")
-        try:
-            with file_lock(lock_path):
-                with open(filepath, "r", encoding="utf-8") as f:
-                    content = f.read()
-
-                if not content.strip():
-                    logger.warning("RL feedback state file at %s is empty. Initializing fresh policy.", filepath)
-                    return learner
-                state = json.loads(content)
-
-            learner.vocab_size = vocab_size
-            learner.learning_rate = state.get("learning_rate", 0.25)
-            learner.l2_reg = state.get("l2_reg", 0.0005)
-            learner.total_feedback_count = state.get("total_feedback_count", 0)
-            learner.false_positive_count = state.get("false_positive_count", 0)
-            learner.confirmed_count = state.get("confirmed_count", 0)
-            learner.history = state.get("recent_history", [])
-
-            weights_list = state.get("weights", [])
-            if weights_list and len(weights_list) == vocab_size:
-                learner.delta_weights = np.array(weights_list, dtype=np.float32)
-            else:
-                logger.warning(
-                    "RL state weights size mismatch (%d vs expected %d). Resetting weights.",
-                    len(weights_list) if weights_list else 0,
-                    vocab_size,
-                )
-                learner.delta_weights = np.zeros(vocab_size, dtype=np.float32)
-
-            logger.info("Loaded existing RL feedback state with %d feedback cycles.", learner.total_feedback_count)
-        except Exception as exc:
-            logger.warning("Could not load RL feedback state from %s (%s). Falling back to fresh weights.", filepath, exc)
-            learner = cls(vocab_size=vocab_size)
         return learner
