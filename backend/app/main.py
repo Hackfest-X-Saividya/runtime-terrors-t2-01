@@ -5,8 +5,11 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from app.api.findings import router as findings_router
 from app.api.health import router as health_router
+from app.api.model import router as model_router
 from app.api.scans import router as scans_router
+from app.api.stats import router as stats_router
 from app.core.config import settings
 from app.core.database import check_database_health, engine
 from app.core.exceptions import ZeroSentinelException
@@ -81,6 +84,9 @@ def create_application() -> FastAPI:
     # Mount routers
     app.include_router(health_router)
     app.include_router(scans_router)
+    app.include_router(findings_router)
+    app.include_router(stats_router)
+    app.include_router(model_router)
 
     return app
 

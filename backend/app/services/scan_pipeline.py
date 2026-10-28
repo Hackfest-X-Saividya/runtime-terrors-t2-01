@@ -6,16 +6,20 @@ from typing import BinaryIO, List, Optional
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.core.database import AsyncSessionLocal
 from app.models.finding import Finding
 from app.models.scan import Scan
 from app.services.analyzers.bandit_analyzer import run_bandit_analysis
 from app.services.analyzers.base import FindingDraft
+from app.services.analyzers.owasp_mapper import map_cwe_to_owasp_2025
 from app.services.analyzers.semgrep_analyzer import run_semgrep_analysis
+from app.services.function_extractor import extract_functions
 from app.services.ingestion.code_ingest import ingest_pasted_code
 from app.services.ingestion.git_ingest import clone_git_repository
 from app.services.ingestion.zip_ingest import validate_and_extract_zip
 from app.services.mitigation_service import get_or_create_mitigation
+from app.services.ml_detector import ml_service
 
 logger = logging.getLogger("zerosentinel.pipeline")
 
@@ -51,8 +55,11 @@ async def execute_scan_pipeline(
     1. Sets scan status to 'scanning'
     2. Runs ingestion into a temporary directory
     3. Runs static analyzers (Bandit, Semgrep)
-    4. Persists findings and updates scan status to 'completed'
-    5. On error, marks scan as 'failed' and guarantees complete directory cleanup
+    4. Sets scan status to 'analyzing_ml'
+    5. Extracts functions and runs ML detector inference
+    6. Correlates rule findings ('both') and promotes standalone ML findings ('ml')
+    7. Persists findings and updates scan status to 'completed'
+    8. On error, marks scan as 'failed' and guarantees complete directory cleanup
     """
     async def _run_with_session(session: AsyncSession):
         # 1. Update status to 'scanning'
@@ -99,7 +106,7 @@ async def execute_scan_pipeline(
                 semgrep_findings = run_semgrep_analysis(temp_dir)
                 findings_drafts.extend(semgrep_findings)
 
-                # Deduplicate overlapping findings by file_path and start_line
+                # Deduplicate overlapping static rule findings by file_path, start_line, rule_id
                 seen = set()
                 deduped_drafts: List[FindingDraft] = []
                 for draft in findings_drafts:
@@ -108,7 +115,84 @@ async def execute_scan_pipeline(
                         seen.add(key)
                         deduped_drafts.append(draft)
 
-                # 4. Persist findings & mitigations
+                # 4. ML inference stage
+                scan.status = "analyzing_ml"
+                await session.commit()
+
+                # Extract functions from ingested files (zero-execution AST parsing)
+                extracted_funcs = extract_functions(temp_dir)
+                logger.info("Scan %s: extracted %d functions for ML analysis.", scan_id, len(extracted_funcs))
+
+                if extracted_funcs:
+                    ml_predictions = ml_service.predict(extracted_funcs)
+                    correlated_func_indices = set()
+
+                    # 4a. Corroborate rule findings with ML predictions (source: "both")
+                    for rule_finding in deduped_drafts:
+                        for idx, fn in enumerate(extracted_funcs):
+                            # Normalize paths for matching
+                            fn_file = fn["file_path"].replace("\\", "/").lstrip("./")
+                            finding_file = rule_finding.file_path.replace("\\", "/").lstrip("./")
+
+                            if fn_file == finding_file:
+                                fn_start = fn["start_line"]
+                                fn_end = fn["end_line"]
+                                # Check if rule finding overlaps the function span
+                                if fn_start <= rule_finding.start_line <= fn_end:
+                                    pred = ml_predictions[idx]
+                                    rule_finding.source = "both"
+                                    rule_finding.ml_score = pred.get("ml_score")
+                                    correlated_func_indices.add(idx)
+
+                    # 4b. Identify standalone ML candidates (source: "ml")
+                    for idx, fn in enumerate(extracted_funcs):
+                        if idx in correlated_func_indices:
+                            continue
+
+                        pred = ml_predictions[idx]
+                        score = pred.get("ml_score", 0.0)
+                        cwe_guess = pred.get("cwe_guess")
+
+                        # Only promote if score exceeds threshold and cwe_guess is present
+                        if score >= settings.ML_STANDALONE_THRESHOLD and cwe_guess:
+                            top_lines = pred.get("top_lines") or [fn["start_line"]]
+                            valid_lines = [line for line in top_lines if fn["start_line"] <= line <= fn["end_line"]]
+                            if not valid_lines:
+                                valid_lines = [fn["start_line"]]
+
+                            f_start = min(valid_lines)
+                            f_end = max(valid_lines)
+
+                            # Derive snippet from function code if possible
+                            fn_lines = fn["code"].splitlines()
+                            snippet_offset_start = max(0, f_start - fn["start_line"])
+                            snippet_offset_end = min(len(fn_lines), f_end - fn["start_line"] + 1)
+                            snippet_text = "\n".join(fn_lines[snippet_offset_start:snippet_offset_end]).strip()
+                            if not snippet_text:
+                                snippet_text = f"def {fn.get('name', 'function')}..."
+
+                            owasp_cat = map_cwe_to_owasp_2025(cwe_guess)
+                            severity = "high" if score >= 0.85 else "medium"
+                            risk = round(score * 8.0, 1)
+
+                            ml_finding = FindingDraft(
+                                file_path=fn["file_path"],
+                                start_line=f_start,
+                                end_line=f_end,
+                                title=f"Potential unverified vulnerability ({cwe_guess}) flagged by ML detector",
+                                severity=severity,
+                                risk_score=risk,
+                                mitigation=f"Review function '{fn.get('name', 'block')}' for potential {cwe_guess} vulnerability risks.",
+                                snippet=snippet_text,
+                                cwe_id=cwe_guess,
+                                owasp=owasp_cat,
+                                source="ml",
+                                rule_id=None,
+                                ml_score=score,
+                            )
+                            deduped_drafts.append(ml_finding)
+
+                # 5. Persist findings & mitigations
                 for draft in deduped_drafts:
                     mitigation_id = await get_or_create_mitigation(session, draft)
                     finding = Finding(
@@ -132,7 +216,7 @@ async def execute_scan_pipeline(
                     )
                     session.add(finding)
 
-                # 5. Finalize scan metadata
+                # 6. Finalize scan metadata
                 scan.findings_count = len(deduped_drafts)
                 scan.risk_score = calculate_overall_risk_score(deduped_drafts)
                 scan.status = "completed"

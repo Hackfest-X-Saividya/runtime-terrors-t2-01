@@ -42,3 +42,25 @@ class ScanResponse(BaseModel):
     completed_at: Optional[datetime] = None
 
     model_config = {"from_attributes": True}
+
+
+class SeverityBreakdown(BaseModel):
+    critical: int = 0
+    high: int = 0
+    medium: int = 0
+    low: int = 0
+
+
+class ScanDetailResponse(BaseModel):
+    scan_id: uuid.UUID
+    project_name: str
+    submission_type: str
+    language: str
+    status: str
+    risk_score: float = 0.0
+    findings_count: int = 0
+    severity_breakdown: SeverityBreakdown
+    created_at: datetime
+    completed_at: Optional[datetime] = None
+
+    model_config = {"from_attributes": True}

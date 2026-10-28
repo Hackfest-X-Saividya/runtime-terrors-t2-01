@@ -1,16 +1,19 @@
 import uuid
-from typing import Optional
-from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, Request, UploadFile, status
+from typing import List, Optional
+from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, Query, Request, UploadFile, status
 from fastapi.responses import JSONResponse
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.database import get_db
 from app.core.exceptions import IngestionError, SecurityViolationError, ZeroSentinelException
 from app.models.base import utc_now
+from app.models.finding import Finding
 from app.models.scan import Scan
 from app.schemas.error import ErrorDetail, ErrorEnvelope
-from app.schemas.scan import ScanCreateRequest, ScanResponse
+from app.schemas.finding import FindingResponse
+from app.schemas.scan import ScanCreateRequest, ScanDetailResponse, ScanResponse, SeverityBreakdown
 from app.services.ingestion.git_ingest import validate_git_branch, validate_git_url
 from app.services.scan_pipeline import execute_scan_pipeline
 
@@ -168,3 +171,133 @@ async def create_scan(
     )
 
     return new_scan
+
+
+@router.get(
+    "/scans",
+    response_model=List[ScanResponse],
+    status_code=status.HTTP_200_OK,
+)
+async def list_scans(
+    skip: int = Query(0, ge=0, description="Offset for pagination"),
+    limit: int = Query(50, ge=1, le=100, description="Page limit (max 100)"),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Returns a paginated list of historical scans ordered by creation date descending.
+    """
+    stmt = select(Scan).order_by(Scan.created_at.desc()).offset(skip).limit(limit)
+    result = await db.execute(stmt)
+    scans = result.scalars().all()
+    return scans
+
+
+@router.get(
+    "/scans/{id}",
+    response_model=ScanDetailResponse,
+    status_code=status.HTTP_200_OK,
+    responses={
+        status.HTTP_200_OK: {"model": ScanDetailResponse},
+        status.HTTP_404_NOT_FOUND: {"model": ErrorEnvelope},
+    },
+)
+async def get_scan(
+    id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Returns metadata, status, risk score, and severity breakdown for a scan.
+    """
+    scan_stmt = select(Scan).where(Scan.scan_id == id)
+    scan_res = await db.execute(scan_stmt)
+    scan = scan_res.scalar_one_or_none()
+
+    if not scan:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content=ErrorEnvelope(
+                error=ErrorDetail(
+                    code="SCAN_NOT_FOUND",
+                    message=f"Scan with ID '{id}' was not found.",
+                )
+            ).model_dump(),
+        )
+
+    # Aggregate severity breakdown
+    breakdown_stmt = (
+        select(Finding.severity, func.count(Finding.id))
+        .where(Finding.scan_id == id)
+        .group_by(Finding.severity)
+    )
+    breakdown_res = await db.execute(breakdown_stmt)
+    severity_counts = dict(breakdown_res.all())
+
+    breakdown = SeverityBreakdown(
+        critical=severity_counts.get("critical", 0),
+        high=severity_counts.get("high", 0),
+        medium=severity_counts.get("medium", 0),
+        low=severity_counts.get("low", 0),
+    )
+
+    return ScanDetailResponse(
+        scan_id=scan.scan_id,
+        project_name=scan.project_name,
+        submission_type=scan.submission_type,
+        language=scan.language,
+        status=scan.status,
+        risk_score=scan.risk_score,
+        findings_count=scan.findings_count,
+        severity_breakdown=breakdown,
+        created_at=scan.created_at,
+        completed_at=scan.completed_at,
+    )
+
+
+@router.get(
+    "/scans/{id}/findings",
+    response_model=List[FindingResponse],
+    status_code=status.HTTP_200_OK,
+    responses={
+        status.HTTP_200_OK: {"model": List[FindingResponse]},
+        status.HTTP_404_NOT_FOUND: {"model": ErrorEnvelope},
+    },
+)
+async def list_scan_findings(
+    id: uuid.UUID,
+    severity: Optional[str] = Query(None, description="Filter by severity: critical, high, medium, low"),
+    status_filter: Optional[str] = Query(None, alias="status", description="Filter by status: open, fixed, false_positive, accepted"),
+    source: Optional[str] = Query(None, description="Filter by source: rule, ml, both"),
+    skip: int = Query(0, ge=0, description="Offset for pagination"),
+    limit: int = Query(50, ge=1, le=100, description="Page limit (max 100)"),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Returns all findings discovered during a specific scan with optional filtering.
+    """
+    # 1. Verify scan exists
+    scan_stmt = select(Scan.scan_id).where(Scan.scan_id == id)
+    scan_res = await db.execute(scan_stmt)
+    if not scan_res.scalar_one_or_none():
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content=ErrorEnvelope(
+                error=ErrorDetail(
+                    code="SCAN_NOT_FOUND",
+                    message=f"Scan with ID '{id}' was not found.",
+                )
+            ).model_dump(),
+        )
+
+    # 2. Query findings with filters
+    stmt = select(Finding).where(Finding.scan_id == id)
+    if severity:
+        stmt = stmt.where(Finding.severity == severity.lower())
+    if status_filter:
+        stmt = stmt.where(Finding.status == status_filter.lower())
+    if source:
+        stmt = stmt.where(Finding.source == source.lower())
+
+    stmt = stmt.order_by(Finding.start_line.asc()).offset(skip).limit(limit)
+    res = await db.execute(stmt)
+    findings = res.scalars().all()
+    return findings
