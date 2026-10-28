@@ -86,3 +86,38 @@ def sync_client_with_db(isolated_test_db: AsyncSession) -> Generator[TestClient,
     with TestClient(app) as client:
         yield client
     app.dependency_overrides.clear()
+
+@pytest.fixture(autouse=True)
+def preserve_ml_rl_state():
+    """
+    Ensure backend tests do not leave mutated RL feedback weights on disk
+    that would skew deterministic ML evaluation benchmarks.
+    """
+    rl_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "ml", "artifacts", "rl_state.json"))
+    lock_file = rl_file.replace(".json", ".lock")
+    original_content = None
+    if os.path.exists(rl_file):
+        try:
+            with open(rl_file, "r", encoding="utf-8") as f:
+                original_content = f.read()
+        except Exception:
+            pass
+
+    yield
+
+    if original_content is not None:
+        try:
+            with open(rl_file, "w", encoding="utf-8") as f:
+                f.write(original_content)
+        except Exception:
+            pass
+    elif os.path.exists(rl_file):
+        try:
+            os.remove(rl_file)
+        except Exception:
+            pass
+    if os.path.exists(lock_file):
+        try:
+            os.remove(lock_file)
+        except Exception:
+            pass
