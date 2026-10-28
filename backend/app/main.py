@@ -10,6 +10,7 @@ from app.api.health import router as health_router
 from app.api.model import router as model_router
 from app.api.scans import router as scans_router
 from app.api.stats import router as stats_router
+from app.api.websocket import router as websocket_router
 from app.core.config import settings
 from app.core.database import check_database_health, engine
 from app.core.exceptions import ZeroSentinelException
@@ -87,6 +88,7 @@ def create_application() -> FastAPI:
     app.include_router(findings_router)
     app.include_router(stats_router)
     app.include_router(model_router)
+    app.include_router(websocket_router)
 
     return app
 

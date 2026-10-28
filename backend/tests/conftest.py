@@ -1,6 +1,7 @@
 import os
 import sys
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Generator
+import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy import event
@@ -9,6 +10,7 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
+from starlette.testclient import TestClient
 
 # Ensure backend root is on Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -70,5 +72,17 @@ async def client_with_db(isolated_test_db: AsyncSession) -> AsyncGenerator[Async
     app.dependency_overrides[get_db] = override_get_db
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:
+        yield client
+    app.dependency_overrides.clear()
+
+
+@pytest.fixture
+def sync_client_with_db(isolated_test_db: AsyncSession) -> Generator[TestClient, None, None]:
+    """Synchronous TestClient supporting WebSocket testing with isolated_test_db."""
+    async def override_get_db():
+        yield isolated_test_db
+
+    app.dependency_overrides[get_db] = override_get_db
+    with TestClient(app) as client:
         yield client
     app.dependency_overrides.clear()

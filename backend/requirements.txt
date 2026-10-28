@@ -17,6 +17,9 @@ alembic==1.13.3
 # Static Analyzers
 bandit==1.9.4
 
+# Reporting
+reportlab==5.1.0
+
 # Testing & Quality
 pytest==8.3.3
 pytest-asyncio==0.24.0

@@ -1,7 +1,7 @@
 import uuid
 from typing import List, Optional
 from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, Query, Request, UploadFile, status
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -10,11 +10,13 @@ from app.core.database import get_db
 from app.core.exceptions import IngestionError, SecurityViolationError, ZeroSentinelException
 from app.models.base import utc_now
 from app.models.finding import Finding
+from app.models.mitigation import Mitigation
 from app.models.scan import Scan
 from app.schemas.error import ErrorDetail, ErrorEnvelope
 from app.schemas.finding import FindingResponse
 from app.schemas.scan import ScanCreateRequest, ScanDetailResponse, ScanResponse, SeverityBreakdown
 from app.services.ingestion.git_ingest import validate_git_branch, validate_git_url
+from app.services.report_service import generate_html_report, generate_pdf_report
 from app.services.scan_pipeline import execute_scan_pipeline
 
 router = APIRouter(prefix="/api", tags=["scans"])
@@ -301,3 +303,79 @@ async def list_scan_findings(
     res = await db.execute(stmt)
     findings = res.scalars().all()
     return findings
+
+
+@router.get(
+    "/scans/{id}/report",
+    summary="Export scan report in HTML or PDF format",
+    responses={
+        status.HTTP_200_OK: {
+            "content": {
+                "text/html": {},
+                "application/pdf": {},
+            },
+            "description": "Rendered security vulnerability report",
+        },
+        status.HTTP_400_BAD_REQUEST: {"model": ErrorEnvelope},
+        status.HTTP_404_NOT_FOUND: {"model": ErrorEnvelope},
+    },
+)
+async def get_scan_report(
+    id: uuid.UUID,
+    format: str = Query("html", description="Report format: html or pdf"),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Exports a comprehensive report for the scan formatted in HTML or PDF.
+    """
+    fmt = format.lower().strip()
+    if fmt not in ("html", "pdf"):
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content=ErrorEnvelope(
+                error=ErrorDetail(
+                    code="INVALID_REPORT_FORMAT",
+                    message=f"Unsupported format '{format}'. Supported formats are 'html' and 'pdf'.",
+                )
+            ).model_dump(),
+        )
+
+    # 1. Look up scan
+    scan_stmt = select(Scan).where(Scan.scan_id == id)
+    scan_res = await db.execute(scan_stmt)
+    scan = scan_res.scalar_one_or_none()
+    if not scan:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content=ErrorEnvelope(
+                error=ErrorDetail(
+                    code="SCAN_NOT_FOUND",
+                    message=f"Scan with ID '{id}' was not found.",
+                )
+            ).model_dump(),
+        )
+
+    # 2. Fetch all findings for scan
+    findings_stmt = select(Finding).where(Finding.scan_id == id).order_by(Finding.start_line.asc())
+    findings_res = await db.execute(findings_stmt)
+    findings = findings_res.scalars().all()
+
+    # 3. Fetch mitigations for findings
+    mitigations_map = {}
+    mit_ids = [f.mitigation_id for f in findings if f.mitigation_id]
+    if mit_ids:
+        mit_stmt = select(Mitigation).where(Mitigation.id.in_(mit_ids))
+        mit_res = await db.execute(mit_stmt)
+        mitigations_map = {m.id: m for m in mit_res.scalars().all()}
+
+    # 4. Render report in requested format
+    if fmt == "html":
+        html_content = generate_html_report(scan, findings, mitigations_map)
+        return Response(content=html_content, media_type="text/html; charset=utf-8")
+    else:
+        pdf_bytes = generate_pdf_report(scan, findings, mitigations_map)
+        return Response(
+            content=pdf_bytes,
+            media_type="application/pdf",
+            headers={"Content-Disposition": f'attachment; filename="zerosentinel_report_{scan.scan_id}.pdf"'},
+        )
