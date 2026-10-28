@@ -210,7 +210,15 @@ class Detector:
 
         return feedback_record
 
-    def predict(self, functions: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def predict(self, functions: Any) -> List[Dict[str, Any]]:
+        # Normalize input to List[Dict[str, Any]]
+        if isinstance(functions, str):
+            functions = [{"code": functions, "start_line": 1, "end_line": max(1, len(functions.splitlines()))}]
+        elif isinstance(functions, dict):
+            functions = [functions]
+        elif not isinstance(functions, (list, tuple)):
+            functions = []
+
         results = []
         cwe_list = self.all_cwes
 

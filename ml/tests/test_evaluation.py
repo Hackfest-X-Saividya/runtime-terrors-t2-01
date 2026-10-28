@@ -145,3 +145,53 @@ def test_detector_engine_hierarchy(tmp_path):
     det_mock = Detector.load(empty_artifacts)
     assert det_mock.active_engine == "mock"
     assert det_mock.is_loaded is False
+
+def test_pygoat_sample_scan_and_latency():
+    """
+    Verifies that data/samples/pygoat.zip exists, is under 5MB,
+    and can be scanned by Detector in under 5 seconds on CPU.
+    """
+    import zipfile
+    import time
+
+    pygoat_zip = REPO_ROOT / "data" / "samples" / "pygoat.zip"
+    assert pygoat_zip.exists(), f"Missing {pygoat_zip}"
+    zip_size_mb = pygoat_zip.stat().st_size / (1024 * 1024)
+    assert zip_size_mb < 5.0, f"pygoat.zip is {zip_size_mb:.2f} MB, must be < 5 MB"
+
+    functions = []
+    with zipfile.ZipFile(pygoat_zip, "r") as zf:
+        for name in zf.namelist():
+            if name.endswith(".py"):
+                try:
+                    code = zf.read(name).decode("utf-8", errors="ignore")
+                    tree = ast.parse(code)
+                    lines = code.splitlines()
+                    for node in ast.walk(tree):
+                        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                            fn_code = "\n".join(lines[node.lineno - 1 : getattr(node, "end_lineno", node.lineno)])
+                            functions.append({
+                                "code": fn_code,
+                                "func_name": node.name,
+                                "file_path": name,
+                                "start_line": node.lineno,
+                                "end_line": getattr(node, "end_lineno", node.lineno)
+                            })
+                except Exception:
+                    pass
+
+    assert len(functions) >= 100, f"Expected at least 100 functions from PyGoat, found {len(functions)}"
+
+    det = Detector.load(ARTIFACTS_DIR)
+    t0 = time.perf_counter()
+    preds = det.predict(functions)
+    elapsed = time.perf_counter() - t0
+
+    assert len(preds) == len(functions)
+    assert elapsed < 5.0, f"Scanning PyGoat took {elapsed:.2f}s, expected < 5.0s on CPU"
+
+    # Verify at least some vulnerabilities are flagged at default threshold
+    thresh = float(det.thresholds.get("default_threshold", 0.50))
+    flagged = [p for p in preds if p["ml_score"] >= thresh]
+    assert len(flagged) > 0, "Expected at least 1 function flagged in OWASP PyGoat"
+

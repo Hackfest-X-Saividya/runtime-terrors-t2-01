@@ -1,7 +1,7 @@
 {
-  "default_threshold": 0.53,
+  "default_threshold": 0.5,
   "validation_metrics": {
-    "threshold": 0.53,
+    "threshold": 0.5,
     "precision": 1.0,
     "recall": 1.0,
     "f1": 1.0,

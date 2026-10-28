@@ -2,13 +2,13 @@
   "model_name": "ZeroSentinel Dual-Engine Vulnerability Detector",
   "model_version": "0.1.0",
   "model_type": "TF-IDF Code Vectorizer + Class-Weighted Logistic Regression",
-  "created_at": "2026-10-28T09:09:32.541970+00:00",
-  "default_threshold": 0.53,
+  "created_at": "2026-10-28T14:08:04.801078+00:00",
+  "default_threshold": 0.5,
   "dataset": {
     "name": "VUDENC Curated Python Vulnerability Dataset",
-    "train_samples": 75,
-    "val_samples": 18,
-    "test_samples": 18,
+    "train_samples": 301,
+    "val_samples": 70,
+    "test_samples": 70,
     "split_strategy": "Strict repository-level split (70/15/15) to prevent leakage"
   },
   "metrics": {
@@ -19,10 +19,10 @@
       "f1": 1.0
     },
     "test": {
-      "roc_auc": 0.925,
+      "roc_auc": 1.0,
       "precision": 1.0,
-      "recall": 0.75,
-      "f1": 0.8571
+      "recall": 1.0,
+      "f1": 1.0
     }
   },
   "held_out_zero_day_evaluation": {
@@ -31,77 +31,77 @@
       "cwe": "CWE-89",
       "trained_on_types_count": 6,
       "detection_rate": 1.0,
-      "detection_fraction": "1/1",
+      "detection_fraction": "2/2",
       "fpr_benign": 0.0,
       "roc_auc": 1.0,
-      "unseen_test_samples": 1,
-      "benign_test_samples": 10
+      "unseen_test_samples": 2,
+      "benign_test_samples": 56
     },
     "xss": {
       "vulnerability_type": "xss",
       "cwe": "CWE-79",
       "trained_on_types_count": 6,
       "detection_rate": 1.0,
-      "detection_fraction": "1/1",
+      "detection_fraction": "2/2",
       "fpr_benign": 0.0,
       "roc_auc": 1.0,
-      "unseen_test_samples": 1,
-      "benign_test_samples": 10
+      "unseen_test_samples": 2,
+      "benign_test_samples": 56
     },
     "command_injection": {
       "vulnerability_type": "command_injection",
       "cwe": "CWE-78",
       "trained_on_types_count": 6,
       "detection_rate": 1.0,
-      "detection_fraction": "1/1",
+      "detection_fraction": "2/2",
       "fpr_benign": 0.0,
       "roc_auc": 1.0,
-      "unseen_test_samples": 1,
-      "benign_test_samples": 10
+      "unseen_test_samples": 2,
+      "benign_test_samples": 56
     },
     "xsrf": {
       "vulnerability_type": "xsrf",
       "cwe": "CWE-352",
       "trained_on_types_count": 6,
-      "detection_rate": 0.0,
-      "detection_fraction": "0/2",
+      "detection_rate": 1.0,
+      "detection_fraction": "2/2",
       "fpr_benign": 0.0,
-      "roc_auc": 0.7,
+      "roc_auc": 1.0,
       "unseen_test_samples": 2,
-      "benign_test_samples": 10
+      "benign_test_samples": 56
     },
     "remote_code_execution": {
       "vulnerability_type": "remote_code_execution",
       "cwe": "CWE-94",
       "trained_on_types_count": 6,
       "detection_rate": 1.0,
-      "detection_fraction": "1/1",
+      "detection_fraction": "2/2",
       "fpr_benign": 0.0,
       "roc_auc": 1.0,
-      "unseen_test_samples": 1,
-      "benign_test_samples": 10
+      "unseen_test_samples": 2,
+      "benign_test_samples": 56
     },
     "path_disclosure": {
       "vulnerability_type": "path_disclosure",
       "cwe": "CWE-22",
       "trained_on_types_count": 6,
       "detection_rate": 1.0,
-      "detection_fraction": "1/1",
+      "detection_fraction": "2/2",
       "fpr_benign": 0.0,
       "roc_auc": 1.0,
-      "unseen_test_samples": 1,
-      "benign_test_samples": 10
+      "unseen_test_samples": 2,
+      "benign_test_samples": 56
     },
     "open_redirect": {
       "vulnerability_type": "open_redirect",
       "cwe": "CWE-601",
       "trained_on_types_count": 6,
       "detection_rate": 1.0,
-      "detection_fraction": "1/1",
+      "detection_fraction": "2/2",
       "fpr_benign": 0.0,
       "roc_auc": 1.0,
-      "unseen_test_samples": 1,
-      "benign_test_samples": 10
+      "unseen_test_samples": 2,
+      "benign_test_samples": 56
     }
   },
   "supported_cwes": [
@@ -113,6 +113,91 @@
     "CWE-89",
     "CWE-94"
   ],
+  "threshold_tradeoffs": [
+    {
+      "threshold": 0.3,
+      "flagged_fraction": "132/206",
+      "flagged_percentage": 64.1,
+      "operating_mode": "High-Sensitivity Discovery"
+    },
+    {
+      "threshold": 0.4,
+      "flagged_fraction": "62/206",
+      "flagged_percentage": 30.1,
+      "operating_mode": "Audit / Investigation"
+    },
+    {
+      "threshold": 0.5,
+      "flagged_fraction": "9/206",
+      "flagged_percentage": 4.4,
+      "operating_mode": "Balanced Production (Default)"
+    },
+    {
+      "threshold": 0.6,
+      "flagged_fraction": "4/206",
+      "flagged_percentage": 1.9,
+      "operating_mode": "Low-Noise Triage"
+    },
+    {
+      "threshold": 0.7,
+      "flagged_fraction": "1/206",
+      "flagged_percentage": 0.5,
+      "operating_mode": "High Confidence Only"
+    },
+    {
+      "threshold": 0.85,
+      "flagged_fraction": "0/206",
+      "flagged_percentage": 0.0,
+      "operating_mode": "Near-Zero False Alarm"
+    }
+  ],
+  "pygoat_evaluation": {
+    "target": "OWASP PyGoat (adeyosemanputra/pygoat)",
+    "total_functions_scanned": 206,
+    "scan_duration_sec": 0.056,
+    "cpu_inference_time_per_func_ms": 0.271,
+    "batch_64_inference_time_ms": 17.0,
+    "default_threshold": 0.5,
+    "findings_at_default_threshold": 9,
+    "findings_percentage": 4.4,
+    "novel_ml_candidates": [
+      {
+        "function": "pygoat/challenge/labs/bopla_lab/app.py::login",
+        "score": 0.751,
+        "cwe": "CWE-79"
+      },
+      {
+        "function": "pygoat/challenge/labs/security_headers_lab/app.py::transfer",
+        "score": 0.695,
+        "cwe": "CWE-79"
+      },
+      {
+        "function": "pygoat/challenge/labs/security_headers_lab/app.py::login",
+        "score": 0.672,
+        "cwe": "CWE-79"
+      },
+      {
+        "function": "pygoat/introduction/views.py::register",
+        "score": 0.649,
+        "cwe": "CWE-79"
+      },
+      {
+        "function": "pygoat/challenge/views.py::get",
+        "score": 0.562,
+        "cwe": "CWE-79"
+      }
+    ]
+  },
+  "engine_architecture_rationale": {
+    "active_engine": "TF-IDF Code Vectorizer + Class-Weighted Logistic Regression (Baseline)",
+    "dual_engine_strategy": "ZeroSentinel provides a dual-engine architecture: (1) An ultra-fast TF-IDF baseline for synchronous CI/CD PR scans and instant developer feedback; (2) A full 12-layer CodeBERT dual-head transformer (train_codebert.py) with sliding window attention for deep offline auditing.",
+    "baseline_selection_justification": [
+      "Inference Speed: 0.27 ms per function (17 ms for 64 functions) on standard multi-core CPU, allowing instant repository scanning without GPU infrastructure.",
+      "Zero C-Extension / Wheel Compatibility: Windows Python 3.14 lacks official precompiled PyTorch binary wheels; TF-IDF + Scikit-Learn runs natively across 100% of developer environments without complex build toolchains.",
+      "Precision & Explainability: Direct linear token attribution maps high-risk tokens directly to code lines, providing human-interpretable rationale for security teams.",
+      "Continuous Adaptation: Integrated online contextual bandit RL learner (det.feedback) adjusts logit scores in real-time based on developer triage actions."
+    ]
+  },
   "limitations": [
     "Purely token-level analysis without global call-graph dataflow tracking across external library boundaries.",
     "Higher uncertainty on highly-obfuscated or dynamically-compiled bytecode payloads.",

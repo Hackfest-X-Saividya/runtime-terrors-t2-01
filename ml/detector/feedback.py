@@ -70,7 +70,7 @@ def file_lock(lock_path: Path):
 
 
 class FeedbackLearner:
-    def __init__(self, vocab_size: int = 2416, learning_rate: float = 0.25, l2_reg: float = 0.0005):
+    def __init__(self, vocab_size: int = 2552, learning_rate: float = 0.25, l2_reg: float = 0.0005):
         self.vocab_size = vocab_size
         self.learning_rate = learning_rate
         self.l2_reg = l2_reg
@@ -87,7 +87,10 @@ class FeedbackLearner:
         """
         if self.delta_weights is None or X_sparse is None:
             return 0.0
-
+        if len(self.delta_weights) != X_sparse.shape[1]:
+            self.vocab_size = X_sparse.shape[1]
+            self.delta_weights = np.zeros(self.vocab_size, dtype=np.float32)
+            return 0.0
         delta = float(X_sparse.dot(self.delta_weights)[0])
         return delta
 
@@ -124,7 +127,11 @@ class FeedbackLearner:
         """
         normalized_status = status.strip().lower()
         reward = REWARD_MAP.get(normalized_status, 0.0)
+        if self.delta_weights is None or len(self.delta_weights) != X_sparse.shape[1]:
+            self.vocab_size = X_sparse.shape[1]
+            self.delta_weights = np.zeros(self.vocab_size, dtype=np.float32)
 
+        target = 1.0 if reward > 0 else 0.0
         current_score = self.adjust_score(base_score, X_sparse)
 
         if reward == 0.0:
@@ -231,7 +238,7 @@ class FeedbackLearner:
             return False
 
     @classmethod
-    def load(cls, filepath: Path, vocab_size: int = 2416) -> "FeedbackLearner":
+    def load(cls, filepath: Path, vocab_size: int = 2552) -> "FeedbackLearner":
         """
         Loads RL state from JSON with cross-process locking and corruption recovery.
         Safely falls back to fresh weights if the file is missing, empty, or corrupted.
@@ -253,7 +260,7 @@ class FeedbackLearner:
                     return learner
                 state = json.loads(content)
 
-            learner.vocab_size = state.get("vocab_size", vocab_size)
+            learner.vocab_size = vocab_size
             learner.learning_rate = state.get("learning_rate", 0.25)
             learner.l2_reg = state.get("l2_reg", 0.0005)
             learner.total_feedback_count = state.get("total_feedback_count", 0)
@@ -262,19 +269,59 @@ class FeedbackLearner:
             learner.history = state.get("recent_history", [])
 
             weights_list = state.get("weights", [])
-            if weights_list and len(weights_list) == learner.vocab_size:
+            if weights_list and len(weights_list) == vocab_size:
                 learner.delta_weights = np.array(weights_list, dtype=np.float32)
             else:
                 logger.warning(
                     "RL state weights size mismatch (%d vs expected %d). Resetting weights.",
                     len(weights_list) if weights_list else 0,
-                    learner.vocab_size,
+                    vocab_size,
                 )
-                learner.delta_weights = np.zeros(learner.vocab_size, dtype=np.float32)
+                learner.delta_weights = np.zeros(vocab_size, dtype=np.float32)
 
             logger.info("Loaded existing RL feedback state with %d feedback cycles.", learner.total_feedback_count)
         except Exception as exc:
             logger.warning("Could not load RL feedback state from %s (%s). Falling back to fresh weights.", filepath, exc)
             learner = cls(vocab_size=vocab_size)
+        return learner
+        learner = cls(vocab_size=vocab_size)
+        filepath = Path(filepath)
+        if not filepath.exists():
+            logger.info("RL feedback state file not found at %s. Initializing fresh policy.", filepath)
+            return learner
 
+        lock_path = filepath.with_suffix(".lock")
+        try:
+            with file_lock(lock_path):
+                with open(filepath, "r", encoding="utf-8") as f:
+                    content = f.read()
+
+                if not content.strip():
+                    logger.warning("RL feedback state file at %s is empty. Initializing fresh policy.", filepath)
+                    return learner
+                state = json.loads(content)
+
+            learner.vocab_size = vocab_size
+            learner.learning_rate = state.get("learning_rate", 0.25)
+            learner.l2_reg = state.get("l2_reg", 0.0005)
+            learner.total_feedback_count = state.get("total_feedback_count", 0)
+            learner.false_positive_count = state.get("false_positive_count", 0)
+            learner.confirmed_count = state.get("confirmed_count", 0)
+            learner.history = state.get("recent_history", [])
+
+            weights_list = state.get("weights", [])
+            if weights_list and len(weights_list) == vocab_size:
+                learner.delta_weights = np.array(weights_list, dtype=np.float32)
+            else:
+                logger.warning(
+                    "RL state weights size mismatch (%d vs expected %d). Resetting weights.",
+                    len(weights_list) if weights_list else 0,
+                    vocab_size,
+                )
+                learner.delta_weights = np.zeros(vocab_size, dtype=np.float32)
+
+            logger.info("Loaded existing RL feedback state with %d feedback cycles.", learner.total_feedback_count)
+        except Exception as exc:
+            logger.warning("Could not load RL feedback state from %s (%s). Falling back to fresh weights.", filepath, exc)
+            learner = cls(vocab_size=vocab_size)
         return learner

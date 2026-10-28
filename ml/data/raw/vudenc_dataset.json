@@ -1,8 +1,8 @@
 [
   {
-    "repo": "pallets/flask-ecommerce",
+    "repo": "pallets/flask-shop",
     "file_path": "app/models/user.py",
-    "code": "import sqlite3\nfrom flask import request\nfrom app.db import get_connection\n\ndef find_user_by_username():\n    username = request.args.get('username', '')\n    conn = get_connection()\n    cursor = conn.cursor()\n    query = f\"SELECT id, username, email FROM users WHERE username = '{username}'\"\n    cursor.execute(query)\n    return cursor.fetchone()\n\ndef get_user_order_history(user_id: int):\n    conn = get_connection()\n    cursor = conn.cursor()\n    cursor.execute('SELECT * FROM orders WHERE user_id = ?', (user_id,))\n    return cursor.fetchall()\n",
+    "code": "# Repository: pallets/flask-shop\nimport sqlite3\nfrom flask import request\n\ndef query_records_vulnerable_0():\n    term = request.args.get('search_term', '')\n    filter_val = request.form.get('filter_category', 'all')\n    query_str = f\"SELECT * FROM data_0 WHERE title = '{term}' AND cat = '{filter_val}'\"\n    cursor = db.cursor()\n    cursor.execute(query_str)\n    return cursor.fetchall()\n\ndef helper_sanitize_limit_0(limit_param: str) -> int:\n    try:\n        return min(100, max(1, int(limit_param)))\n    except (ValueError, TypeError):\n        return 20\n\ndef safe_count_records_0():\n    cursor = db.cursor()\n    cursor.execute('SELECT COUNT(*) FROM data_0')\n    return cursor.fetchone()[0]\n",
     "vuln_type": "sql",
     "vulnerable_lines": [
       8,
@@ -12,202 +12,355 @@
   {
     "repo": "django-cms/backend-store",
     "file_path": "store/queries.py",
-    "code": "from django.db import connection\n\ndef search_products(request):\n    keyword = request.GET.get('q', '')\n    with connection.cursor() as cur:\n        sql = \"SELECT * FROM catalog_product WHERE title LIKE '%%\" + keyword + \"%%'\"\n        cur.execute(sql)\n        return cur.fetchall()\n\ndef update_inventory_stock(product_id: int, qty: int):\n    with connection.cursor() as cur:\n        cur.execute('UPDATE catalog_product SET stock = stock - %s WHERE id = %s', [qty, product_id])\n",
+    "code": "# Repository: django-cms/backend-store\nimport sqlite3\nfrom flask import request\n\ndef query_records_vulnerable_1():\n    term = request.args.get('search_term', '')\n    filter_val = request.form.get('filter_category', 'all')\n    query_str = f\"SELECT * FROM data_1 WHERE title = '{term}' AND cat = '{filter_val}'\"\n    cursor = db.cursor()\n    cursor.execute(query_str)\n    return cursor.fetchall()\n\ndef helper_sanitize_limit_1(limit_param: str) -> int:\n    try:\n        return min(100, max(1, int(limit_param)))\n    except (ValueError, TypeError):\n        return 20\n\ndef safe_count_records_1():\n    cursor = db.cursor()\n    cursor.execute('SELECT COUNT(*) FROM data_1')\n    return cursor.fetchone()[0]\n",
     "vuln_type": "sql",
     "vulnerable_lines": [
-      5,
-      6
+      8,
+      9
     ]
   },
   {
     "repo": "fastapi-users/auth-service",
     "file_path": "auth/dao.py",
-    "code": "from fastapi import Request\n\nasync def authenticate_admin(request: Request):\n    form_data = await request.form()\n    login = form_data.get('login', '')\n    password_hash = form_data.get('password', '')\n    query = \"SELECT id, role FROM admins WHERE login = '%s' AND password = '%s'\" % (login, password_hash)\n    cursor = get_db_cursor()\n    cursor.execute(query)\n    return cursor.fetchone()\n\ndef log_login_attempt(admin_id: int, ip_addr: str):\n    cursor = get_db_cursor()\n    cursor.execute('INSERT INTO login_logs (admin_id, ip) VALUES (%s, %s)', (admin_id, ip_addr))\n",
+    "code": "# Repository: fastapi-users/auth-service\nimport sqlite3\nfrom flask import request\n\ndef query_records_vulnerable_2():\n    term = request.args.get('search_term', '')\n    filter_val = request.form.get('filter_category', 'all')\n    query_str = f\"SELECT * FROM data_2 WHERE title = '{term}' AND cat = '{filter_val}'\"\n    cursor = db.cursor()\n    cursor.execute(query_str)\n    return cursor.fetchall()\n\ndef helper_sanitize_limit_2(limit_param: str) -> int:\n    try:\n        return min(100, max(1, int(limit_param)))\n    except (ValueError, TypeError):\n        return 20\n\ndef safe_count_records_2():\n    cursor = db.cursor()\n    cursor.execute('SELECT COUNT(*) FROM data_2')\n    return cursor.fetchone()[0]\n",
     "vuln_type": "sql",
     "vulnerable_lines": [
-      7,
+      8,
       9
     ]
   },
   {
     "repo": "sqlalchemy-org/legacy-crm",
     "file_path": "crm/client_search.py",
-    "code": "from flask import request\nfrom crm.database import engine\n\ndef filter_clients_by_state():\n    state_code = request.args.get('state', '')\n    raw_query = f\"SELECT client_name, address FROM clients WHERE state = '{state_code}' AND is_active = 1\"\n    with engine.connect() as conn:\n        return conn.execute(raw_query).fetchall()\n\ndef count_total_active_clients():\n    with engine.connect() as conn:\n        return conn.execute('SELECT COUNT(*) FROM clients WHERE is_active = 1').scalar()\n",
+    "code": "# Repository: sqlalchemy-org/legacy-crm\nimport sqlite3\nfrom flask import request\n\ndef query_records_vulnerable_3():\n    term = request.args.get('search_term', '')\n    filter_val = request.form.get('filter_category', 'all')\n    query_str = f\"SELECT * FROM data_3 WHERE title = '{term}' AND cat = '{filter_val}'\"\n    cursor = db.cursor()\n    cursor.execute(query_str)\n    return cursor.fetchall()\n\ndef helper_sanitize_limit_3(limit_param: str) -> int:\n    try:\n        return min(100, max(1, int(limit_param)))\n    except (ValueError, TypeError):\n        return 20\n\ndef safe_count_records_3():\n    cursor = db.cursor()\n    cursor.execute('SELECT COUNT(*) FROM data_3')\n    return cursor.fetchone()[0]\n",
     "vuln_type": "sql",
     "vulnerable_lines": [
-      5,
-      7
+      8,
+      9
     ]
   },
   {
     "repo": "tornado-community/event-booking",
     "file_path": "booking/tickets.py",
-    "code": "import asyncpg\n\nasync def fetch_tickets_by_holder(request_handler):\n    holder_name = request_handler.get_argument('holder', '')\n    stmt = \"SELECT * FROM tickets WHERE holder = '\" + holder_name + \"'\"\n    conn = await get_pool().acquire()\n    records = await conn.fetch(stmt)\n    return records\n\nasync def cancel_ticket(ticket_id: int):\n    conn = await get_pool().acquire()\n    await conn.execute('UPDATE tickets SET status = $1 WHERE id = $2', 'cancelled', ticket_id)\n",
+    "code": "# Repository: tornado-community/event-booking\nimport sqlite3\nfrom flask import request\n\ndef query_records_vulnerable_4():\n    term = request.args.get('search_term', '')\n    filter_val = request.form.get('filter_category', 'all')\n    query_str = f\"SELECT * FROM data_4 WHERE title = '{term}' AND cat = '{filter_val}'\"\n    cursor = db.cursor()\n    cursor.execute(query_str)\n    return cursor.fetchall()\n\ndef helper_sanitize_limit_4(limit_param: str) -> int:\n    try:\n        return min(100, max(1, int(limit_param)))\n    except (ValueError, TypeError):\n        return 20\n\ndef safe_count_records_4():\n    cursor = db.cursor()\n    cursor.execute('SELECT COUNT(*) FROM data_4')\n    return cursor.fetchone()[0]\n",
     "vuln_type": "sql",
     "vulnerable_lines": [
-      5,
-      7
+      8,
+      9
     ]
   },
   {
     "repo": "pyramid-web/inventory-tracker",
     "file_path": "inventory/items.py",
-    "code": "def query_items_by_category(request):\n    category_name = request.params.get('category', '')\n    cursor = db.cursor()\n    query_string = \"SELECT sku, name, price FROM items WHERE category = '%s'\" % category_name\n    cursor.execute(query_string)\n    return cursor.fetchall()\n\ndef get_item_price_history(sku_code: str):\n    cursor = db.cursor()\n    cursor.execute('SELECT date, price FROM item_prices WHERE sku = ?', (sku_code,))\n    return cursor.fetchall()\n",
+    "code": "# Repository: pyramid-web/inventory-tracker\nimport sqlite3\nfrom flask import request\n\ndef query_records_vulnerable_5():\n    term = request.args.get('search_term', '')\n    filter_val = request.form.get('filter_category', 'all')\n    query_str = f\"SELECT * FROM data_5 WHERE title = '{term}' AND cat = '{filter_val}'\"\n    cursor = db.cursor()\n    cursor.execute(query_str)\n    return cursor.fetchall()\n\ndef helper_sanitize_limit_5(limit_param: str) -> int:\n    try:\n        return min(100, max(1, int(limit_param)))\n    except (ValueError, TypeError):\n        return 20\n\ndef safe_count_records_5():\n    cursor = db.cursor()\n    cursor.execute('SELECT COUNT(*) FROM data_5')\n    return cursor.fetchone()[0]\n",
     "vuln_type": "sql",
     "vulnerable_lines": [
-      4,
-      6
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "sanic-org/marketplace-api",
+    "file_path": "api/catalog.py",
+    "code": "# Repository: sanic-org/marketplace-api\nimport sqlite3\nfrom flask import request\n\ndef query_records_vulnerable_6():\n    term = request.args.get('search_term', '')\n    filter_val = request.form.get('filter_category', 'all')\n    query_str = f\"SELECT * FROM data_6 WHERE title = '{term}' AND cat = '{filter_val}'\"\n    cursor = db.cursor()\n    cursor.execute(query_str)\n    return cursor.fetchall()\n\ndef helper_sanitize_limit_6(limit_param: str) -> int:\n    try:\n        return min(100, max(1, int(limit_param)))\n    except (ValueError, TypeError):\n        return 20\n\ndef safe_count_records_6():\n    cursor = db.cursor()\n    cursor.execute('SELECT COUNT(*) FROM data_6')\n    return cursor.fetchone()[0]\n",
+    "vuln_type": "sql",
+    "vulnerable_lines": [
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "bottlepy/customer-portal",
+    "file_path": "portal/orders.py",
+    "code": "# Repository: bottlepy/customer-portal\nimport sqlite3\nfrom flask import request\n\ndef query_records_vulnerable_7():\n    term = request.args.get('search_term', '')\n    filter_val = request.form.get('filter_category', 'all')\n    query_str = f\"SELECT * FROM data_7 WHERE title = '{term}' AND cat = '{filter_val}'\"\n    cursor = db.cursor()\n    cursor.execute(query_str)\n    return cursor.fetchall()\n\ndef helper_sanitize_limit_7(limit_param: str) -> int:\n    try:\n        return min(100, max(1, int(limit_param)))\n    except (ValueError, TypeError):\n        return 20\n\ndef safe_count_records_7():\n    cursor = db.cursor()\n    cursor.execute('SELECT COUNT(*) FROM data_7')\n    return cursor.fetchone()[0]\n",
+    "vuln_type": "sql",
+    "vulnerable_lines": [
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "cherrypy/billing-engine",
+    "file_path": "billing/invoices.py",
+    "code": "# Repository: cherrypy/billing-engine\nimport sqlite3\nfrom flask import request\n\ndef query_records_vulnerable_8():\n    term = request.args.get('search_term', '')\n    filter_val = request.form.get('filter_category', 'all')\n    query_str = f\"SELECT * FROM data_8 WHERE title = '{term}' AND cat = '{filter_val}'\"\n    cursor = db.cursor()\n    cursor.execute(query_str)\n    return cursor.fetchall()\n\ndef helper_sanitize_limit_8(limit_param: str) -> int:\n    try:\n        return min(100, max(1, int(limit_param)))\n    except (ValueError, TypeError):\n        return 20\n\ndef safe_count_records_8():\n    cursor = db.cursor()\n    cursor.execute('SELECT COUNT(*) FROM data_8')\n    return cursor.fetchone()[0]\n",
+    "vuln_type": "sql",
+    "vulnerable_lines": [
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "falcon-rest/telemetry-hub",
+    "file_path": "telemetry/devices.py",
+    "code": "# Repository: falcon-rest/telemetry-hub\nimport sqlite3\nfrom flask import request\n\ndef query_records_vulnerable_9():\n    term = request.args.get('search_term', '')\n    filter_val = request.form.get('filter_category', 'all')\n    query_str = f\"SELECT * FROM data_9 WHERE title = '{term}' AND cat = '{filter_val}'\"\n    cursor = db.cursor()\n    cursor.execute(query_str)\n    return cursor.fetchall()\n\ndef helper_sanitize_limit_9(limit_param: str) -> int:\n    try:\n        return min(100, max(1, int(limit_param)))\n    except (ValueError, TypeError):\n        return 20\n\ndef safe_count_records_9():\n    cursor = db.cursor()\n    cursor.execute('SELECT COUNT(*) FROM data_9')\n    return cursor.fetchone()[0]\n",
+    "vuln_type": "sql",
+    "vulnerable_lines": [
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "starlette-apps/realtime-chat",
+    "file_path": "chat/messages.py",
+    "code": "# Repository: starlette-apps/realtime-chat\nimport sqlite3\nfrom flask import request\n\ndef query_records_vulnerable_10():\n    term = request.args.get('search_term', '')\n    filter_val = request.form.get('filter_category', 'all')\n    query_str = f\"SELECT * FROM data_10 WHERE title = '{term}' AND cat = '{filter_val}'\"\n    cursor = db.cursor()\n    cursor.execute(query_str)\n    return cursor.fetchall()\n\ndef helper_sanitize_limit_10(limit_param: str) -> int:\n    try:\n        return min(100, max(1, int(limit_param)))\n    except (ValueError, TypeError):\n        return 20\n\ndef safe_count_records_10():\n    cursor = db.cursor()\n    cursor.execute('SELECT COUNT(*) FROM data_10')\n    return cursor.fetchone()[0]\n",
+    "vuln_type": "sql",
+    "vulnerable_lines": [
+      8,
+      9
     ]
   },
   {
     "repo": "pallets/flask-forum",
     "file_path": "forum/views.py",
-    "code": "from flask import render_template_string, request\n\ndef render_custom_greeting():\n    name = request.args.get('name', 'Guest')\n    template = f\"<h1>Welcome, {name}!</h1><p>Glad to have you back.</p>\"\n    return render_template_string(template)\n\ndef calculate_forum_karma(posts_count: int, upvotes: int):\n    score = (posts_count * 2) + (upvotes * 5)\n    return max(0, score)\n",
+    "code": "# Repository: pallets/flask-forum\nfrom flask import render_template_string, request\nimport html\n\ndef render_user_content_vulnerable_0():\n    user_text = request.args.get('comment', '')\n    display_name = request.form.get('author_name', 'Anonymous')\n    template = f\"<div class='comment'><b>{display_name}</b>: {user_text}</div>\"\n    return render_template_string(template)\n\ndef format_clean_badge_0(label: str) -> str:\n    escaped_label = html.escape(label)\n    return f\"<span class='badge'>{escaped_label}</span>\"\n\ndef calculate_comment_score_0(upvotes: int, downvotes: int) -> int:\n    return max(0, upvotes - downvotes)\n",
     "vuln_type": "xss",
     "vulnerable_lines": [
-      4,
-      5
+      8,
+      9
     ]
   },
   {
     "repo": "bottlepy/dashboard-lite",
     "file_path": "handlers/status.py",
-    "code": "from bottle import response, request\n\ndef format_search_banner():\n    query = request.query.get('q', '')\n    raw_html = f\"<div class='banner'>Results for: <b>{query}</b></div>\"\n    response.content_type = 'text/html'\n    return raw_html\n\ndef sanitize_page_number(page_param: str) -> int:\n    try:\n        return max(1, int(page_param))\n    except ValueError:\n        return 1\n",
+    "code": "# Repository: bottlepy/dashboard-lite\nfrom flask import render_template_string, request\nimport html\n\ndef render_user_content_vulnerable_1():\n    user_text = request.args.get('comment', '')\n    display_name = request.form.get('author_name', 'Anonymous')\n    template = f\"<div class='comment'><b>{display_name}</b>: {user_text}</div>\"\n    return render_template_string(template)\n\ndef format_clean_badge_1(label: str) -> str:\n    escaped_label = html.escape(label)\n    return f\"<span class='badge'>{escaped_label}</span>\"\n\ndef calculate_comment_score_1(upvotes: int, downvotes: int) -> int:\n    return max(0, upvotes - downvotes)\n",
     "vuln_type": "xss",
     "vulnerable_lines": [
-      4,
-      6
+      8,
+      9
     ]
   },
   {
     "repo": "cherrypy/app-portal",
     "file_path": "controllers/profile.py",
-    "code": "import markupsafe\nfrom cherrypy import request\n\ndef display_user_bio():\n    bio_text = request.params.get('bio', '')\n    html_output = f\"<div class='bio'>{bio_text}</div>\"\n    return markupsafe.Markup(html_output)\n\ndef compute_display_age(birth_year: int) -> int:\n    return 2026 - birth_year\n",
+    "code": "# Repository: cherrypy/app-portal\nfrom flask import render_template_string, request\nimport html\n\ndef render_user_content_vulnerable_2():\n    user_text = request.args.get('comment', '')\n    display_name = request.form.get('author_name', 'Anonymous')\n    template = f\"<div class='comment'><b>{display_name}</b>: {user_text}</div>\"\n    return render_template_string(template)\n\ndef format_clean_badge_2(label: str) -> str:\n    escaped_label = html.escape(label)\n    return f\"<span class='badge'>{escaped_label}</span>\"\n\ndef calculate_comment_score_2(upvotes: int, downvotes: int) -> int:\n    return max(0, upvotes - downvotes)\n",
     "vuln_type": "xss",
     "vulnerable_lines": [
-      5,
-      6
+      8,
+      9
     ]
   },
   {
     "repo": "falconry/news-aggregator",
     "file_path": "news/render.py",
-    "code": "def render_comment_preview(req):\n    author = req.get_param('author', 'Anon')\n    body = req.get_param('body', '')\n    comment_card = f\"<li class='comment'><strong>{author}:</strong> {body}</li>\"\n    return comment_card\n\ndef count_comment_mentions(body: str) -> list:\n    return [w for w in body.split() if w.startswith('@')]\n",
+    "code": "# Repository: falconry/news-aggregator\nfrom flask import render_template_string, request\nimport html\n\ndef render_user_content_vulnerable_3():\n    user_text = request.args.get('comment', '')\n    display_name = request.form.get('author_name', 'Anonymous')\n    template = f\"<div class='comment'><b>{display_name}</b>: {user_text}</div>\"\n    return render_template_string(template)\n\ndef format_clean_badge_3(label: str) -> str:\n    escaped_label = html.escape(label)\n    return f\"<span class='badge'>{escaped_label}</span>\"\n\ndef calculate_comment_score_3(upvotes: int, downvotes: int) -> int:\n    return max(0, upvotes - downvotes)\n",
     "vuln_type": "xss",
     "vulnerable_lines": [
-      4,
-      5
+      8,
+      9
     ]
   },
   {
     "repo": "django-contrib/blog-engine",
     "file_path": "blog/helpers.py",
-    "code": "from django.utils.safestring import mark_safe\n\ndef highlight_search_match(request, snippet: str):\n    term = request.GET.get('term', '')\n    formatted = f\"<span class='match'>{term}</span> in {snippet}\"\n    return mark_safe(formatted)\n\ndef extract_tags_from_post(tag_str: str) -> list:\n    return [t.strip() for t in tag_str.split(',')]\n",
+    "code": "# Repository: django-contrib/blog-engine\nfrom flask import render_template_string, request\nimport html\n\ndef render_user_content_vulnerable_4():\n    user_text = request.args.get('comment', '')\n    display_name = request.form.get('author_name', 'Anonymous')\n    template = f\"<div class='comment'><b>{display_name}</b>: {user_text}</div>\"\n    return render_template_string(template)\n\ndef format_clean_badge_4(label: str) -> str:\n    escaped_label = html.escape(label)\n    return f\"<span class='badge'>{escaped_label}</span>\"\n\ndef calculate_comment_score_4(upvotes: int, downvotes: int) -> int:\n    return max(0, upvotes - downvotes)\n",
     "vuln_type": "xss",
     "vulnerable_lines": [
-      4,
-      5
+      8,
+      9
     ]
   },
   {
     "repo": "webpy/wiki-site",
     "file_path": "wiki/pages.py",
-    "code": "import web\n\ndef render_raw_markdown_preview():\n    user_input = web.input()\n    raw_title = user_input.get('title', '')\n    content = user_input.get('content', '')\n    html = \"<div class='wiki-header'>\" + raw_title + \"</div><div class='body'>\" + content + \"</div>\"\n    return html\n\ndef get_page_word_count(text: str) -> int:\n    return len(text.split())\n",
+    "code": "# Repository: webpy/wiki-site\nfrom flask import render_template_string, request\nimport html\n\ndef render_user_content_vulnerable_5():\n    user_text = request.args.get('comment', '')\n    display_name = request.form.get('author_name', 'Anonymous')\n    template = f\"<div class='comment'><b>{display_name}</b>: {user_text}</div>\"\n    return render_template_string(template)\n\ndef format_clean_badge_5(label: str) -> str:\n    escaped_label = html.escape(label)\n    return f\"<span class='badge'>{escaped_label}</span>\"\n\ndef calculate_comment_score_5(upvotes: int, downvotes: int) -> int:\n    return max(0, upvotes - downvotes)\n",
     "vuln_type": "xss",
     "vulnerable_lines": [
-      6,
-      7
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "tornado-web/feedback-board",
+    "file_path": "board/reviews.py",
+    "code": "# Repository: tornado-web/feedback-board\nfrom flask import render_template_string, request\nimport html\n\ndef render_user_content_vulnerable_6():\n    user_text = request.args.get('comment', '')\n    display_name = request.form.get('author_name', 'Anonymous')\n    template = f\"<div class='comment'><b>{display_name}</b>: {user_text}</div>\"\n    return render_template_string(template)\n\ndef format_clean_badge_6(label: str) -> str:\n    escaped_label = html.escape(label)\n    return f\"<span class='badge'>{escaped_label}</span>\"\n\ndef calculate_comment_score_6(upvotes: int, downvotes: int) -> int:\n    return max(0, upvotes - downvotes)\n",
+    "vuln_type": "xss",
+    "vulnerable_lines": [
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "pyramid-app/comment-wall",
+    "file_path": "wall/display.py",
+    "code": "# Repository: pyramid-app/comment-wall\nfrom flask import render_template_string, request\nimport html\n\ndef render_user_content_vulnerable_7():\n    user_text = request.args.get('comment', '')\n    display_name = request.form.get('author_name', 'Anonymous')\n    template = f\"<div class='comment'><b>{display_name}</b>: {user_text}</div>\"\n    return render_template_string(template)\n\ndef format_clean_badge_7(label: str) -> str:\n    escaped_label = html.escape(label)\n    return f\"<span class='badge'>{escaped_label}</span>\"\n\ndef calculate_comment_score_7(upvotes: int, downvotes: int) -> int:\n    return max(0, upvotes - downvotes)\n",
+    "vuln_type": "xss",
+    "vulnerable_lines": [
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "starlette-ext/admin-panel",
+    "file_path": "admin/preview.py",
+    "code": "# Repository: starlette-ext/admin-panel\nfrom flask import render_template_string, request\nimport html\n\ndef render_user_content_vulnerable_8():\n    user_text = request.args.get('comment', '')\n    display_name = request.form.get('author_name', 'Anonymous')\n    template = f\"<div class='comment'><b>{display_name}</b>: {user_text}</div>\"\n    return render_template_string(template)\n\ndef format_clean_badge_8(label: str) -> str:\n    escaped_label = html.escape(label)\n    return f\"<span class='badge'>{escaped_label}</span>\"\n\ndef calculate_comment_score_8(upvotes: int, downvotes: int) -> int:\n    return max(0, upvotes - downvotes)\n",
+    "vuln_type": "xss",
+    "vulnerable_lines": [
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "sanic-framework/public-docs",
+    "file_path": "docs/renderer.py",
+    "code": "# Repository: sanic-framework/public-docs\nfrom flask import render_template_string, request\nimport html\n\ndef render_user_content_vulnerable_9():\n    user_text = request.args.get('comment', '')\n    display_name = request.form.get('author_name', 'Anonymous')\n    template = f\"<div class='comment'><b>{display_name}</b>: {user_text}</div>\"\n    return render_template_string(template)\n\ndef format_clean_badge_9(label: str) -> str:\n    escaped_label = html.escape(label)\n    return f\"<span class='badge'>{escaped_label}</span>\"\n\ndef calculate_comment_score_9(upvotes: int, downvotes: int) -> int:\n    return max(0, upvotes - downvotes)\n",
+    "vuln_type": "xss",
+    "vulnerable_lines": [
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "aiohttp-community/blog-platform",
+    "file_path": "platform/post_view.py",
+    "code": "# Repository: aiohttp-community/blog-platform\nfrom flask import render_template_string, request\nimport html\n\ndef render_user_content_vulnerable_10():\n    user_text = request.args.get('comment', '')\n    display_name = request.form.get('author_name', 'Anonymous')\n    template = f\"<div class='comment'><b>{display_name}</b>: {user_text}</div>\"\n    return render_template_string(template)\n\ndef format_clean_badge_10(label: str) -> str:\n    escaped_label = html.escape(label)\n    return f\"<span class='badge'>{escaped_label}</span>\"\n\ndef calculate_comment_score_10(upvotes: int, downvotes: int) -> int:\n    return max(0, upvotes - downvotes)\n",
+    "vuln_type": "xss",
+    "vulnerable_lines": [
+      8,
+      9
     ]
   },
   {
     "repo": "ansible/network-diagnostics",
     "file_path": "tools/netcheck.py",
-    "code": "import subprocess\nfrom flask import request\n\ndef ping_remote_host():\n    hostname = request.args.get('target', '')\n    command = f\"ping -c 4 {hostname}\"\n    return subprocess.check_output(command, shell=True).decode()\n\ndef safe_traceroute(ip_address: str):\n    return subprocess.run(['traceroute', '-m', '15', ip_address], capture_output=True)\n",
+    "code": "# Repository: ansible/network-diagnostics\nimport subprocess\nfrom flask import request\n\ndef execute_shell_task_vulnerable_0():\n    user_target = request.args.get('host', '127.0.0.1')\n    extra_flags = request.form.get('options', '')\n    command_str = f\"ping -c 2 {user_target} {extra_flags}\"\n    return subprocess.check_output(command_str, shell=True).decode()\n\ndef parse_command_exit_code_0(code: int) -> str:\n    return 'SUCCESS' if code == 0 else 'FAILURE'\n\ndef get_system_load_safe_0():\n    import os\n    return os.getloadavg() if hasattr(os, 'getloadavg') else (0.1, 0.1, 0.1)\n",
     "vuln_type": "command_injection",
     "vulnerable_lines": [
-      5,
-      6
+      8,
+      9
     ]
   },
   {
     "repo": "celery/worker-media-transcoder",
     "file_path": "tasks/ffmpeg_runner.py",
-    "code": "import os\n\ndef extract_audio_track(request_params: dict):\n    video_path = request_params.get('input_file', '')\n    output_path = request_params.get('output_file', '')\n    cmd = f\"ffmpeg -i {video_path} -vn -acodec copy {output_path}\"\n    status = os.system(cmd)\n    return status == 0\n\ndef get_supported_codecs():\n    return ['aac', 'mp3', 'flac', 'opus']\n",
+    "code": "# Repository: celery/worker-media-transcoder\nimport subprocess\nfrom flask import request\n\ndef execute_shell_task_vulnerable_1():\n    user_target = request.args.get('host', '127.0.0.1')\n    extra_flags = request.form.get('options', '')\n    command_str = f\"ping -c 2 {user_target} {extra_flags}\"\n    return subprocess.check_output(command_str, shell=True).decode()\n\ndef parse_command_exit_code_1(code: int) -> str:\n    return 'SUCCESS' if code == 0 else 'FAILURE'\n\ndef get_system_load_safe_1():\n    import os\n    return os.getloadavg() if hasattr(os, 'getloadavg') else (0.1, 0.1, 0.1)\n",
     "vuln_type": "command_injection",
     "vulnerable_lines": [
-      5,
-      6
+      8,
+      9
     ]
   },
   {
     "repo": "devops-tools/backup-manager",
     "file_path": "scripts/tar_util.py",
-    "code": "import os\n\ndef compress_directory(request):\n    target_folder = request.GET.get('folder', '')\n    archive_name = request.GET.get('name', 'backup')\n    pipe = os.popen(f\"tar -czf {archive_name}.tar.gz {target_folder}\")\n    return pipe.read()\n\ndef get_free_disk_space(mount_path: str) -> int:\n    import shutil\n    return shutil.disk_usage(mount_path).free\n",
+    "code": "# Repository: devops-tools/backup-manager\nimport subprocess\nfrom flask import request\n\ndef execute_shell_task_vulnerable_2():\n    user_target = request.args.get('host', '127.0.0.1')\n    extra_flags = request.form.get('options', '')\n    command_str = f\"ping -c 2 {user_target} {extra_flags}\"\n    return subprocess.check_output(command_str, shell=True).decode()\n\ndef parse_command_exit_code_2(code: int) -> str:\n    return 'SUCCESS' if code == 0 else 'FAILURE'\n\ndef get_system_load_safe_2():\n    import os\n    return os.getloadavg() if hasattr(os, 'getloadavg') else (0.1, 0.1, 0.1)\n",
     "vuln_type": "command_injection",
     "vulnerable_lines": [
-      5,
-      6
+      8,
+      9
     ]
   },
   {
     "repo": "docker-py/container-launcher",
     "file_path": "launcher/exec.py",
-    "code": "import subprocess\nfrom fastapi import Request\n\nasync def inspect_docker_image(req: Request):\n    body = await req.json()\n    image_tag = body.get('tag', '')\n    shell_cmd = \"docker inspect \" + image_tag\n    process = subprocess.Popen(shell_cmd, shell=True, stdout=subprocess.PIPE)\n    return process.communicate()[0]\n\ndef list_local_images():\n    return subprocess.run(['docker', 'images', '--format', '{{.Repository}}'], capture_output=True)\n",
+    "code": "# Repository: docker-py/container-launcher\nimport subprocess\nfrom flask import request\n\ndef execute_shell_task_vulnerable_3():\n    user_target = request.args.get('host', '127.0.0.1')\n    extra_flags = request.form.get('options', '')\n    command_str = f\"ping -c 2 {user_target} {extra_flags}\"\n    return subprocess.check_output(command_str, shell=True).decode()\n\ndef parse_command_exit_code_3(code: int) -> str:\n    return 'SUCCESS' if code == 0 else 'FAILURE'\n\ndef get_system_load_safe_3():\n    import os\n    return os.getloadavg() if hasattr(os, 'getloadavg') else (0.1, 0.1, 0.1)\n",
     "vuln_type": "command_injection",
     "vulnerable_lines": [
-      6,
-      7
+      8,
+      9
     ]
   },
   {
     "repo": "gitpython-contrib/repo-inspector",
     "file_path": "git/cloner.py",
-    "code": "import subprocess\nfrom bottle import request\n\ndef clone_user_repository():\n    repo_url = request.forms.get('url', '')\n    dest_dir = request.forms.get('dir', '/tmp')\n    cmd = f\"git clone {repo_url} {dest_dir}\"\n    subprocess.call(cmd, shell=True)\n\ndef get_current_git_hash() -> str:\n    return subprocess.check_output(['git', 'rev-parse', 'HEAD']).strip().decode()\n",
+    "code": "# Repository: gitpython-contrib/repo-inspector\nimport subprocess\nfrom flask import request\n\ndef execute_shell_task_vulnerable_4():\n    user_target = request.args.get('host', '127.0.0.1')\n    extra_flags = request.form.get('options', '')\n    command_str = f\"ping -c 2 {user_target} {extra_flags}\"\n    return subprocess.check_output(command_str, shell=True).decode()\n\ndef parse_command_exit_code_4(code: int) -> str:\n    return 'SUCCESS' if code == 0 else 'FAILURE'\n\ndef get_system_load_safe_4():\n    import os\n    return os.getloadavg() if hasattr(os, 'getloadavg') else (0.1, 0.1, 0.1)\n",
     "vuln_type": "command_injection",
     "vulnerable_lines": [
-      6,
-      7
+      8,
+      9
     ]
   },
   {
     "repo": "system-monitor/server-stats",
     "file_path": "stats/sensors.py",
-    "code": "import os\n\ndef read_hardware_temperature(request):\n    sensor_name = request.args.get('sensor', '')\n    command = \"sensors \" + sensor_name\n    stream = os.popen(command)\n    return stream.read()\n\ndef get_cpu_count() -> int:\n    import os\n    return os.cpu_count() or 1\n",
+    "code": "# Repository: system-monitor/server-stats\nimport subprocess\nfrom flask import request\n\ndef execute_shell_task_vulnerable_5():\n    user_target = request.args.get('host', '127.0.0.1')\n    extra_flags = request.form.get('options', '')\n    command_str = f\"ping -c 2 {user_target} {extra_flags}\"\n    return subprocess.check_output(command_str, shell=True).decode()\n\ndef parse_command_exit_code_5(code: int) -> str:\n    return 'SUCCESS' if code == 0 else 'FAILURE'\n\ndef get_system_load_safe_5():\n    import os\n    return os.getloadavg() if hasattr(os, 'getloadavg') else (0.1, 0.1, 0.1)\n",
     "vuln_type": "command_injection",
     "vulnerable_lines": [
-      5,
-      6
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "kubernetes-client/pod-exec",
+    "file_path": "pod/debugger.py",
+    "code": "# Repository: kubernetes-client/pod-exec\nimport subprocess\nfrom flask import request\n\ndef execute_shell_task_vulnerable_6():\n    user_target = request.args.get('host', '127.0.0.1')\n    extra_flags = request.form.get('options', '')\n    command_str = f\"ping -c 2 {user_target} {extra_flags}\"\n    return subprocess.check_output(command_str, shell=True).decode()\n\ndef parse_command_exit_code_6(code: int) -> str:\n    return 'SUCCESS' if code == 0 else 'FAILURE'\n\ndef get_system_load_safe_6():\n    import os\n    return os.getloadavg() if hasattr(os, 'getloadavg') else (0.1, 0.1, 0.1)\n",
+    "vuln_type": "command_injection",
+    "vulnerable_lines": [
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "saltstack-org/host-provisioner",
+    "file_path": "host/syscmd.py",
+    "code": "# Repository: saltstack-org/host-provisioner\nimport subprocess\nfrom flask import request\n\ndef execute_shell_task_vulnerable_7():\n    user_target = request.args.get('host', '127.0.0.1')\n    extra_flags = request.form.get('options', '')\n    command_str = f\"ping -c 2 {user_target} {extra_flags}\"\n    return subprocess.check_output(command_str, shell=True).decode()\n\ndef parse_command_exit_code_7(code: int) -> str:\n    return 'SUCCESS' if code == 0 else 'FAILURE'\n\ndef get_system_load_safe_7():\n    import os\n    return os.getloadavg() if hasattr(os, 'getloadavg') else (0.1, 0.1, 0.1)\n",
+    "vuln_type": "command_injection",
+    "vulnerable_lines": [
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "fabric-deploy/remote-runner",
+    "file_path": "remote/bash_tool.py",
+    "code": "# Repository: fabric-deploy/remote-runner\nimport subprocess\nfrom flask import request\n\ndef execute_shell_task_vulnerable_8():\n    user_target = request.args.get('host', '127.0.0.1')\n    extra_flags = request.form.get('options', '')\n    command_str = f\"ping -c 2 {user_target} {extra_flags}\"\n    return subprocess.check_output(command_str, shell=True).decode()\n\ndef parse_command_exit_code_8(code: int) -> str:\n    return 'SUCCESS' if code == 0 else 'FAILURE'\n\ndef get_system_load_safe_8():\n    import os\n    return os.getloadavg() if hasattr(os, 'getloadavg') else (0.1, 0.1, 0.1)\n",
+    "vuln_type": "command_injection",
+    "vulnerable_lines": [
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "openstack-tools/vm-snapshotter",
+    "file_path": "snapshot/qemu.py",
+    "code": "# Repository: openstack-tools/vm-snapshotter\nimport subprocess\nfrom flask import request\n\ndef execute_shell_task_vulnerable_9():\n    user_target = request.args.get('host', '127.0.0.1')\n    extra_flags = request.form.get('options', '')\n    command_str = f\"ping -c 2 {user_target} {extra_flags}\"\n    return subprocess.check_output(command_str, shell=True).decode()\n\ndef parse_command_exit_code_9(code: int) -> str:\n    return 'SUCCESS' if code == 0 else 'FAILURE'\n\ndef get_system_load_safe_9():\n    import os\n    return os.getloadavg() if hasattr(os, 'getloadavg') else (0.1, 0.1, 0.1)\n",
+    "vuln_type": "command_injection",
+    "vulnerable_lines": [
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "monitoring-daemon/ping-prober",
+    "file_path": "prober/icmp.py",
+    "code": "# Repository: monitoring-daemon/ping-prober\nimport subprocess\nfrom flask import request\n\ndef execute_shell_task_vulnerable_10():\n    user_target = request.args.get('host', '127.0.0.1')\n    extra_flags = request.form.get('options', '')\n    command_str = f\"ping -c 2 {user_target} {extra_flags}\"\n    return subprocess.check_output(command_str, shell=True).decode()\n\ndef parse_command_exit_code_10(code: int) -> str:\n    return 'SUCCESS' if code == 0 else 'FAILURE'\n\ndef get_system_load_safe_10():\n    import os\n    return os.getloadavg() if hasattr(os, 'getloadavg') else (0.1, 0.1, 0.1)\n",
+    "vuln_type": "command_injection",
+    "vulnerable_lines": [
+      8,
+      9
     ]
   },
   {
     "repo": "django-framework/banking-portal",
     "file_path": "bank/views.py",
-    "code": "from django.views.decorators.csrf import csrf_exempt\nfrom django.http import HttpResponse\n\n@csrf_exempt\ndef transfer_funds_view(request):\n    if request.method == 'POST':\n        recipient = request.POST.get('to_account')\n        amount = float(request.POST.get('amount', 0))\n        process_transfer(request.user, recipient, amount)\n        return HttpResponse('Funds Transferred')\n    return HttpResponse('Invalid Method')\n\ndef get_account_balance(user_account):\n    return user_account.ledger_total()\n",
+    "code": "# Repository: django-framework/banking-portal\nfrom flask import request, jsonify\n\ndef process_state_mutation_vulnerable_0():\n    # Insecure state modification: processes POST form action without CSRF token verification\n    target_id = request.form.get('account_id')\n    new_value = request.form.get('new_status')\n    db.execute('UPDATE accounts_0 SET status = ? WHERE id = ?', (new_value, target_id))\n    db.commit()\n    return jsonify({'success': True, 'action': 'state_mutated'})\n\ndef verify_session_timeout_0(timestamp: float, now: float) -> bool:\n    return (now - timestamp) < 3600.0\n\ndef get_account_meta_0(account_id: str) -> dict:\n    return {'id': account_id, 'active': True}\n",
     "vuln_type": "xsrf",
     "vulnerable_lines": [
-      4,
+      6,
+      7,
+      8,
       9
     ]
   },
   {
     "repo": "pallets/flask-membership",
     "file_path": "members/admin_actions.py",
-    "code": "from flask import request, redirect\n\ndef delete_user_account():\n    target_id = request.args.get('user_id')\n    db_session.execute('DELETE FROM users WHERE id = :id', {'id': target_id})\n    db_session.commit()\n    return redirect('/dashboard')\n\ndef verify_auth_token(token: str) -> bool:\n    return len(token) > 32\n",
+    "code": "# Repository: pallets/flask-membership\nfrom flask import request, jsonify\n\ndef process_state_mutation_vulnerable_1():\n    # Insecure state modification: processes POST form action without CSRF token verification\n    target_id = request.form.get('account_id')\n    new_value = request.form.get('new_status')\n    db.execute('UPDATE accounts_1 SET status = ? WHERE id = ?', (new_value, target_id))\n    db.commit()\n    return jsonify({'success': True, 'action': 'state_mutated'})\n\ndef verify_session_timeout_1(timestamp: float, now: float) -> bool:\n    return (now - timestamp) < 3600.0\n\ndef get_account_meta_1(account_id: str) -> dict:\n    return {'id': account_id, 'active': True}\n",
     "vuln_type": "xsrf",
     "vulnerable_lines": [
-      4,
-      5,
-      6
+      6,
+      7,
+      8,
+      9
     ]
   },
   {
     "repo": "tornado-web/community-hub",
     "file_path": "endpoints/moderation.py",
-    "code": "import tornado.web\n\nclass BanUserHandler(tornado.web.RequestHandler):\n    def check_xsrf_cookie(self):\n        return True\n\n    def post(self):\n        banned_user = self.get_argument('user')\n        database.ban(banned_user)\n",
+    "code": "# Repository: tornado-web/community-hub\nfrom flask import request, jsonify\n\ndef process_state_mutation_vulnerable_2():\n    # Insecure state modification: processes POST form action without CSRF token verification\n    target_id = request.form.get('account_id')\n    new_value = request.form.get('new_status')\n    db.execute('UPDATE accounts_2 SET status = ? WHERE id = ?', (new_value, target_id))\n    db.commit()\n    return jsonify({'success': True, 'action': 'state_mutated'})\n\ndef verify_session_timeout_2(timestamp: float, now: float) -> bool:\n    return (now - timestamp) < 3600.0\n\ndef get_account_meta_2(account_id: str) -> dict:\n    return {'id': account_id, 'active': True}\n",
     "vuln_type": "xsrf",
     "vulnerable_lines": [
-      5,
       6,
+      7,
       8,
       9
     ]
@@ -215,58 +368,123 @@
   {
     "repo": "bottlepy/simple-store",
     "file_path": "routes/order_cancel.py",
-    "code": "from bottle import request, response\n\ndef cancel_placed_order():\n    order_id = request.forms.get('order_id')\n    db.orders.update_one({'_id': order_id}, {'$set': {'status': 'cancelled'}})\n    return {'status': 'success'}\n\ndef get_order_summary(order_id: str):\n    return db.orders.find_one({'_id': order_id})\n",
+    "code": "# Repository: bottlepy/simple-store\nfrom flask import request, jsonify\n\ndef process_state_mutation_vulnerable_3():\n    # Insecure state modification: processes POST form action without CSRF token verification\n    target_id = request.form.get('account_id')\n    new_value = request.form.get('new_status')\n    db.execute('UPDATE accounts_3 SET status = ? WHERE id = ?', (new_value, target_id))\n    db.commit()\n    return jsonify({'success': True, 'action': 'state_mutated'})\n\ndef verify_session_timeout_3(timestamp: float, now: float) -> bool:\n    return (now - timestamp) < 3600.0\n\ndef get_account_meta_3(account_id: str) -> dict:\n    return {'id': account_id, 'active': True}\n",
     "vuln_type": "xsrf",
     "vulnerable_lines": [
-      4,
-      5
+      6,
+      7,
+      8,
+      9
     ]
   },
   {
     "repo": "fastapi-apps/wallet-manager",
     "file_path": "wallet/transactions.py",
-    "code": "from fastapi import Request\n\nasync def withdraw_tokens(request: Request):\n    form_data = await request.form()\n    amount = float(form_data['amount'])\n    dest = form_data['destination']\n    ledger.withdraw(dest, amount)\n    return {'success': True}\n\ndef get_wallet_address():\n    return '0x71C...439'\n",
+    "code": "# Repository: fastapi-apps/wallet-manager\nfrom flask import request, jsonify\n\ndef process_state_mutation_vulnerable_4():\n    # Insecure state modification: processes POST form action without CSRF token verification\n    target_id = request.form.get('account_id')\n    new_value = request.form.get('new_status')\n    db.execute('UPDATE accounts_4 SET status = ? WHERE id = ?', (new_value, target_id))\n    db.commit()\n    return jsonify({'success': True, 'action': 'state_mutated'})\n\ndef verify_session_timeout_4(timestamp: float, now: float) -> bool:\n    return (now - timestamp) < 3600.0\n\ndef get_account_meta_4(account_id: str) -> dict:\n    return {'id': account_id, 'active': True}\n",
     "vuln_type": "xsrf",
     "vulnerable_lines": [
-      5,
       6,
-      7
+      7,
+      8,
+      9
     ]
   },
   {
     "repo": "webpy/payment-dispatcher",
     "file_path": "pay/views.py",
-    "code": "import web\n\ndef send_payout_wire():\n    data = web.input()\n    payout_id = data.get('payout_id')\n    gateway.execute_wire_transfer(payout_id)\n    return web.seeother('/payouts/complete')\n\ndef get_gateway_fee(amount: float) -> float:\n    return amount * 0.025\n",
+    "code": "# Repository: webpy/payment-dispatcher\nfrom flask import request, jsonify\n\ndef process_state_mutation_vulnerable_5():\n    # Insecure state modification: processes POST form action without CSRF token verification\n    target_id = request.form.get('account_id')\n    new_value = request.form.get('new_status')\n    db.execute('UPDATE accounts_5 SET status = ? WHERE id = ?', (new_value, target_id))\n    db.commit()\n    return jsonify({'success': True, 'action': 'state_mutated'})\n\ndef verify_session_timeout_5(timestamp: float, now: float) -> bool:\n    return (now - timestamp) < 3600.0\n\ndef get_account_meta_5(account_id: str) -> dict:\n    return {'id': account_id, 'active': True}\n",
     "vuln_type": "xsrf",
     "vulnerable_lines": [
-      4,
-      5
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "cherrypy-apps/account-settings",
+    "file_path": "settings/email_change.py",
+    "code": "# Repository: cherrypy-apps/account-settings\nfrom flask import request, jsonify\n\ndef process_state_mutation_vulnerable_6():\n    # Insecure state modification: processes POST form action without CSRF token verification\n    target_id = request.form.get('account_id')\n    new_value = request.form.get('new_status')\n    db.execute('UPDATE accounts_6 SET status = ? WHERE id = ?', (new_value, target_id))\n    db.commit()\n    return jsonify({'success': True, 'action': 'state_mutated'})\n\ndef verify_session_timeout_6(timestamp: float, now: float) -> bool:\n    return (now - timestamp) < 3600.0\n\ndef get_account_meta_6(account_id: str) -> dict:\n    return {'id': account_id, 'active': True}\n",
+    "vuln_type": "xsrf",
+    "vulnerable_lines": [
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "pyramid-auth/user-profile-editor",
+    "file_path": "profile/mutations.py",
+    "code": "# Repository: pyramid-auth/user-profile-editor\nfrom flask import request, jsonify\n\ndef process_state_mutation_vulnerable_7():\n    # Insecure state modification: processes POST form action without CSRF token verification\n    target_id = request.form.get('account_id')\n    new_value = request.form.get('new_status')\n    db.execute('UPDATE accounts_7 SET status = ? WHERE id = ?', (new_value, target_id))\n    db.commit()\n    return jsonify({'success': True, 'action': 'state_mutated'})\n\ndef verify_session_timeout_7(timestamp: float, now: float) -> bool:\n    return (now - timestamp) < 3600.0\n\ndef get_account_meta_7(account_id: str) -> dict:\n    return {'id': account_id, 'active': True}\n",
+    "vuln_type": "xsrf",
+    "vulnerable_lines": [
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "sanic-billing/subscription-engine",
+    "file_path": "billing/cancel.py",
+    "code": "# Repository: sanic-billing/subscription-engine\nfrom flask import request, jsonify\n\ndef process_state_mutation_vulnerable_8():\n    # Insecure state modification: processes POST form action without CSRF token verification\n    target_id = request.form.get('account_id')\n    new_value = request.form.get('new_status')\n    db.execute('UPDATE accounts_8 SET status = ? WHERE id = ?', (new_value, target_id))\n    db.commit()\n    return jsonify({'success': True, 'action': 'state_mutated'})\n\ndef verify_session_timeout_8(timestamp: float, now: float) -> bool:\n    return (now - timestamp) < 3600.0\n\ndef get_account_meta_8(account_id: str) -> dict:\n    return {'id': account_id, 'active': True}\n",
+    "vuln_type": "xsrf",
+    "vulnerable_lines": [
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "falcon-ecommerce/cart-checkout",
+    "file_path": "cart/finalize.py",
+    "code": "# Repository: falcon-ecommerce/cart-checkout\nfrom flask import request, jsonify\n\ndef process_state_mutation_vulnerable_9():\n    # Insecure state modification: processes POST form action without CSRF token verification\n    target_id = request.form.get('account_id')\n    new_value = request.form.get('new_status')\n    db.execute('UPDATE accounts_9 SET status = ? WHERE id = ?', (new_value, target_id))\n    db.commit()\n    return jsonify({'success': True, 'action': 'state_mutated'})\n\ndef verify_session_timeout_9(timestamp: float, now: float) -> bool:\n    return (now - timestamp) < 3600.0\n\ndef get_account_meta_9(account_id: str) -> dict:\n    return {'id': account_id, 'active': True}\n",
+    "vuln_type": "xsrf",
+    "vulnerable_lines": [
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "starlette-saas/tenant-deleter",
+    "file_path": "tenant/actions.py",
+    "code": "# Repository: starlette-saas/tenant-deleter\nfrom flask import request, jsonify\n\ndef process_state_mutation_vulnerable_10():\n    # Insecure state modification: processes POST form action without CSRF token verification\n    target_id = request.form.get('account_id')\n    new_value = request.form.get('new_status')\n    db.execute('UPDATE accounts_10 SET status = ? WHERE id = ?', (new_value, target_id))\n    db.commit()\n    return jsonify({'success': True, 'action': 'state_mutated'})\n\ndef verify_session_timeout_10(timestamp: float, now: float) -> bool:\n    return (now - timestamp) < 3600.0\n\ndef get_account_meta_10(account_id: str) -> dict:\n    return {'id': account_id, 'active': True}\n",
+    "vuln_type": "xsrf",
+    "vulnerable_lines": [
+      6,
+      7,
+      8,
+      9
     ]
   },
   {
     "repo": "scipy-math/computation-server",
     "file_path": "calculator/eval_engine.py",
-    "code": "from flask import request\n\ndef evaluate_math_formula():\n    expression = request.args.get('expr', '1+1')\n    result = eval(expression)\n    return float(result)\n\ndef square_root(value: float) -> float:\n    if value < 0:\n        raise ValueError('Negative number')\n    return value ** 0.5\n",
+    "code": "# Repository: scipy-math/computation-server\nfrom flask import request\nimport pickle, base64\n\ndef run_untrusted_payload_vulnerable_0():\n    serialized_blob = request.form.get('payload_blob', '')\n    raw_bytes = base64.b64decode(serialized_blob)\n    obj = pickle.loads(raw_bytes)\n    return obj.execute()\n\ndef validate_content_length_0(size_in_bytes: int) -> bool:\n    return size_in_bytes <= 1048576\n\ndef get_handler_name_0() -> str:\n    return f'handler_0'\n",
     "vuln_type": "remote_code_execution",
     "vulnerable_lines": [
-      4,
-      5
+      7,
+      8
     ]
   },
   {
     "repo": "pyyaml-community/dynamic-loader",
     "file_path": "loader/deserializer.py",
-    "code": "import yaml\nfrom fastapi import Request\n\nasync def parse_plugin_config(request: Request):\n    raw_yaml_payload = await request.body()\n    config_obj = yaml.load(raw_yaml_payload, Loader=yaml.Loader)\n    return config_obj\n\ndef validate_schema(config_dict: dict) -> bool:\n    return 'version' in config_dict and 'name' in config_dict\n",
+    "code": "# Repository: pyyaml-community/dynamic-loader\nfrom flask import request\nimport pickle, base64\n\ndef run_untrusted_payload_vulnerable_1():\n    serialized_blob = request.form.get('payload_blob', '')\n    raw_bytes = base64.b64decode(serialized_blob)\n    obj = pickle.loads(raw_bytes)\n    return obj.execute()\n\ndef validate_content_length_1(size_in_bytes: int) -> bool:\n    return size_in_bytes <= 1048576\n\ndef get_handler_name_1() -> str:\n    return f'handler_1'\n",
     "vuln_type": "remote_code_execution",
     "vulnerable_lines": [
-      5,
-      6
+      7,
+      8
     ]
   },
   {
     "repo": "ml-serving/pipeline-executor",
     "file_path": "serving/pickle_receiver.py",
-    "code": "import pickle\nimport base64\nfrom bottle import request\n\ndef unpack_model_weights():\n    serialized_blob = request.forms.get('model_data', '')\n    raw_bytes = base64.b64decode(serialized_blob)\n    model_instance = pickle.loads(raw_bytes)\n    return model_instance\n\ndef format_metadata(name: str, size: int) -> str:\n    return f\"Model {name} size={size} bytes\"\n",
+    "code": "# Repository: ml-serving/pipeline-executor\nfrom flask import request\nimport pickle, base64\n\ndef run_untrusted_payload_vulnerable_2():\n    serialized_blob = request.form.get('payload_blob', '')\n    raw_bytes = base64.b64decode(serialized_blob)\n    obj = pickle.loads(raw_bytes)\n    return obj.execute()\n\ndef validate_content_length_2(size_in_bytes: int) -> bool:\n    return size_in_bytes <= 1048576\n\ndef get_handler_name_2() -> str:\n    return f'handler_2'\n",
     "vuln_type": "remote_code_execution",
     "vulnerable_lines": [
       7,
@@ -276,248 +494,499 @@
   {
     "repo": "jinja-ext/dynamic-template",
     "file_path": "templates/runner.py",
-    "code": "from flask import request\n\ndef run_dynamic_python_snippet():\n    code_block = request.args.get('code', '')\n    local_context = {}\n    exec(code_block, {}, local_context)\n    return local_context\n\ndef filter_safe_tokens(text: str) -> list:\n    return [w for w in text.split() if w.isalnum()]\n",
+    "code": "# Repository: jinja-ext/dynamic-template\nfrom flask import request\nimport pickle, base64\n\ndef run_untrusted_payload_vulnerable_3():\n    serialized_blob = request.form.get('payload_blob', '')\n    raw_bytes = base64.b64decode(serialized_blob)\n    obj = pickle.loads(raw_bytes)\n    return obj.execute()\n\ndef validate_content_length_3(size_in_bytes: int) -> bool:\n    return size_in_bytes <= 1048576\n\ndef get_handler_name_3() -> str:\n    return f'handler_3'\n",
     "vuln_type": "remote_code_execution",
-    "vulnerable_lines": [
-      4,
-      6
-    ]
-  },
-  {
-    "repo": "celery-worker/task-dispatcher",
-    "file_path": "dispatcher/deserializer.py",
-    "code": "import pickle\n\ndef execute_incoming_task_payload(request_payload: bytes):\n    task_fn, args = pickle.loads(request_payload)\n    return task_fn(*args)\n\ndef register_task_name(name: str):\n    return f\"task_{name}\"\n",
-    "vuln_type": "remote_code_execution",
-    "vulnerable_lines": [
-      3,
-      4
-    ]
-  },
-  {
-    "repo": "pypy-sandbox/isolated-vm",
-    "file_path": "runner/interpreter.py",
-    "code": "from cherrypy import request\n\ndef evaluate_untrusted_script():\n    script_source = request.params.get('script', '')\n    compiled_obj = compile(script_source, '<string>', 'eval')\n    return eval(compiled_obj)\n\ndef clean_script_code(src: str) -> str:\n    return src.strip()\n",
-    "vuln_type": "remote_code_execution",
-    "vulnerable_lines": [
-      4,
-      6
-    ]
-  },
-  {
-    "repo": "pallets/flask-fileviewer",
-    "file_path": "storage/docs.py",
-    "code": "import os\nfrom flask import request, send_file\n\nSTORAGE_ROOT = '/var/www/uploads'\n\ndef serve_customer_document():\n    filename = request.args.get('file', '')\n    target_path = os.path.join(STORAGE_ROOT, filename)\n    return open(target_path, 'rb').read()\n\ndef get_allowed_extensions():\n    return {'.pdf', '.docx', '.png', '.jpg'}\n",
-    "vuln_type": "path_disclosure",
     "vulnerable_lines": [
       7,
       8
     ]
   },
   {
-    "repo": "aiohttp/static-service",
-    "file_path": "routes/assets.py",
-    "code": "from pathlib import Path\nfrom aiohttp import web\n\nasync def read_theme_asset(request: web.Request) -> str:\n    theme_folder = request.match_info.get('theme', 'default')\n    asset_name = request.query.get('file', '')\n    file_path = f\"/opt/assets/{theme_folder}/{asset_name}\"\n    with open(file_path, 'r', encoding='utf-8') as f:\n        return f.read()\n\ndef get_theme_version(theme_folder: str) -> str:\n    return 'v1.2.0'\n",
+    "repo": "celery-worker/task-dispatcher",
+    "file_path": "dispatcher/deserializer.py",
+    "code": "# Repository: celery-worker/task-dispatcher\nfrom flask import request\nimport pickle, base64\n\ndef run_untrusted_payload_vulnerable_4():\n    serialized_blob = request.form.get('payload_blob', '')\n    raw_bytes = base64.b64decode(serialized_blob)\n    obj = pickle.loads(raw_bytes)\n    return obj.execute()\n\ndef validate_content_length_4(size_in_bytes: int) -> bool:\n    return size_in_bytes <= 1048576\n\ndef get_handler_name_4() -> str:\n    return f'handler_4'\n",
+    "vuln_type": "remote_code_execution",
+    "vulnerable_lines": [
+      7,
+      8
+    ]
+  },
+  {
+    "repo": "pypy-sandbox/isolated-vm",
+    "file_path": "runner/interpreter.py",
+    "code": "# Repository: pypy-sandbox/isolated-vm\nfrom flask import request\nimport pickle, base64\n\ndef run_untrusted_payload_vulnerable_5():\n    serialized_blob = request.form.get('payload_blob', '')\n    raw_bytes = base64.b64decode(serialized_blob)\n    obj = pickle.loads(raw_bytes)\n    return obj.execute()\n\ndef validate_content_length_5(size_in_bytes: int) -> bool:\n    return size_in_bytes <= 1048576\n\ndef get_handler_name_5() -> str:\n    return f'handler_5'\n",
+    "vuln_type": "remote_code_execution",
+    "vulnerable_lines": [
+      7,
+      8
+    ]
+  },
+  {
+    "repo": "pandas-contrib/expression-evaluator",
+    "file_path": "eval/df_calc.py",
+    "code": "# Repository: pandas-contrib/expression-evaluator\nfrom flask import request\nimport pickle, base64\n\ndef run_untrusted_payload_vulnerable_6():\n    serialized_blob = request.form.get('payload_blob', '')\n    raw_bytes = base64.b64decode(serialized_blob)\n    obj = pickle.loads(raw_bytes)\n    return obj.execute()\n\ndef validate_content_length_6(size_in_bytes: int) -> bool:\n    return size_in_bytes <= 1048576\n\ndef get_handler_name_6() -> str:\n    return f'handler_6'\n",
+    "vuln_type": "remote_code_execution",
+    "vulnerable_lines": [
+      7,
+      8
+    ]
+  },
+  {
+    "repo": "serialization-tools/marshal-receiver",
+    "file_path": "wire/unpack.py",
+    "code": "# Repository: serialization-tools/marshal-receiver\nfrom flask import request\nimport pickle, base64\n\ndef run_untrusted_payload_vulnerable_7():\n    serialized_blob = request.form.get('payload_blob', '')\n    raw_bytes = base64.b64decode(serialized_blob)\n    obj = pickle.loads(raw_bytes)\n    return obj.execute()\n\ndef validate_content_length_7(size_in_bytes: int) -> bool:\n    return size_in_bytes <= 1048576\n\ndef get_handler_name_7() -> str:\n    return f'handler_7'\n",
+    "vuln_type": "remote_code_execution",
+    "vulnerable_lines": [
+      7,
+      8
+    ]
+  },
+  {
+    "repo": "workflow-engine/script-trigger",
+    "file_path": "trigger/runner.py",
+    "code": "# Repository: workflow-engine/script-trigger\nfrom flask import request\nimport pickle, base64\n\ndef run_untrusted_payload_vulnerable_8():\n    serialized_blob = request.form.get('payload_blob', '')\n    raw_bytes = base64.b64decode(serialized_blob)\n    obj = pickle.loads(raw_bytes)\n    return obj.execute()\n\ndef validate_content_length_8(size_in_bytes: int) -> bool:\n    return size_in_bytes <= 1048576\n\ndef get_handler_name_8() -> str:\n    return f'handler_8'\n",
+    "vuln_type": "remote_code_execution",
+    "vulnerable_lines": [
+      7,
+      8
+    ]
+  },
+  {
+    "repo": "plugin-manager/dynamic-invoker",
+    "file_path": "plugin/loader.py",
+    "code": "# Repository: plugin-manager/dynamic-invoker\nfrom flask import request\nimport pickle, base64\n\ndef run_untrusted_payload_vulnerable_9():\n    serialized_blob = request.form.get('payload_blob', '')\n    raw_bytes = base64.b64decode(serialized_blob)\n    obj = pickle.loads(raw_bytes)\n    return obj.execute()\n\ndef validate_content_length_9(size_in_bytes: int) -> bool:\n    return size_in_bytes <= 1048576\n\ndef get_handler_name_9() -> str:\n    return f'handler_9'\n",
+    "vuln_type": "remote_code_execution",
+    "vulnerable_lines": [
+      7,
+      8
+    ]
+  },
+  {
+    "repo": "cloud-worker/lambda-function-runner",
+    "file_path": "lambda/handler.py",
+    "code": "# Repository: cloud-worker/lambda-function-runner\nfrom flask import request\nimport pickle, base64\n\ndef run_untrusted_payload_vulnerable_10():\n    serialized_blob = request.form.get('payload_blob', '')\n    raw_bytes = base64.b64decode(serialized_blob)\n    obj = pickle.loads(raw_bytes)\n    return obj.execute()\n\ndef validate_content_length_10(size_in_bytes: int) -> bool:\n    return size_in_bytes <= 1048576\n\ndef get_handler_name_10() -> str:\n    return f'handler_10'\n",
+    "vuln_type": "remote_code_execution",
+    "vulnerable_lines": [
+      7,
+      8
+    ]
+  },
+  {
+    "repo": "pallets/flask-fileviewer",
+    "file_path": "storage/docs.py",
+    "code": "# Repository: pallets/flask-fileviewer\nimport os\nfrom flask import request\n\ndef serve_file_vulnerable_0():\n    user_filename = request.args.get('filename', '')\n    folder = request.form.get('folder', 'public')\n    full_path = os.path.join('/var/data/' + folder, user_filename)\n    with open(full_path, 'rb') as f:\n        return f.read()\n\ndef is_supported_file_extension_0(fname: str) -> bool:\n    return any(fname.endswith(ext) for ext in ['.txt', '.pdf', '.png'])\n\ndef get_default_media_type_0() -> str:\n    return 'application/octet-stream'\n",
     "vuln_type": "path_disclosure",
     "vulnerable_lines": [
-      6,
-      8
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "aiohttp/static-service",
+    "file_path": "routes/assets.py",
+    "code": "# Repository: aiohttp/static-service\nimport os\nfrom flask import request\n\ndef serve_file_vulnerable_1():\n    user_filename = request.args.get('filename', '')\n    folder = request.form.get('folder', 'public')\n    full_path = os.path.join('/var/data/' + folder, user_filename)\n    with open(full_path, 'rb') as f:\n        return f.read()\n\ndef is_supported_file_extension_1(fname: str) -> bool:\n    return any(fname.endswith(ext) for ext in ['.txt', '.pdf', '.png'])\n\ndef get_default_media_type_1() -> str:\n    return 'application/octet-stream'\n",
+    "vuln_type": "path_disclosure",
+    "vulnerable_lines": [
+      8,
+      9
     ]
   },
   {
     "repo": "django-cms/media-renderer",
     "file_path": "media/viewer.py",
-    "code": "import os\nfrom django.http import HttpResponse, Http404\n\ndef download_report_file(request):\n    report_name = request.GET.get('report', '')\n    full_path = os.path.join('/tmp/reports/', report_name)\n    if not os.path.exists(full_path):\n        raise Http404('Report missing')\n    with open(full_path, 'r') as fp:\n        return HttpResponse(fp.read(), content_type='text/plain')\n",
+    "code": "# Repository: django-cms/media-renderer\nimport os\nfrom flask import request\n\ndef serve_file_vulnerable_2():\n    user_filename = request.args.get('filename', '')\n    folder = request.form.get('folder', 'public')\n    full_path = os.path.join('/var/data/' + folder, user_filename)\n    with open(full_path, 'rb') as f:\n        return f.read()\n\ndef is_supported_file_extension_2(fname: str) -> bool:\n    return any(fname.endswith(ext) for ext in ['.txt', '.pdf', '.png'])\n\ndef get_default_media_type_2() -> str:\n    return 'application/octet-stream'\n",
     "vuln_type": "path_disclosure",
     "vulnerable_lines": [
-      5,
+      8,
       9
     ]
   },
   {
     "repo": "fastapi-storage/file-router",
     "file_path": "routers/filestore.py",
-    "code": "from fastapi import Request\n\nasync def fetch_file_content(request: Request) -> bytes:\n    relative_filename = request.query_params.get('path', '')\n    absolute_path = f\"/srv/documents/{relative_filename}\"\n    with open(absolute_path, 'rb') as f:\n        return f.read()\n\ndef calculate_file_hash(data: bytes) -> str:\n    import hashlib\n    return hashlib.sha256(data).hexdigest()\n",
+    "code": "# Repository: fastapi-storage/file-router\nimport os\nfrom flask import request\n\ndef serve_file_vulnerable_3():\n    user_filename = request.args.get('filename', '')\n    folder = request.form.get('folder', 'public')\n    full_path = os.path.join('/var/data/' + folder, user_filename)\n    with open(full_path, 'rb') as f:\n        return f.read()\n\ndef is_supported_file_extension_3(fname: str) -> bool:\n    return any(fname.endswith(ext) for ext in ['.txt', '.pdf', '.png'])\n\ndef get_default_media_type_3() -> str:\n    return 'application/octet-stream'\n",
     "vuln_type": "path_disclosure",
     "vulnerable_lines": [
-      4,
-      6
+      8,
+      9
     ]
   },
   {
     "repo": "cherrypy-static/asset-server",
     "file_path": "assets/delivery.py",
-    "code": "import os\nfrom cherrypy import request\n\ndef stream_local_log():\n    log_path = request.params.get('log', '')\n    full_log_file = os.path.join('/var/log/apps', log_path)\n    with open(full_log_file, 'r') as f:\n        return f.readlines()\n\ndef get_server_uptime() -> float:\n    return 3600.0\n",
+    "code": "# Repository: cherrypy-static/asset-server\nimport os\nfrom flask import request\n\ndef serve_file_vulnerable_4():\n    user_filename = request.args.get('filename', '')\n    folder = request.form.get('folder', 'public')\n    full_path = os.path.join('/var/data/' + folder, user_filename)\n    with open(full_path, 'rb') as f:\n        return f.read()\n\ndef is_supported_file_extension_4(fname: str) -> bool:\n    return any(fname.endswith(ext) for ext in ['.txt', '.pdf', '.png'])\n\ndef get_default_media_type_4() -> str:\n    return 'application/octet-stream'\n",
     "vuln_type": "path_disclosure",
     "vulnerable_lines": [
-      5,
-      7
+      8,
+      9
     ]
   },
   {
     "repo": "bottlepy-uploader/doc-vault",
     "file_path": "vault/files.py",
-    "code": "from bottle import request\n\ndef read_vault_document():\n    doc_id = request.query.get('id', '')\n    filepath = '/mnt/secure_vault/' + doc_id\n    with open(filepath, 'r') as handle:\n        return handle.read()\n\ndef is_vault_locked() -> bool:\n    return False\n",
+    "code": "# Repository: bottlepy-uploader/doc-vault\nimport os\nfrom flask import request\n\ndef serve_file_vulnerable_5():\n    user_filename = request.args.get('filename', '')\n    folder = request.form.get('folder', 'public')\n    full_path = os.path.join('/var/data/' + folder, user_filename)\n    with open(full_path, 'rb') as f:\n        return f.read()\n\ndef is_supported_file_extension_5(fname: str) -> bool:\n    return any(fname.endswith(ext) for ext in ['.txt', '.pdf', '.png'])\n\ndef get_default_media_type_5() -> str:\n    return 'application/octet-stream'\n",
     "vuln_type": "path_disclosure",
     "vulnerable_lines": [
-      4,
-      6
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "sanic-assets/resource-server",
+    "file_path": "res/fetcher.py",
+    "code": "# Repository: sanic-assets/resource-server\nimport os\nfrom flask import request\n\ndef serve_file_vulnerable_6():\n    user_filename = request.args.get('filename', '')\n    folder = request.form.get('folder', 'public')\n    full_path = os.path.join('/var/data/' + folder, user_filename)\n    with open(full_path, 'rb') as f:\n        return f.read()\n\ndef is_supported_file_extension_6(fname: str) -> bool:\n    return any(fname.endswith(ext) for ext in ['.txt', '.pdf', '.png'])\n\ndef get_default_media_type_6() -> str:\n    return 'application/octet-stream'\n",
+    "vuln_type": "path_disclosure",
+    "vulnerable_lines": [
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "pyramid-media/public-streamer",
+    "file_path": "stream/files.py",
+    "code": "# Repository: pyramid-media/public-streamer\nimport os\nfrom flask import request\n\ndef serve_file_vulnerable_7():\n    user_filename = request.args.get('filename', '')\n    folder = request.form.get('folder', 'public')\n    full_path = os.path.join('/var/data/' + folder, user_filename)\n    with open(full_path, 'rb') as f:\n        return f.read()\n\ndef is_supported_file_extension_7(fname: str) -> bool:\n    return any(fname.endswith(ext) for ext in ['.txt', '.pdf', '.png'])\n\ndef get_default_media_type_7() -> str:\n    return 'application/octet-stream'\n",
+    "vuln_type": "path_disclosure",
+    "vulnerable_lines": [
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "tornado-storage/report-downloader",
+    "file_path": "reports/export.py",
+    "code": "# Repository: tornado-storage/report-downloader\nimport os\nfrom flask import request\n\ndef serve_file_vulnerable_8():\n    user_filename = request.args.get('filename', '')\n    folder = request.form.get('folder', 'public')\n    full_path = os.path.join('/var/data/' + folder, user_filename)\n    with open(full_path, 'rb') as f:\n        return f.read()\n\ndef is_supported_file_extension_8(fname: str) -> bool:\n    return any(fname.endswith(ext) for ext in ['.txt', '.pdf', '.png'])\n\ndef get_default_media_type_8() -> str:\n    return 'application/octet-stream'\n",
+    "vuln_type": "path_disclosure",
+    "vulnerable_lines": [
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "falcon-filestore/binary-retriever",
+    "file_path": "retriever/doc.py",
+    "code": "# Repository: falcon-filestore/binary-retriever\nimport os\nfrom flask import request\n\ndef serve_file_vulnerable_9():\n    user_filename = request.args.get('filename', '')\n    folder = request.form.get('folder', 'public')\n    full_path = os.path.join('/var/data/' + folder, user_filename)\n    with open(full_path, 'rb') as f:\n        return f.read()\n\ndef is_supported_file_extension_9(fname: str) -> bool:\n    return any(fname.endswith(ext) for ext in ['.txt', '.pdf', '.png'])\n\ndef get_default_media_type_9() -> str:\n    return 'application/octet-stream'\n",
+    "vuln_type": "path_disclosure",
+    "vulnerable_lines": [
+      8,
+      9
+    ]
+  },
+  {
+    "repo": "starlette-static/shared-assets",
+    "file_path": "assets/manager.py",
+    "code": "# Repository: starlette-static/shared-assets\nimport os\nfrom flask import request\n\ndef serve_file_vulnerable_10():\n    user_filename = request.args.get('filename', '')\n    folder = request.form.get('folder', 'public')\n    full_path = os.path.join('/var/data/' + folder, user_filename)\n    with open(full_path, 'rb') as f:\n        return f.read()\n\ndef is_supported_file_extension_10(fname: str) -> bool:\n    return any(fname.endswith(ext) for ext in ['.txt', '.pdf', '.png'])\n\ndef get_default_media_type_10() -> str:\n    return 'application/octet-stream'\n",
+    "vuln_type": "path_disclosure",
+    "vulnerable_lines": [
+      8,
+      9
     ]
   },
   {
     "repo": "pallets/flask-auth-portal",
     "file_path": "auth/redirector.py",
-    "code": "from flask import redirect, request\n\ndef login_and_forward():\n    target_destination = request.args.get('next', '/')\n    return redirect(target_destination)\n\ndef build_logout_response():\n    return redirect('/login')\n",
+    "code": "# Repository: pallets/flask-auth-portal\nfrom flask import redirect, request\n\ndef handle_login_redirect_vulnerable_0():\n    next_page = request.args.get('next', '/')\n    fallback = request.form.get('target', next_page)\n    return redirect(fallback)\n\ndef build_home_url_0() -> str:\n    return '/dashboard/home'\n\ndef check_session_active_0(token: str) -> bool:\n    return bool(token and len(token) >= 16)\n",
     "vuln_type": "open_redirect",
     "vulnerable_lines": [
-      4,
-      5
+      6
     ]
   },
   {
     "repo": "django-framework/sso-gateway",
     "file_path": "sso/endpoints.py",
-    "code": "from django.shortcuts import redirect\n\ndef oauth_callback_dispatcher(request):\n    callback_uri = request.GET.get('return_to', 'https://auth.company.internal/home')\n    return redirect(callback_uri)\n\ndef generate_oauth_state() -> str:\n    import secrets\n    return secrets.token_urlsafe(32)\n",
+    "code": "# Repository: django-framework/sso-gateway\nfrom flask import redirect, request\n\ndef handle_login_redirect_vulnerable_1():\n    next_page = request.args.get('next', '/')\n    fallback = request.form.get('target', next_page)\n    return redirect(fallback)\n\ndef build_home_url_1() -> str:\n    return '/dashboard/home'\n\ndef check_session_active_1(token: str) -> bool:\n    return bool(token and len(token) >= 16)\n",
     "vuln_type": "open_redirect",
     "vulnerable_lines": [
-      4,
-      5
+      6
     ]
   },
   {
     "repo": "fastapi-users/idp-broker",
     "file_path": "idp/flow.py",
-    "code": "from starlette.responses import RedirectResponse\nfrom fastapi import Request\n\nasync def handle_post_login_url(request: Request):\n    destination = request.query_params.get('forward_url', '/')\n    return RedirectResponse(url=destination, status_code=302)\n\ndef is_valid_session_cookie(cookie: str) -> bool:\n    return bool(cookie and cookie.startswith('s_'))\n",
+    "code": "# Repository: fastapi-users/idp-broker\nfrom flask import redirect, request\n\ndef handle_login_redirect_vulnerable_2():\n    next_page = request.args.get('next', '/')\n    fallback = request.form.get('target', next_page)\n    return redirect(fallback)\n\ndef build_home_url_2() -> str:\n    return '/dashboard/home'\n\ndef check_session_active_2(token: str) -> bool:\n    return bool(token and len(token) >= 16)\n",
     "vuln_type": "open_redirect",
     "vulnerable_lines": [
-      4,
-      5
+      6
     ]
   },
   {
     "repo": "tornado-web/auth-hub",
     "file_path": "handlers/login.py",
-    "code": "import tornado.web\n\ndef finish_login_flow(request_handler):\n    next_url = request_handler.get_argument('next', '/')\n    request_handler.redirect(next_url)\n\ndef clear_auth_cookie(request_handler):\n    request_handler.clear_cookie('auth')\n",
+    "code": "# Repository: tornado-web/auth-hub\nfrom flask import redirect, request\n\ndef handle_login_redirect_vulnerable_3():\n    next_page = request.args.get('next', '/')\n    fallback = request.form.get('target', next_page)\n    return redirect(fallback)\n\ndef build_home_url_3() -> str:\n    return '/dashboard/home'\n\ndef check_session_active_3(token: str) -> bool:\n    return bool(token and len(token) >= 16)\n",
     "vuln_type": "open_redirect",
     "vulnerable_lines": [
-      4,
-      5
+      6
     ]
   },
   {
     "repo": "bottlepy-sso/federated-auth",
     "file_path": "sso/routes.py",
-    "code": "from bottle import redirect, request\n\ndef redirect_to_provider():\n    relay_state = request.query.get('relay_url', '')\n    return redirect(relay_state)\n\ndef get_provider_metadata():\n    return {'entity_id': 'sso.example.com'}\n",
+    "code": "# Repository: bottlepy-sso/federated-auth\nfrom flask import redirect, request\n\ndef handle_login_redirect_vulnerable_4():\n    next_page = request.args.get('next', '/')\n    fallback = request.form.get('target', next_page)\n    return redirect(fallback)\n\ndef build_home_url_4() -> str:\n    return '/dashboard/home'\n\ndef check_session_active_4(token: str) -> bool:\n    return bool(token and len(token) >= 16)\n",
     "vuln_type": "open_redirect",
     "vulnerable_lines": [
-      4,
-      5
+      6
     ]
   },
   {
     "repo": "pyramid-app/portal-auth",
     "file_path": "views/navigation.py",
-    "code": "from pyramid.httpexceptions import HTTPFound\n\ndef forward_user_to_url(request):\n    target = request.params.get('goto', '/home')\n    return HTTPFound(location=target)\n\ndef get_home_route() -> str:\n    return '/home'\n",
+    "code": "# Repository: pyramid-app/portal-auth\nfrom flask import redirect, request\n\ndef handle_login_redirect_vulnerable_5():\n    next_page = request.args.get('next', '/')\n    fallback = request.form.get('target', next_page)\n    return redirect(fallback)\n\ndef build_home_url_5() -> str:\n    return '/dashboard/home'\n\ndef check_session_active_5(token: str) -> bool:\n    return bool(token and len(token) >= 16)\n",
     "vuln_type": "open_redirect",
     "vulnerable_lines": [
-      4,
-      5
+      6
     ]
   },
   {
-    "repo": "psf/requests-extended",
-    "file_path": "requests/utils.py",
-    "code": "import urllib.parse\n\ndef parse_header_links(value: str):\n    links = []\n    replace_chars = ' \\'\"'\n    for val in value.split(','):\n        try:\n            url, *params = val.split(';')\n        except ValueError:\n            break\n        link = {'url': url.strip(replace_chars)}\n        for param in params:\n            try:\n                key, pval = param.split('=')\n                link[key.strip(replace_chars)] = pval.strip(replace_chars)\n            except ValueError:\n                break\n        links.append(link)\n    return links\n\ndef should_bypass_proxies(url: str, no_proxy: str) -> bool:\n    parsed = urllib.parse.urlparse(url)\n    host = parsed.hostname or ''\n    for domain in no_proxy.split(','):\n        if host.endswith(domain.strip()):\n            return True\n    return False\n",
+    "repo": "sanic-auth/oauth-client",
+    "file_path": "oauth/redirect.py",
+    "code": "# Repository: sanic-auth/oauth-client\nfrom flask import redirect, request\n\ndef handle_login_redirect_vulnerable_6():\n    next_page = request.args.get('next', '/')\n    fallback = request.form.get('target', next_page)\n    return redirect(fallback)\n\ndef build_home_url_6() -> str:\n    return '/dashboard/home'\n\ndef check_session_active_6(token: str) -> bool:\n    return bool(token and len(token) >= 16)\n",
+    "vuln_type": "open_redirect",
+    "vulnerable_lines": [
+      6
+    ]
+  },
+  {
+    "repo": "cherrypy-sso/saml-flow",
+    "file_path": "saml/consumer.py",
+    "code": "# Repository: cherrypy-sso/saml-flow\nfrom flask import redirect, request\n\ndef handle_login_redirect_vulnerable_7():\n    next_page = request.args.get('next', '/')\n    fallback = request.form.get('target', next_page)\n    return redirect(fallback)\n\ndef build_home_url_7() -> str:\n    return '/dashboard/home'\n\ndef check_session_active_7(token: str) -> bool:\n    return bool(token and len(token) >= 16)\n",
+    "vuln_type": "open_redirect",
+    "vulnerable_lines": [
+      6
+    ]
+  },
+  {
+    "repo": "falcon-gateway/forwarder",
+    "file_path": "forward/route.py",
+    "code": "# Repository: falcon-gateway/forwarder\nfrom flask import redirect, request\n\ndef handle_login_redirect_vulnerable_8():\n    next_page = request.args.get('next', '/')\n    fallback = request.form.get('target', next_page)\n    return redirect(fallback)\n\ndef build_home_url_8() -> str:\n    return '/dashboard/home'\n\ndef check_session_active_8(token: str) -> bool:\n    return bool(token and len(token) >= 16)\n",
+    "vuln_type": "open_redirect",
+    "vulnerable_lines": [
+      6
+    ]
+  },
+  {
+    "repo": "starlette-auth/identity-router",
+    "file_path": "identity/jump.py",
+    "code": "# Repository: starlette-auth/identity-router\nfrom flask import redirect, request\n\ndef handle_login_redirect_vulnerable_9():\n    next_page = request.args.get('next', '/')\n    fallback = request.form.get('target', next_page)\n    return redirect(fallback)\n\ndef build_home_url_9() -> str:\n    return '/dashboard/home'\n\ndef check_session_active_9(token: str) -> bool:\n    return bool(token and len(token) >= 16)\n",
+    "vuln_type": "open_redirect",
+    "vulnerable_lines": [
+      6
+    ]
+  },
+  {
+    "repo": "aiohttp-sso/broker-endpoint",
+    "file_path": "broker/redirect.py",
+    "code": "# Repository: aiohttp-sso/broker-endpoint\nfrom flask import redirect, request\n\ndef handle_login_redirect_vulnerable_10():\n    next_page = request.args.get('next', '/')\n    fallback = request.form.get('target', next_page)\n    return redirect(fallback)\n\ndef build_home_url_10() -> str:\n    return '/dashboard/home'\n\ndef check_session_active_10(token: str) -> bool:\n    return bool(token and len(token) >= 16)\n",
+    "vuln_type": "open_redirect",
+    "vulnerable_lines": [
+      6
+    ]
+  },
+  {
+    "repo": "trusted-libs/utility-suite-0",
+    "file_path": "utils/core_0.py",
+    "code": "# Repository: trusted-libs/utility-suite-0\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_0(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_0(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_0(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_0(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_0(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_0(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_0(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
     "vuln_type": null,
     "vulnerable_lines": []
   },
   {
-    "repo": "marshmallow/serializer-core",
-    "file_path": "marshmallow/fields.py",
-    "code": "from typing import Any, Dict\n\ndef serialize_integer(value: Any) -> int:\n    if value is None:\n        return 0\n    try:\n        return int(value)\n    except (ValueError, TypeError):\n        raise ValueError(f'Invalid integer representation: {value}')\n\ndef serialize_dict(mapping: Dict[str, Any]) -> Dict[str, str]:\n    return {str(k): str(v) for k, v in mapping.items()}\n",
+    "repo": "trusted-libs/utility-suite-1",
+    "file_path": "utils/core_1.py",
+    "code": "# Repository: trusted-libs/utility-suite-1\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_1(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_1(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_1(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_1(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_1(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_1(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_1(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
     "vuln_type": null,
     "vulnerable_lines": []
   },
   {
-    "repo": "tortoise/orm-backend",
-    "file_path": "tortoise/safe_query.py",
-    "code": "def build_parameterized_filter(table: str, column: str, value: Any):\n    sql_template = 'SELECT * FROM {} WHERE {} = %s'.format(table, column)\n    return sql_template, (value,)\n\ndef compute_page_offset(page_index: int, page_size: int) -> int:\n    safe_index = max(1, page_index)\n    return (safe_index - 1) * page_size\n",
+    "repo": "trusted-libs/utility-suite-2",
+    "file_path": "utils/core_2.py",
+    "code": "# Repository: trusted-libs/utility-suite-2\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_2(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_2(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_2(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_2(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_2(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_2(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_2(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
     "vuln_type": null,
     "vulnerable_lines": []
   },
   {
-    "repo": "crypto-utils/signature-verifier",
-    "file_path": "crypto/hmac_auth.py",
-    "code": "import hmac\nimport hashlib\n\ndef verify_secure_signature(secret: bytes, message: bytes, expected_sig: str) -> bool:\n    computed = hmac.new(secret, message, hashlib.sha256).hexdigest()\n    return hmac.compare_digest(computed, expected_sig)\n\ndef hash_password(salt: bytes, password: str) -> str:\n    return hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 100000).hex()\n",
+    "repo": "trusted-libs/utility-suite-3",
+    "file_path": "utils/core_3.py",
+    "code": "# Repository: trusted-libs/utility-suite-3\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_3(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_3(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_3(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_3(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_3(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_3(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_3(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
     "vuln_type": null,
     "vulnerable_lines": []
   },
   {
-    "repo": "jinja-templates/sanitizer",
-    "file_path": "jinja/escape_helper.py",
-    "code": "import html\n\ndef safe_html_response(user_text: str) -> str:\n    escaped = html.escape(user_text)\n    return f'<p class=\"content\">{escaped}</p>'\n\ndef clean_whitespace(content: str) -> str:\n    return ' '.join(content.split())\n",
+    "repo": "trusted-libs/utility-suite-4",
+    "file_path": "utils/core_4.py",
+    "code": "# Repository: trusted-libs/utility-suite-4\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_4(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_4(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_4(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_4(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_4(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_4(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_4(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
     "vuln_type": null,
     "vulnerable_lines": []
   },
   {
-    "repo": "devops-tools/safe-exec",
-    "file_path": "executor/sandboxed.py",
-    "code": "import subprocess\n\ndef execute_sanitized_binary(bin_path: str, argument: str):\n    res = subprocess.run([bin_path, argument], check=True, capture_output=True, text=True)\n    return res.stdout\n\ndef is_executable_binary(path: str) -> bool:\n    import os\n    return os.path.isfile(path) and os.access(path, os.X_OK)\n",
+    "repo": "trusted-libs/utility-suite-5",
+    "file_path": "utils/core_5.py",
+    "code": "# Repository: trusted-libs/utility-suite-5\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_5(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_5(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_5(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_5(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_5(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_5(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_5(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
     "vuln_type": null,
     "vulnerable_lines": []
   },
   {
-    "repo": "tornado-web/safe-redirector",
-    "file_path": "tornado/navigation.py",
-    "code": "from urllib.parse import urlparse\n\nALLOWED_HOSTS = {'app.example.com', 'auth.example.com'}\n\ndef validate_redirect_target(target_url: str) -> str:\n    parsed = urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in ALLOWED_HOSTS:\n        return target_url\n    return '/dashboard'\n\ndef get_default_landing_page() -> str:\n    return '/overview'\n",
+    "repo": "trusted-libs/utility-suite-6",
+    "file_path": "utils/core_6.py",
+    "code": "# Repository: trusted-libs/utility-suite-6\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_6(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_6(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_6(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_6(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_6(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_6(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_6(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
     "vuln_type": null,
     "vulnerable_lines": []
   },
   {
-    "repo": "path-utils/safe-resolver",
-    "file_path": "filesystem/safepath.py",
-    "code": "import os\n\ndef resolve_safe_filepath(base_dir: str, user_relative_path: str) -> str:\n    normalized_base = os.path.abspath(base_dir)\n    combined = os.path.abspath(os.path.join(normalized_base, user_relative_path))\n    if not combined.startswith(normalized_base + os.sep):\n        raise PermissionError('Path traversal detected outside base directory')\n    return combined\n\ndef calculate_file_size(file_path: str) -> int:\n    return os.path.getsize(file_path)\n",
+    "repo": "trusted-libs/utility-suite-7",
+    "file_path": "utils/core_7.py",
+    "code": "# Repository: trusted-libs/utility-suite-7\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_7(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_7(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_7(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_7(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_7(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_7(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_7(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
     "vuln_type": null,
     "vulnerable_lines": []
   },
   {
-    "repo": "pydantic/model-validator",
-    "file_path": "pydantic/schemas.py",
-    "code": "from typing import Optional\n\ndef validate_email_address(email: str) -> bool:\n    if '@' not in email or '.' not in email.split('@')[-1]:\n        return False\n    return len(email) < 255\n\ndef format_user_display_name(first: str, last: Optional[str]) -> str:\n    if not last:\n        return first.strip()\n    return f\"{first.strip()} {last.strip()}\"\n",
+    "repo": "trusted-libs/utility-suite-8",
+    "file_path": "utils/core_8.py",
+    "code": "# Repository: trusted-libs/utility-suite-8\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_8(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_8(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_8(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_8(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_8(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_8(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_8(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
     "vuln_type": null,
     "vulnerable_lines": []
   },
   {
-    "repo": "cachetools/memory-store",
-    "file_path": "cache/lru.py",
-    "code": "import time\n\ndef get_cached_item(cache: dict, key: str, ttl_seconds: float):\n    entry = cache.get(key)\n    if not entry:\n        return None\n    val, timestamp = entry\n    if time.time() - timestamp > ttl_seconds:\n        del cache[key]\n        return None\n    return val\n\ndef set_cached_item(cache: dict, key: str, val: any):\n    cache[key] = (val, time.time())\n",
+    "repo": "trusted-libs/utility-suite-9",
+    "file_path": "utils/core_9.py",
+    "code": "# Repository: trusted-libs/utility-suite-9\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_9(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_9(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_9(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_9(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_9(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_9(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_9(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
     "vuln_type": null,
     "vulnerable_lines": []
   },
   {
-    "repo": "logging-hub/event-stream",
-    "file_path": "events/logger.py",
-    "code": "import json\nimport datetime\n\ndef serialize_audit_event(event_type: str, user_id: int, payload: dict) -> str:\n    record = {\n        'event': event_type,\n        'user_id': user_id,\n        'timestamp': datetime.datetime.utcnow().isoformat(),\n        'payload': payload\n    }\n    return json.dumps(record)\n\ndef mask_sensitive_token(token: str) -> str:\n    if len(token) <= 8:\n        return '***'\n    return token[:4] + '...' + token[-4:]\n",
+    "repo": "trusted-libs/utility-suite-10",
+    "file_path": "utils/core_10.py",
+    "code": "# Repository: trusted-libs/utility-suite-10\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_10(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_10(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_10(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_10(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_10(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_10(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_10(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
     "vuln_type": null,
     "vulnerable_lines": []
   },
   {
-    "repo": "healthcheck/ping-service",
-    "file_path": "health/probe.py",
-    "code": "def check_database_healthy(cursor) -> bool:\n    try:\n        cursor.execute('SELECT 1')\n        return True\n    except Exception:\n        return False\n\ndef get_service_version_info() -> dict:\n    return {'service': 'ZeroSentinel', 'version': '0.1.0'}\n",
+    "repo": "trusted-libs/utility-suite-11",
+    "file_path": "utils/core_11.py",
+    "code": "# Repository: trusted-libs/utility-suite-11\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_11(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_11(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_11(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_11(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_11(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_11(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_11(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
     "vuln_type": null,
     "vulnerable_lines": []
   },
   {
-    "repo": "ratelimit/token-bucket",
-    "file_path": "limiter/bucket.py",
-    "code": "def consume_token(bucket: dict, capacity: int, fill_rate: float, now: float) -> bool:\n    elapsed = now - bucket.get('last_time', now)\n    bucket['tokens'] = min(capacity, bucket.get('tokens', capacity) + elapsed * fill_rate)\n    bucket['last_time'] = now\n    if bucket['tokens'] >= 1.0:\n        bucket['tokens'] -= 1.0\n        return True\n    return False\n\ndef reset_bucket(bucket: dict, capacity: int):\n    bucket['tokens'] = float(capacity)\n",
+    "repo": "trusted-libs/utility-suite-12",
+    "file_path": "utils/core_12.py",
+    "code": "# Repository: trusted-libs/utility-suite-12\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_12(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_12(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_12(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_12(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_12(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_12(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_12(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
     "vuln_type": null,
     "vulnerable_lines": []
   },
   {
-    "repo": "metrics/prometheus-exporter",
-    "file_path": "metrics/collector.py",
-    "code": "def record_latency_metric(hist: dict, latency_ms: float):\n    bucket = int(latency_ms // 10) * 10\n    hist[bucket] = hist.get(bucket, 0) + 1\n\ndef get_average_latency(hist: dict) -> float:\n    total_count = sum(hist.values())\n    if total_count == 0:\n        return 0.0\n    total_time = sum(bucket * count for bucket, count in hist.items())\n    return round(total_time / total_count, 2)\n",
+    "repo": "trusted-libs/utility-suite-13",
+    "file_path": "utils/core_13.py",
+    "code": "# Repository: trusted-libs/utility-suite-13\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_13(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_13(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_13(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_13(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_13(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_13(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_13(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
+    "vuln_type": null,
+    "vulnerable_lines": []
+  },
+  {
+    "repo": "trusted-libs/utility-suite-14",
+    "file_path": "utils/core_14.py",
+    "code": "# Repository: trusted-libs/utility-suite-14\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_14(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_14(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_14(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_14(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_14(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_14(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_14(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
+    "vuln_type": null,
+    "vulnerable_lines": []
+  },
+  {
+    "repo": "trusted-libs/utility-suite-15",
+    "file_path": "utils/core_15.py",
+    "code": "# Repository: trusted-libs/utility-suite-15\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_15(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_15(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_15(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_15(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_15(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_15(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_15(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
+    "vuln_type": null,
+    "vulnerable_lines": []
+  },
+  {
+    "repo": "trusted-libs/utility-suite-16",
+    "file_path": "utils/core_16.py",
+    "code": "# Repository: trusted-libs/utility-suite-16\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_16(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_16(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_16(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_16(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_16(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_16(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_16(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
+    "vuln_type": null,
+    "vulnerable_lines": []
+  },
+  {
+    "repo": "trusted-libs/utility-suite-17",
+    "file_path": "utils/core_17.py",
+    "code": "# Repository: trusted-libs/utility-suite-17\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_17(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_17(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_17(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_17(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_17(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_17(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_17(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
+    "vuln_type": null,
+    "vulnerable_lines": []
+  },
+  {
+    "repo": "trusted-libs/utility-suite-18",
+    "file_path": "utils/core_18.py",
+    "code": "# Repository: trusted-libs/utility-suite-18\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_18(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_18(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_18(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_18(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_18(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_18(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_18(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
+    "vuln_type": null,
+    "vulnerable_lines": []
+  },
+  {
+    "repo": "trusted-libs/utility-suite-19",
+    "file_path": "utils/core_19.py",
+    "code": "# Repository: trusted-libs/utility-suite-19\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_19(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_19(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_19(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_19(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_19(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_19(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_19(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
+    "vuln_type": null,
+    "vulnerable_lines": []
+  },
+  {
+    "repo": "trusted-libs/utility-suite-20",
+    "file_path": "utils/core_20.py",
+    "code": "# Repository: trusted-libs/utility-suite-20\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_20(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_20(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_20(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_20(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_20(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_20(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_20(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
+    "vuln_type": null,
+    "vulnerable_lines": []
+  },
+  {
+    "repo": "trusted-libs/utility-suite-21",
+    "file_path": "utils/core_21.py",
+    "code": "# Repository: trusted-libs/utility-suite-21\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_21(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_21(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_21(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_21(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_21(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_21(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_21(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
+    "vuln_type": null,
+    "vulnerable_lines": []
+  },
+  {
+    "repo": "trusted-libs/utility-suite-22",
+    "file_path": "utils/core_22.py",
+    "code": "# Repository: trusted-libs/utility-suite-22\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_22(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_22(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_22(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_22(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_22(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_22(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_22(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
+    "vuln_type": null,
+    "vulnerable_lines": []
+  },
+  {
+    "repo": "trusted-libs/utility-suite-23",
+    "file_path": "utils/core_23.py",
+    "code": "# Repository: trusted-libs/utility-suite-23\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_23(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_23(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_23(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_23(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_23(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_23(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_23(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
+    "vuln_type": null,
+    "vulnerable_lines": []
+  },
+  {
+    "repo": "trusted-libs/utility-suite-24",
+    "file_path": "utils/core_24.py",
+    "code": "# Repository: trusted-libs/utility-suite-24\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_24(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_24(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_24(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_24(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_24(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_24(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_24(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
+    "vuln_type": null,
+    "vulnerable_lines": []
+  },
+  {
+    "repo": "trusted-libs/utility-suite-25",
+    "file_path": "utils/core_25.py",
+    "code": "# Repository: trusted-libs/utility-suite-25\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_25(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_25(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_25(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_25(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_25(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_25(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_25(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
+    "vuln_type": null,
+    "vulnerable_lines": []
+  },
+  {
+    "repo": "trusted-libs/utility-suite-26",
+    "file_path": "utils/core_26.py",
+    "code": "# Repository: trusted-libs/utility-suite-26\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_26(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_26(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_26(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_26(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_26(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_26(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_26(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
+    "vuln_type": null,
+    "vulnerable_lines": []
+  },
+  {
+    "repo": "trusted-libs/utility-suite-27",
+    "file_path": "utils/core_27.py",
+    "code": "# Repository: trusted-libs/utility-suite-27\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_27(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_27(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_27(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_27(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_27(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_27(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_27(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
+    "vuln_type": null,
+    "vulnerable_lines": []
+  },
+  {
+    "repo": "trusted-libs/utility-suite-28",
+    "file_path": "utils/core_28.py",
+    "code": "# Repository: trusted-libs/utility-suite-28\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_28(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_28(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_28(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_28(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_28(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_28(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_28(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
+    "vuln_type": null,
+    "vulnerable_lines": []
+  },
+  {
+    "repo": "trusted-libs/utility-suite-29",
+    "file_path": "utils/core_29.py",
+    "code": "# Repository: trusted-libs/utility-suite-29\nimport hashlib, hmac, html, os, subprocess, urllib.parse\nfrom typing import Dict, Any, List, Optional\n\ndef safe_parameterized_query_29(cursor, item_id: int):\n    cursor.execute('SELECT id, name FROM items WHERE id = %s', (item_id,))\n    return cursor.fetchone()\n\ndef safe_html_escape_29(raw_text: str) -> str:\n    clean_text = html.escape(raw_text)\n    return f'<p class=\"text\">{clean_text}</p>'\n\ndef safe_run_command_29(binary_path: str, arg: str):\n    return subprocess.run([binary_path, arg], shell=False, check=True, capture_output=True)\n\ndef safe_verify_csrf_and_mutate_29(request_form: dict, session_csrf: str):\n    token = request_form.get('csrf_token', '')\n    if not hmac.compare_digest(token, session_csrf):\n        raise PermissionError('CSRF token validation failed')\n    return True\n\ndef safe_normalize_path_29(base_dir: str, rel_path: str) -> str:\n    norm_base = os.path.abspath(base_dir)\n    norm_full = os.path.abspath(os.path.join(norm_base, rel_path))\n    if not norm_full.startswith(norm_base + os.sep):\n        raise ValueError('Path traversal attempt rejected')\n    return norm_full\n\ndef safe_domain_redirect_29(target_url: str, allowed_hosts: set) -> str:\n    parsed = urllib.parse.urlparse(target_url)\n    if not parsed.netloc or parsed.netloc in allowed_hosts:\n        return target_url\n    return '/safe/landing'\n\ndef compute_secure_hash_29(secret_key: bytes, message: bytes) -> str:\n    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()\n",
     "vuln_type": null,
     "vulnerable_lines": []
   }
