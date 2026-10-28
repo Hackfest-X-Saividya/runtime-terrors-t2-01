@@ -1,8 +1,10 @@
+import asyncio
 import importlib
 import logging
 import os
 import re
 import sys
+import threading
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -92,6 +94,23 @@ class MLDetectorStub:
 
         return results
 
+    def feedback(
+        self,
+        code: str,
+        status: str,
+        func_name: str = "unknown",
+    ) -> Dict[str, Any]:
+        """
+        Deterministic stub implementation of feedback learning.
+        Returns explicit non-learning response; never pretends mock heuristics adapt.
+        """
+        return {
+            "status": status,
+            "reward": 0.0,
+            "applied": False,
+            "message": "Feedback ignored: running on heuristic stub without trainable artifacts.",
+        }
+
 
 class MLDetectorService:
     """
@@ -104,11 +123,13 @@ class MLDetectorService:
         self.artifacts_path = artifacts_path or settings.ML_ARTIFACTS_PATH
         self.device = "cpu"
         self._detector: Any = None
+        self._lock = threading.Lock()
         self.is_stub: bool = True
         self.artifacts_present: bool = False
         self.status: str = "stub_fallback"
         self.model_name: str = "ZeroSentinel Heuristic Stub"
         self.version: str = "stub-v0.1.0"
+        self.feedback_supported: bool = False
 
         self._initialize()
 
@@ -146,7 +167,8 @@ class MLDetectorService:
                 self.status = "ready"
                 self.model_name = "ZeroSentinel CodeBERT Detector"
                 self.version = "0.1.0"
-                logger.info("ML detector loaded successfully.")
+                self.feedback_supported = hasattr(self._detector, "feedback") and callable(getattr(self._detector, "feedback"))
+                logger.info("ML detector loaded successfully (feedback_supported=%s).", self.feedback_supported)
                 return
             except Exception as exc:
                 logger.warning(
@@ -159,6 +181,7 @@ class MLDetectorService:
                 self.status = "load_failed"
                 self.model_name = "ZeroSentinel Heuristic Stub"
                 self.version = "stub-v0.1.0"
+                self.feedback_supported = False
                 return
 
         # Artifacts missing or detector not importable
@@ -171,6 +194,7 @@ class MLDetectorService:
         self.is_stub = True
         self.model_name = "ZeroSentinel Heuristic Stub"
         self.version = "stub-v0.1.0"
+        self.feedback_supported = False
         logger.warning(
             "[ML_STUB] ML detector artifacts or package unavailable (status=%s). Fallback stub active.",
             self.status,
@@ -181,6 +205,96 @@ class MLDetectorService:
             return []
         return self._detector.predict(functions)
 
+    def feedback(
+        self,
+        code: str,
+        status: str,
+        func_name: str = "unknown",
+    ) -> Dict[str, Any]:
+        """
+        Safely dispatches feedback learning to the active detector under lock protection.
+        - Enforces safe semantic mapping per Phase 7B.
+        - Protects concurrent disk and state writes.
+        - Never throws unhandled exceptions that could crash caller workflows.
+        - Rejects code execution or evaluation.
+        """
+        if not code or not code.strip():
+            return {
+                "status": status,
+                "reward": 0.0,
+                "applied": False,
+                "message": "Feedback ignored: empty code snippet provided.",
+            }
+
+        norm_status = status.strip().lower()
+
+        # Semantic Mapping Policy per Phase 7B:
+        # - 'false_positive': negative reward to suppress false alarm
+        # - 'fixed': positive reward confirming true vulnerability
+        # - 'accepted': indicates business risk acceptance, NOT a false positive.
+        #   Member 3's engine assigns it negative reward (-0.3), which improperly penalizes legitimate findings.
+        #   Therefore, we explicitly reject model updates for 'accepted'.
+        if norm_status == "accepted":
+            logger.info("Feedback for status 'accepted' received: skipped model parameter update to prevent false suppression.")
+            return {
+                "status": norm_status,
+                "reward": 0.0,
+                "applied": False,
+                "message": "Feedback skipped: 'accepted' indicates business risk acceptance, not a false positive.",
+            }
+
+        if norm_status not in ("false_positive", "fixed"):
+            logger.info("Feedback status '%s' not recognized for online model learning; skipped.", norm_status)
+            return {
+                "status": norm_status,
+                "reward": 0.0,
+                "applied": False,
+                "message": f"Feedback skipped: status '{norm_status}' is not mapped to an active training signal.",
+            }
+
+        # Check if active detector supports feedback
+        if not hasattr(self._detector, "feedback") or not callable(getattr(self._detector, "feedback")):
+            return {
+                "status": norm_status,
+                "reward": 0.0,
+                "applied": False,
+                "message": "Feedback ignored: active detector does not support online feedback.",
+            }
+
+        # Thread-safe execution under lock to prevent concurrent state corruption
+        with self._lock:
+            try:
+                # Truncate overly large snippets to prevent memory/vectorizer exhaustion (64 KB ceiling)
+                safe_code = code[:65536]
+                result = self._detector.feedback(
+                    code=safe_code,
+                    status=norm_status,
+                    func_name=func_name,
+                )
+                if isinstance(result, dict):
+                    result["applied"] = True
+                return result
+            except Exception as exc:
+                logger.warning("[ML_FEEDBACK] Detector feedback failed: %s", exc)
+                return {
+                    "status": norm_status,
+                    "reward": 0.0,
+                    "applied": False,
+                    "message": f"Detector feedback processing failed: {exc}",
+                }
+
+    async def record_feedback_async(
+        self,
+        code: str,
+        status: str,
+        func_name: str = "unknown",
+    ) -> Dict[str, Any]:
+        """
+        Non-blocking async wrapper that delegates synchronous feedback processing
+        to an asynchronous worker thread pool to avoid blocking the event loop.
+        """
+        return await asyncio.to_thread(self.feedback, code, status, func_name)
+
     def get_runtime_info(self) -> Dict[str, Any]:
         return {
             "model_name": self.model_name,
@@ -190,7 +304,9 @@ class MLDetectorService:
             "artifacts_path": self.artifacts_path,
             "device": self.device,
             "status": self.status,
+            "feedback_supported": self.feedback_supported,
         }
+
 
 
 # Singleton service instance

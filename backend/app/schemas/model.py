@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Optional
 from pydantic import BaseModel
 
 
@@ -10,5 +10,6 @@ class ModelInfoResponse(BaseModel):
     artifacts_path: str
     device: str = "cpu"
     status: Literal["ready", "stub_fallback", "load_failed"]
+    feedback_supported: Optional[bool] = False
 
     model_config = {"protected_namespaces": ()}

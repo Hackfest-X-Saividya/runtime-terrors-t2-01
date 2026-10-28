@@ -44,3 +44,7 @@ backend/reports/
 reports/
 *.html
 *.pdf
+
+# RL Feedback & Model State (User-generated online learning state)
+rl_state.json
+**/rl_state.json

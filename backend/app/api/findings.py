@@ -1,5 +1,6 @@
+import logging
 import uuid
-from fastapi import APIRouter, Depends, Request, status
+from fastapi import APIRouter, BackgroundTasks, Depends, Request, status
 from fastapi.responses import JSONResponse
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -14,6 +15,18 @@ from app.schemas.finding import (
     FindingUpdateRequest,
     MitigationDetail,
 )
+from app.services.ml_detector import ml_service
+
+logger = logging.getLogger("zerosentinel.findings")
+
+
+def _safe_dispatch_feedback(code: str, status: str, func_name: str) -> None:
+    """Safe background worker protecting against any unhandled detector/IO exceptions."""
+    try:
+        ml_service.feedback(code=code, status=status, func_name=func_name)
+    except Exception as exc:
+        logger.warning("[FEEDBACK_BACKGROUND] Feedback dispatch failed gracefully: %s", exc)
+
 
 router = APIRouter(prefix="/api", tags=["findings"])
 
@@ -98,10 +111,12 @@ async def get_finding(
 async def update_finding(
     id: uuid.UUID,
     payload: FindingUpdateRequest,
+    background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
 ):
     """
     Updates finding triage status (open, fixed, false_positive, accepted).
+    Optionally enqueues safe online feedback learning in background tasks.
     """
     finding_stmt = select(Finding).where(Finding.id == id)
     result = await db.execute(finding_stmt)
@@ -118,8 +133,19 @@ async def update_finding(
             ).model_dump(),
         )
 
+    previous_status = finding.status
     finding.status = payload.status
     await db.commit()
     await db.refresh(finding)
+
+    # Safe asynchronous feedback learning dispatch
+    # Only dispatched if status actually transitioned, avoiding duplicate feedback runs
+    if finding.status != previous_status and finding.snippet and finding.snippet.strip():
+        background_tasks.add_task(
+            _safe_dispatch_feedback,
+            code=finding.snippet,
+            status=payload.status,
+            func_name=finding.title or "finding",
+        )
 
     return finding
