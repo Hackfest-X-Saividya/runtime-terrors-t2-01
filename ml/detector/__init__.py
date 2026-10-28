@@ -5,11 +5,13 @@ Loads trained vulnerability detection models or falls back to a deterministic
 hash dummy scorer. Implements the standard contract:
 - Detector.load(path: str = "ml/artifacts") -> Detector
 - Detector.predict(functions: List[Dict[str, Any]]) -> List[Dict[str, Any]]
+- Detector.feedback(code: str, status: str, func_name: str) -> Dict[str, Any]
 
-Supports 3-tier progressive enhancement:
+Supports 3-tier progressive enhancement with Online Reinforcement Learning:
   Tier 1: Deep Learning (CodeBERT) if fine-tuned weights exist and torch is available.
   Tier 2: TF-IDF Baseline (Linear classifier with token-level line attribution).
   Tier 3: Deterministic hash dummy scorer (fallback when no artifacts are present).
+  Adaptive Layer: Real-time Contextual Bandit policy feedback from user triage actions.
 """
 
 import hashlib
@@ -22,6 +24,7 @@ import joblib
 import numpy as np
 
 from detector.tokenizer import tokenize_code
+from detector.feedback import FeedbackLearner
 
 logger = logging.getLogger(__name__)
 
@@ -55,6 +58,9 @@ class Detector:
         self.binary_model = None
         self.cwe_model = None
         self.positive_feature_weights: Dict[str, float] = {}
+
+        # Reinforcement Learning feedback component
+        self.feedback_learner: Optional[FeedbackLearner] = None
 
         # CodeBERT components
         self.codebert_pipeline = None
@@ -97,11 +103,17 @@ class Detector:
                 self.binary_model = joblib.load(bin_path)
                 self.cwe_model = joblib.load(cwe_path)
 
+                vocab_size = len(self.vectorizer.vocabulary_)
                 feature_names = self.vectorizer.get_feature_names_out()
                 coefs = self.binary_model.coef_[0]
                 self.positive_feature_weights = {
                     feat: float(w) for feat, w in zip(feature_names, coefs) if w > 0
                 }
+
+                # Initialize / load RL feedback state
+                rl_state_file = self.artifacts_path / "rl_state.json"
+                self.feedback_learner = FeedbackLearner.load(rl_state_file, vocab_size=vocab_size)
+
                 self.active_engine = "baseline"
                 self.is_loaded = True
                 logger.info(f"Detector successfully loaded TF-IDF baseline artifacts from {self.artifacts_path}")
@@ -161,6 +173,41 @@ class Detector:
         
         return [start_line]
 
+    def feedback(
+        self,
+        code: str,
+        status: str,
+        cwe_id: Optional[str] = None,
+        func_name: str = "unknown"
+    ) -> Dict[str, Any]:
+        """
+        Reinforcement Learning Feedback Hook:
+        Accepts triage decisions ('fixed', 'confirmed', 'false_positive', 'accepted')
+        and updates the policy gradient weights in real-time.
+        """
+        if not self.is_loaded or self.vectorizer is None or self.feedback_learner is None:
+            return {
+                "status": status,
+                "reward": 0.0,
+                "message": "Feedback ignored: running on mock engine without trainable artifacts."
+            }
+
+        X = self.vectorizer.transform([code])
+        base_score = float(self.binary_model.predict_proba(X)[0, 1])
+
+        feedback_record = self.feedback_learner.record_feedback(
+            X_sparse=X[0],
+            status=status,
+            base_score=base_score,
+            func_name=func_name
+        )
+
+        # Persist updated RL state
+        rl_state_file = self.artifacts_path / "rl_state.json"
+        self.feedback_learner.save(rl_state_file)
+
+        return feedback_record
+
     def predict(self, functions: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         results = []
         cwe_list = self.all_cwes
@@ -206,7 +253,6 @@ class Detector:
                 }
                 cwe_guess = max(cwe_probs, key=cwe_probs.get)
                 
-                # Occlusion for top lines if above default threshold
                 thresh = float(self.thresholds.get("default_threshold", 0.50))
                 if score >= thresh:
                     top_lines = self.codebert_pipeline.compute_line_occlusion(code, start, end)
@@ -221,7 +267,7 @@ class Detector:
                 })
             return results
 
-        # Path 3: TF-IDF Baseline Engine
+        # Path 3: TF-IDF Baseline Engine + RL Feedback Policy Adaptation
         codes = [fn.get("code", "") for fn in functions]
         X = self.vectorizer.transform(codes)
 
@@ -234,7 +280,13 @@ class Detector:
             start = fn.get("start_line", 1)
             end = fn.get("end_line", start)
 
-            score = round(float(binary_probs[idx]), 3)
+            base_score = float(binary_probs[idx])
+            
+            # Apply online RL contextual bandit adjustment if available
+            if self.feedback_learner:
+                score = self.feedback_learner.adjust_score(base_score, X[idx])
+            else:
+                score = round(base_score, 3)
 
             cwe_raw_dict = {
                 cls_name: float(cwe_probs_matrix[idx, i])
