@@ -50,12 +50,12 @@ def create_application() -> FastAPI:
         lifespan=lifespan,
     )
 
-    # CORS configuration for Member 2 frontend
+    # CORS configuration narrowly scoped for Member 2 frontend origins
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
+        allow_origins=settings.CORS_ALLOWED_ORIGINS,
         allow_credentials=True,
-        allow_methods=["*"],
+        allow_methods=["GET", "POST", "PATCH", "OPTIONS"],
         allow_headers=["*"],
     )
 

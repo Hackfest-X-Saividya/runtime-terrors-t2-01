@@ -29,6 +29,14 @@ class Settings(BaseSettings):
     GIT_CLONE_TIMEOUT_SECONDS: int = 30
     MAX_REPO_SIZE_BYTES: int = 50 * 1024 * 1024         # 50 MB
 
+    # CORS Allowed Origins
+    CORS_ALLOWED_ORIGINS: list[str] = [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ]
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
