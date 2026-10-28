@@ -31,6 +31,11 @@ class FindingResponse(BaseModel):
     mitigation: str
     status: Literal["open", "fixed", "false_positive", "accepted"]
 
+    # Frontend contract compatibility
+    ml_score_before: Optional[float] = None
+    suppressed: bool = False
+    feedback: Optional[dict] = None
+
     model_config = {"from_attributes": True}
 
 

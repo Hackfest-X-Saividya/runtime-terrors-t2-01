@@ -30,6 +30,16 @@ async def lifespan(app: FastAPI):
     db_ok = await check_database_health()
     if db_ok:
         logger.info("Database connectivity established successfully.")
+        try:
+            from app.models.base import Base
+            import app.models.finding
+            import app.models.mitigation
+            import app.models.scan
+            async with engine.begin() as conn:
+                await conn.run_sync(Base.metadata.create_all)
+            logger.info("Database schema initialized.")
+        except Exception as exc:
+            logger.warning("Database schema initialization skipped: %s", exc)
     else:
         logger.warning(
             "Database connectivity check failed on startup. Server running in degraded mode."

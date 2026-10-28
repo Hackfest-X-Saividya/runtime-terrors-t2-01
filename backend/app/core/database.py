@@ -13,12 +13,17 @@ from app.core.config import settings
 logger = logging.getLogger("zerosentinel.database")
 
 # Build async engine targeting PostgreSQL 16 (or custom test engine when injected)
+engine_kwargs = {"echo": settings.APP_DEBUG}
+if not settings.DATABASE_URL.startswith("sqlite"):
+    engine_kwargs.update({
+        "pool_size": settings.DB_POOL_SIZE,
+        "max_overflow": settings.DB_MAX_OVERFLOW,
+        "pool_timeout": settings.DB_POOL_TIMEOUT,
+    })
+
 engine: AsyncEngine = create_async_engine(
     settings.DATABASE_URL,
-    echo=settings.APP_DEBUG,
-    pool_size=settings.DB_POOL_SIZE,
-    max_overflow=settings.DB_MAX_OVERFLOW,
-    pool_timeout=settings.DB_POOL_TIMEOUT,
+    **engine_kwargs,
 )
 
 # Async session factory

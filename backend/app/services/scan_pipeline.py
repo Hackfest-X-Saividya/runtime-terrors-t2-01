@@ -277,6 +277,9 @@ async def execute_scan_pipeline(
                         "risk_score": finding.risk_score,
                         "mitigation": finding.mitigation,
                         "status": finding.status,
+                        "ml_score_before": None,
+                        "suppressed": False,
+                        "feedback": None,
                     }
                     await broadcaster.publish_finding(scan.scan_id, finding_event_data)
 
