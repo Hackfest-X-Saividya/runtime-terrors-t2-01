@@ -99,6 +99,7 @@ class MLDetectorStub:
         code: str,
         status: str,
         func_name: str = "unknown",
+        cwe_id: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Deterministic stub implementation of feedback learning.
@@ -135,6 +136,11 @@ class MLDetectorService:
 
     def _initialize(self) -> None:
         path = Path(self.artifacts_path)
+        if not path.is_absolute() and not path.exists():
+            repo_root = Path(__file__).resolve().parents[3]
+            if (repo_root / self.artifacts_path).exists():
+                path = repo_root / self.artifacts_path
+
         # Check if artifacts exist
         if path.exists() and path.is_dir() and any(path.iterdir()):
             self.artifacts_present = True
@@ -149,7 +155,8 @@ class MLDetectorService:
         except ImportError:
             # Check if ml or ml/detector is locally available in workspace
             repo_root = Path.cwd()
-            candidate_paths = [repo_root / "ml", repo_root]
+            file_root = Path(__file__).resolve().parents[3]
+            candidate_paths = [repo_root / "ml", repo_root, file_root / "ml", file_root]
             for c_path in candidate_paths:
                 if c_path.exists() and str(c_path) not in sys.path:
                     sys.path.insert(0, str(c_path))
@@ -161,8 +168,19 @@ class MLDetectorService:
 
         if detector_cls is not None and self.artifacts_present:
             try:
-                logger.info("Loading ML detector from %s...", self.artifacts_path)
-                self._detector = detector_cls.load(self.artifacts_path)
+                logger.info("Loading ML detector from %s...", path)
+                loaded_det = detector_cls.load(path)
+                if hasattr(loaded_det, "is_loaded") and not loaded_det.is_loaded:
+                    logger.warning("[ML_STUB] Detector reported is_loaded=False. Falling back to stub.")
+                    self._detector = MLDetectorStub()
+                    self.is_stub = True
+                    self.status = "load_failed"
+                    self.model_name = "ZeroSentinel Heuristic Stub"
+                    self.version = "stub-v0.1.0"
+                    self.feedback_supported = False
+                    return
+
+                self._detector = loaded_det
                 self.is_stub = False
                 self.status = "ready"
                 self.model_name = "ZeroSentinel CodeBERT Detector"
@@ -173,7 +191,7 @@ class MLDetectorService:
             except Exception as exc:
                 logger.warning(
                     "[ML_STUB] Failed to load detector from %s (%s). Falling back to stub.",
-                    self.artifacts_path,
+                    path,
                     exc,
                 )
                 self._detector = MLDetectorStub()
@@ -203,13 +221,35 @@ class MLDetectorService:
     def predict(self, functions: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         if not functions:
             return []
-        return self._detector.predict(functions)
+        raw_results = self._detector.predict(functions)
+        normalized: List[Dict[str, Any]] = []
+        for idx, item in enumerate(raw_results):
+            fn = functions[idx] if idx < len(functions) else {}
+            start = fn.get("start_line", 1)
+            end = fn.get("end_line", start)
+
+            score = float(item.get("ml_score", 0.0))
+            cwe_guess = item.get("cwe_guess")
+            cwe_probs = item.get("cwe_probs") or {}
+            top_lines = item.get("top_lines") or [start]
+
+            score = max(0.0, min(1.0, score))
+            valid_lines = [l for l in top_lines if start <= l <= end] or [start]
+
+            normalized.append({
+                "ml_score": round(score, 3),
+                "cwe_guess": cwe_guess,
+                "cwe_probs": cwe_probs,
+                "top_lines": valid_lines,
+            })
+        return normalized
 
     def feedback(
         self,
         code: str,
         status: str,
         func_name: str = "unknown",
+        cwe_id: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Safely dispatches feedback learning to the active detector under lock protection.
@@ -266,11 +306,17 @@ class MLDetectorService:
             try:
                 # Truncate overly large snippets to prevent memory/vectorizer exhaustion (64 KB ceiling)
                 safe_code = code[:65536]
-                result = self._detector.feedback(
-                    code=safe_code,
-                    status=norm_status,
-                    func_name=func_name,
-                )
+                feedback_kwargs = {
+                    "code": safe_code,
+                    "status": norm_status,
+                    "func_name": func_name,
+                }
+                if cwe_id is not None:
+                    feedback_kwargs["cwe_id"] = cwe_id
+                try:
+                    result = self._detector.feedback(**feedback_kwargs)
+                except TypeError:
+                    result = self._detector.feedback(code=safe_code, status=norm_status, func_name=func_name)
                 if isinstance(result, dict):
                     result["applied"] = True
                 return result
@@ -288,12 +334,13 @@ class MLDetectorService:
         code: str,
         status: str,
         func_name: str = "unknown",
+        cwe_id: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Non-blocking async wrapper that delegates synchronous feedback processing
         to an asynchronous worker thread pool to avoid blocking the event loop.
         """
-        return await asyncio.to_thread(self.feedback, code, status, func_name)
+        return await asyncio.to_thread(self.feedback, code, status, func_name, cwe_id)
 
     def get_runtime_info(self) -> Dict[str, Any]:
         return {

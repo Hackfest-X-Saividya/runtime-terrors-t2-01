@@ -50,7 +50,7 @@ def test_feedback_semantic_mapping_policies():
     assert "empty code snippet" in res_empty["message"]
 
 
-def test_feedback_with_valid_detector(tmp_path):
+def test_feedback_with_valid_detector(tmp_path, monkeypatch):
     """
     Verify that when a real detector is loaded, MLDetectorService correctly
     dispatches 'false_positive' and 'fixed' while marking feedback_supported=True.
@@ -68,6 +68,8 @@ def test_feedback_with_valid_detector(tmp_path):
     })
 
     class MockDetectorWithFeedback:
+        is_loaded = True
+
         @classmethod
         def load(cls, path):
             return cls()
@@ -82,7 +84,7 @@ def test_feedback_with_valid_detector(tmp_path):
     import types
     mock_mod = types.ModuleType("detector")
     mock_mod.Detector = MockDetectorWithFeedback
-    sys.modules["detector"] = mock_mod
+    monkeypatch.setitem(sys.modules, "detector", mock_mod)
 
     service = MLDetectorService(artifacts_path=str(art_dir))
     assert service.is_stub is False
@@ -347,7 +349,12 @@ async def test_model_info_reports_feedback_supported(client_with_db: AsyncClient
     assert res.status_code == 200
     data = res.json()
     assert "feedback_supported" in data
-    assert data["feedback_supported"] is False  # Stub fallback has no feedback learning
+    if data["is_stub"] is False:
+        assert data["feedback_supported"] is True
+        assert data["status"] == "ready"
+    else:
+        assert data["feedback_supported"] is False
+        assert data["status"] in ("stub_fallback", "load_failed")
 
 
 def test_no_model_state_tracked_in_git():

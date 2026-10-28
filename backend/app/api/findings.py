@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 import uuid
 from fastapi import APIRouter, BackgroundTasks, Depends, Request, status
 from fastapi.responses import JSONResponse
@@ -20,10 +21,18 @@ from app.services.ml_detector import ml_service
 logger = logging.getLogger("zerosentinel.findings")
 
 
-def _safe_dispatch_feedback(code: str, status: str, func_name: str) -> None:
+def _safe_dispatch_feedback(
+    code: str,
+    status: str,
+    func_name: str,
+    cwe_id: Optional[str] = None,
+) -> None:
     """Safe background worker protecting against any unhandled detector/IO exceptions."""
     try:
-        ml_service.feedback(code=code, status=status, func_name=func_name)
+        try:
+            ml_service.feedback(code=code, status=status, func_name=func_name, cwe_id=cwe_id)
+        except TypeError:
+            ml_service.feedback(code=code, status=status, func_name=func_name)
     except Exception as exc:
         logger.warning("[FEEDBACK_BACKGROUND] Feedback dispatch failed gracefully: %s", exc)
 
@@ -62,6 +71,7 @@ async def get_finding(
             ).model_dump(),
         )
 
+    # Build response with catalog mitigation details if linked
     mitigation_detail = None
     if finding.mitigation_id:
         mit_stmt = select(Mitigation).where(Mitigation.id == finding.mitigation_id)
@@ -70,15 +80,20 @@ async def get_finding(
         if mit:
             mitigation_detail = MitigationDetail(
                 id=mit.id,
+                canonical_key=mit.canonical_key,
+                cwe_id=mit.cwe_id,
+                rule_id=mit.rule_id,
                 title=mit.title,
                 remediation_guidance=mit.remediation_guidance,
                 code_diff=mit.code_diff,
                 references_json=mit.references_json,
+                created_at=mit.created_at,
             )
 
     return FindingDetailResponse(
         id=finding.id,
         scan_id=finding.scan_id,
+        mitigation_id=finding.mitigation_id,
         file_path=finding.file_path,
         start_line=finding.start_line,
         end_line=finding.end_line,
@@ -103,9 +118,7 @@ async def get_finding(
     status_code=status.HTTP_200_OK,
     responses={
         status.HTTP_200_OK: {"model": FindingResponse},
-        status.HTTP_400_BAD_REQUEST: {"model": ErrorEnvelope},
         status.HTTP_404_NOT_FOUND: {"model": ErrorEnvelope},
-        status.HTTP_422_UNPROCESSABLE_ENTITY: {"model": ErrorEnvelope},
     },
 )
 async def update_finding(
@@ -115,7 +128,7 @@ async def update_finding(
     db: AsyncSession = Depends(get_db),
 ):
     """
-    Updates finding triage status (open, fixed, false_positive, accepted).
+    Updates the triage status of an individual finding (open, fixed, false_positive, accepted).
     Optionally enqueues safe online feedback learning in background tasks.
     """
     finding_stmt = select(Finding).where(Finding.id == id)
@@ -146,6 +159,7 @@ async def update_finding(
             code=finding.snippet,
             status=payload.status,
             func_name=finding.title or "finding",
+            cwe_id=finding.cwe_id,
         )
 
     return finding

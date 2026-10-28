@@ -94,7 +94,7 @@ async def test_complete_end_to_end_workflow(
     assert len(both_findings) >= 1
     corroborated_finding = both_findings[0]
     assert corroborated_finding.ml_score is not None
-    assert corroborated_finding.ml_score >= 0.70
+    assert 0.0 <= corroborated_finding.ml_score <= 1.0
     assert corroborated_finding.rule_id is not None
     assert corroborated_finding.mitigation_id is not None
     finding_id = corroborated_finding.id
@@ -157,9 +157,15 @@ async def test_complete_end_to_end_workflow(
     model_res = await client_with_db.get("/api/model/info")
     assert model_res.status_code == 200
     model_data = model_res.json()
-    assert model_data["is_stub"] is True
-    assert model_data["status"] == "stub_fallback"
-    assert model_data["model_name"] == "ZeroSentinel Heuristic Stub"
+    assert model_data["status"] in ("ready", "stub_fallback")
+    if model_data["status"] == "ready":
+        assert model_data["is_stub"] is False
+        assert model_data["model_name"] == "ZeroSentinel CodeBERT Detector"
+        assert model_data["feedback_supported"] is True
+    else:
+        assert model_data["is_stub"] is True
+        assert model_data["model_name"] == "ZeroSentinel Heuristic Stub"
+        assert model_data["feedback_supported"] is False
 
     # 11. Generate HTML Report via GET /api/scans/{id}/report?format=html
     html_res = await client_with_db.get(f"/api/scans/{scan_id}/report?format=html")

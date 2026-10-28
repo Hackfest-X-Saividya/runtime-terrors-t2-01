@@ -41,10 +41,12 @@ Thumbs.db
 # ZeroSentinel Temporary Files & Reports
 backend/temp/
 backend/reports/
-reports/
+/reports/
 *.html
 *.pdf
 
 # RL Feedback & Model State (User-generated online learning state)
 rl_state.json
 **/rl_state.json
+*.lock
+*.tmp
