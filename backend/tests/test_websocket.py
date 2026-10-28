@@ -1,3 +1,4 @@
+import asyncio
 import uuid
 from unittest.mock import AsyncMock
 import pytest
@@ -233,4 +234,10 @@ async def test_ws_broadcaster_disconnect_cleanup(
         assert len(broadcaster._subscriptions[scan_id]) == 1
 
     # After exiting context manager, client has disconnected
+    # Allow background server task a brief moment to process the disconnect in finally block
+    for _ in range(10):
+        if scan_id not in broadcaster._subscriptions or len(broadcaster._subscriptions[scan_id]) == 0:
+            break
+        await asyncio.sleep(0.05)
+
     assert scan_id not in broadcaster._subscriptions or len(broadcaster._subscriptions[scan_id]) == 0
