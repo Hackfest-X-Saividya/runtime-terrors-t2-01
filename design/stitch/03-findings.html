@@ -1,0 +1,1096 @@
+<!DOCTYPE html><html class="dark" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"secondary":"#adc6ff","on-background":"#dfe2ee","on-tertiary":"#472a00","secondary-fixed-dim":"#adc6ff","on-primary":"#00391d","secondary-fixed":"#d8e2ff","surface-tint":"#1ce388","secondary-container":"#0566d9","inverse-on-surface":"#2c3039","tertiary-fixed-dim":"#ffb95f","background":"#0f131c","surface-variant":"#31353e","surface-container-lowest":"#0a0e16","inverse-primary":"#006d3e","error-container":"#93000a","tertiary-fixed":"#ffddb8","on-tertiary-fixed":"#2a1700","outline":"#859587","on-secondary-fixed":"#001a42","surface-container":"#1c2028","error":"#ffb4ab","tertiary":"#ffd5a5","primary-fixed":"#59ffa4","on-secondary-container":"#e6ecff","surface":"#0f131c","surface-bright":"#353942","on-tertiary-container":"#6f4500","on-secondary":"#002e6a","on-error-container":"#ffdad6","on-surface":"#dfe2ee","primary":"#45f99c","on-primary-fixed-variant":"#00522d","surface-dim":"#0f131c","on-primary-fixed":"#00210f","on-error":"#690005","on-tertiary-fixed-variant":"#653e00","surface-container-high":"#262a33","outline-variant":"#3c4a3f","on-surface-variant":"#bacbbc","surface-container-low":"#181c24","primary-fixed-dim":"#1ce388","surface-container-highest":"#31353e","tertiary-container":"#ffb044","on-primary-container":"#005b32","primary-container":"#00dc82","inverse-surface":"#dfe2ee","on-secondary-fixed-variant":"#004395"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"gutter-desktop":"1.5rem","space-sm":"0.5rem","space-xl":"2rem","margin":"1rem","space-lg":"1.5rem","space-xs":"0.25rem","margin-desktop":"2rem","gutter":"1rem","space-md":"1rem"},fontFamily:{"headline-md":["Inter"],"headline-xl":["Inter"],"label-code-lg":["JetBrains Mono"],"label-code-md":["JetBrains Mono"],"body-sm":["Inter"],"headline-sm":["Inter"],"body-lg":["Inter"],"body-md":["Inter"],"label-code-sm":["JetBrains Mono"],"headline-lg":["Inter"]},fontSize:{"headline-md":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"-0.015em","fontWeight":"600"}],"headline-xl":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.025em","fontWeight":"600"}],"label-code-lg":["0.875rem",{"lineHeight":"1.375rem","letterSpacing":"-0.01em","fontWeight":"500"}],"label-code-md":["0.75rem",{"lineHeight":"1.125rem","letterSpacing":"0em","fontWeight":"500"}],"body-sm":["0.75rem",{"lineHeight":"1.125rem","letterSpacing":"0.01em","fontWeight":"400"}],"headline-sm":["1rem",{"lineHeight":"1.5rem","letterSpacing":"-0.01em","fontWeight":"600"}],"body-lg":["1rem",{"lineHeight":"1.625rem","letterSpacing":"-0.005em","fontWeight":"400"}],"body-md":["0.875rem",{"lineHeight":"1.375rem","letterSpacing":"0em","fontWeight":"400"}],"label-code-sm":["0.6875rem",{"lineHeight":"1rem","letterSpacing":"0.025em","fontWeight":"600"}],"headline-lg":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.02em","fontWeight":"600"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="flex flex-col"><div class="h-16 px-space-md flex items-center justify-between bg-surface-container-low"><div class="flex items-center gap-space-sm"><img alt="ZeroSentinel Shield Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Wed_pUB1ykxQPnPqBFw2H__EJZZBtbqdpQuesl9qt2Uy1Uos5IU9_4t174YvXz7ZY5-MiZ0cc9tWGC92nMoesrWFrLDH0aDrfzFXQG7nb_UE3w84ktxEtYaGW4rv2kjr5RPG0T-JyhB0AKcHRgd9vYIg6S1UtKw40qEB0uxRn_0I03VJ5LsFM_FRITJu9PXQhLI-uyxdYxtxnJIbYNfPqFxizkvAezQj4PnnPiinoM"><span class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">ZeroSentinel</span></div><span class="font-label-code-sm text-label-code-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-primary font-medium">v2.4-secops</span></div><nav class="px-space-sm pt-space-md flex flex-col gap-1" data-active-classes="bg-surface-container-high text-primary font-medium rounded-lg"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="dashboard" href="#"><span class="material-symbols-outlined text-lg">dashboard</span><span class="">Dashboard</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="new-scan" href="#"><span class="material-symbols-outlined text-lg">radar</span><span class="">New Scan</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md bg-surface-container-high text-primary font-medium" data-path="findings" href="#"><span class="material-symbols-outlined text-lg">shield_with_house</span><span class="">Findings</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="reports" href="#"><span class="material-symbols-outlined text-lg">description</span><span class="">Reports</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="model-governance" href="#"><span class="material-symbols-outlined text-lg">smart_toy</span><span class="">Model</span></a></nav></div><div class="p-space-sm flex flex-col gap-space-sm"><div class="p-space-sm rounded-lg bg-surface-container flex flex-col gap-1"><div class="flex items-center justify-between text-on-surface-variant"><span class="font-label-code-sm text-label-code-sm uppercase">Engine</span><div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span class="font-label-code-sm text-label-code-sm text-primary">Healthy</span></div></div><div class="flex items-center justify-between text-on-surface-variant"><span class="font-label-code-sm text-label-code-sm uppercase">Ruleset</span><span class="font-label-code-sm text-label-code-sm text-on-surface font-mono">v2025.2</span></div></div><div class="p-space-xs rounded-lg bg-surface-container-high flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDd1wTG-Xk7cx2bfNAeiu7zfylQP8FTb7HT91lDZaAmSvivlifJgVlKQ_d4mROvs7EVsKBycmveRKg5926u2Ptf6QVw7zNmshZKi3gWqqt7Fb_3uAjpDcb1C23RjF0bleYyNQ9q4LMB2ZQO-Y8hSTZQwBcM1m-hFAoh8An_fPXKQwvNNnooQq38yZ_f8WolZHFMI2EBkYuvxaKdQ1UhMMDN0WjY13OvLs9XZ6m66uY"><div class="flex flex-col min-w-0"><span class="font-body-sm text-body-sm font-medium text-on-surface truncate">SecOps Lead</span><span class="font-label-code-sm text-label-code-sm text-on-surface-variant truncate">sec-ops@sentinel</span></div></div><span class="material-symbols-outlined text-on-surface-variant text-base cursor-pointer hover:text-on-surface">unfold_more</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.3)] z-40 flex items-center justify-between px-space-lg gap-space-md"><div class="flex items-center gap-space-md flex-1 max-w-2xl"><div class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface cursor-pointer"><span class="material-symbols-outlined text-base text-primary">source_environment</span><span class="font-label-code-sm text-label-code-sm text-on-surface font-medium truncate max-w-[200px]">production-monorepo / main</span><span class="material-symbols-outlined text-sm">expand_more</span></div><div class="relative flex-1"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg pointer-events-none">search</span><input class="w-full pl-9 pr-space-md py-1.5 rounded-lg bg-surface-container text-on-surface placeholder:text-outline font-label-code-sm text-label-code-sm focus:outline-none focus:bg-surface-container-high" placeholder="Search repos, CVEs, findings, rules... [Cmd + K]" type="text"></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-2 px-space-sm py-1 rounded bg-surface-container-low"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span></span><span class="font-label-code-sm text-label-code-sm text-on-surface font-medium">Scan: Continuous</span></div><button class="flex items-center gap-1.5 px-space-md py-1.5 rounded-lg bg-primary-container text-on-primary-container font-headline-sm text-headline-sm font-semibold hover:bg-primary transition-colors" type="button"><span class="material-symbols-outlined text-lg">add</span><span class="">New scan</span></button></div></header><main class="relative pt-16 w-full px-gutter-desktop bg-background min-h-screen"><div class="flex flex-col w-full pb-12">
+<!-- Interactive Script for findings triage, selection, and drawer viewing -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Synchronize findings nav route active indicator
+      const findingsNav = document.querySelector('aside nav a[data-path="findings"]');
+      if (findingsNav) {
+        document.querySelectorAll('aside nav a').forEach(el => {
+          el.classList.remove('bg-surface-container-high', 'text-primary', 'font-medium');
+          el.classList.add('text-on-surface-variant');
+        });
+        findingsNav.classList.add('bg-surface-container-high', 'text-primary', 'font-medium');
+        findingsNav.classList.remove('text-on-surface-variant');
+      }
+
+      // Checkbox state handling
+      const selectAll = document.getElementById('select-all-findings');
+      const itemCheckboxes = document.querySelectorAll('.finding-row-checkbox');
+      const bulkBar = document.getElementById('bulk-action-bar');
+      const selectedCountText = document.getElementById('selected-count-label');
+
+      function updateBulkBar() {
+        const checkedBoxes = document.querySelectorAll('.finding-row-checkbox:checked');
+        const count = checkedBoxes.length;
+        if (selectedCountText) {
+          selectedCountText.textContent = `${count} finding${count === 1 ? '' : 's'} selected`;
+        }
+        if (count > 0) {
+          bulkBar.classList.remove('hidden');
+          bulkBar.classList.add('flex');
+        } else {
+          bulkBar.classList.add('hidden');
+          bulkBar.classList.remove('flex');
+        }
+        if (selectAll) {
+          selectAll.checked = count === itemCheckboxes.length && itemCheckboxes.length > 0;
+          selectAll.indeterminate = count > 0 && count < itemCheckboxes.length;
+        }
+      }
+
+      if (selectAll) {
+        selectAll.addEventListener('change', (e) => {
+          itemCheckboxes.forEach(cb => {
+            cb.checked = e.target.checked;
+            const tr = cb.closest('tr');
+            if (tr) {
+              if (e.target.checked) tr.classList.add('bg-surface-container/60');
+              else tr.classList.remove('bg-surface-container/60');
+            }
+          });
+          updateBulkBar();
+        });
+      }
+
+      itemCheckboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+          const tr = cb.closest('tr');
+          if (tr) {
+            if (cb.checked) tr.classList.add('bg-surface-container/60');
+            else tr.classList.remove('bg-surface-container/60');
+          }
+          updateBulkBar();
+        });
+      });
+
+      const deselectBtn = document.getElementById('deselect-all-btn');
+      if (deselectBtn) {
+        deselectBtn.addEventListener('click', () => {
+          itemCheckboxes.forEach(cb => {
+            cb.checked = false;
+            const tr = cb.closest('tr');
+            if (tr) tr.classList.remove('bg-surface-container/60');
+          });
+          if (selectAll) {
+            selectAll.checked = false;
+            selectAll.indeterminate = false;
+          }
+          updateBulkBar();
+        });
+      }
+
+      // Initial visual row sync for default selected items
+      itemCheckboxes.forEach(cb => {
+        if (cb.checked) {
+          const tr = cb.closest('tr');
+          if (tr) tr.classList.add('bg-surface-container/60');
+        }
+      });
+      updateBulkBar();
+    });
+  </script>
+<!-- Top Context / Breadcrumb & Header Bar -->
+<div class="flex flex-col gap-space-sm pt-space-md mb-space-lg">
+<!-- Breadcrumb Stream -->
+<div class="flex items-center gap-2 text-on-surface-variant font-label-code-sm text-label-code-sm uppercase tracking-wider">
+<span class="hover:text-on-surface transition-colors cursor-pointer">SecOps Telemetry</span>
+<span class="text-outline">/</span>
+<span class="hover:text-on-surface transition-colors cursor-pointer">Scans</span>
+<span class="text-outline">/</span>
+<span class="text-primary font-mono lowercase tracking-normal">manual-audit-auth-service-2025-05-18</span>
+</div>
+<!-- Header Grid: Title, Telemetry Summary, and Actions -->
+<div class="flex flex-col xl:flex-row xl:items-start justify-between gap-space-lg">
+<div class="flex flex-col gap-2 min-w-0">
+<div class="flex items-center gap-space-sm flex-wrap">
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight font-semibold">
+            Findings: auth-service-v2.1.zip
+          </h1>
+<span class="px-2 py-0.5 rounded bg-surface-container text-primary font-label-code-sm text-label-code-sm font-medium">
+            SAST + ML HEURISTIC v2.4
+          </span>
+</div>
+<!-- Telemetry Metadata Strip -->
+<div class="flex items-center flex-wrap gap-x-4 gap-y-1.5 text-on-surface-variant font-label-code-sm text-label-code-sm">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-outline">schedule</span>
+<span class="">May 18, 2025 · 14:28:02 UTC</span>
+</div>
+<span class="text-outline">·</span>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-outline">commit</span>
+<span class="text-on-surface font-mono">SHA-256: 8a4f91b7d12f45ea...33ec</span>
+</div>
+<span class="text-outline">·</span>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-outline">fork_right</span>
+<span class="">Target: <span class="text-on-surface font-mono">main</span></span>
+</div>
+<span class="text-outline">·</span>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-outline">folder_zip</span>
+<span class="">Total Scanned: <span class="text-on-surface font-mono">3,410 files</span> (24.8 MB)</span>
+</div>
+</div>
+</div>
+<!-- Header Actions & Scan Risk Indicator Score Card -->
+<div class="flex items-center flex-wrap gap-space-md self-start xl:self-auto">
+<!-- Composite Risk Score Telemetry Card -->
+<div class="flex items-center gap-space-md p-space-sm rounded-xl bg-surface-container-low shadow-sm">
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-label-code-sm text-label-code-sm uppercase text-on-surface-variant font-medium">Scan Risk</span>
+<span class="px-1.5 py-0.5 rounded bg-error-container text-on-error-container font-label-code-sm text-label-code-sm font-semibold tracking-wider">
+                HIGH RISK
+              </span>
+</div>
+<div class="flex items-baseline gap-1 mt-0.5">
+<span class="font-headline-lg text-headline-lg font-mono text-on-surface font-bold tracking-tight">8.4</span>
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant">/ 10</span>
+</div>
+</div>
+<div class="w-px h-10 bg-surface-container-highest"></div>
+<!-- Quick Severity Metrics Bar -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-1 text-on-surface font-label-code-sm text-label-code-sm">
+<span class="font-semibold">128</span>
+<span class="text-on-surface-variant">Total Findings</span>
+<span class="text-outline">·</span>
+<span class="text-primary font-medium">19 Novel ML</span>
+</div>
+<!-- Micro distribution breakdown -->
+<div class="flex items-center gap-2 font-label-code-sm text-label-code-sm">
+<span class="flex items-center gap-1 text-error"><span class="w-1.5 h-1.5 rounded-full bg-error"></span>14 Crit</span>
+<span class="flex items-center gap-1 text-tertiary-container"><span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>28 High</span>
+<span class="flex items-center gap-1 text-tertiary"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>42 Med</span>
+<span class="flex items-center gap-1 text-secondary"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>44 Low</span>
+</div>
+</div>
+</div>
+<!-- Export & Rescan Action Group -->
+<div class="flex items-center gap-2">
+<div class="relative inline-flex rounded-lg shadow-sm">
+<button class="flex items-center gap-1.5 px-space-sm py-2 rounded-l-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-headline-sm text-headline-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-base text-on-surface-variant">file_download</span>
+<span class="">Export SARIF</span>
+</button>
+<button class="px-2 py-2 rounded-r-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" title="More export formats" type="button">
+<span class="material-symbols-outlined text-base">expand_more</span>
+</button>
+</div>
+<button class="flex items-center gap-1.5 px-space-md py-2 rounded-lg bg-primary-container text-on-primary-container font-headline-sm text-headline-sm font-semibold hover:bg-primary transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-lg">sync</span>
+<span class="">Re-scan Audit</span>
+</button>
+</div>
+</div>
+</div>
+</div><div class="p-space-sm px-space-md rounded-xl bg-surface-container-low border-surface-container-highest shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-space-sm mb-space-md">
+  <div class="flex items-center flex-wrap gap-x-4 gap-y-1.5 font-label-code-sm text-label-code-sm">
+    <div class="flex items-center gap-1.5 text-on-surface-variant font-medium">
+      <span class="material-symbols-outlined text-base text-primary">compare_arrows</span>
+      <span class="text-on-surface font-semibold">Compared with previous scan:</span>
+      <span class="text-outline font-mono">(v2.0-main · May 17)</span>
+    </div>
+    <div class="flex items-center gap-1 px-2 py-0.5 rounded bg-error-container/20 text-error font-medium">
+      <span class="font-mono font-bold">+14</span> New
+    </div>
+    <div class="flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container text-primary font-medium">
+      <span class="font-mono font-bold">-9</span> Resolved
+    </div>
+    <div class="flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high text-tertiary font-medium">
+      <span class="material-symbols-outlined text-xs text-tertiary-container">tune</span>
+      <span class="">Suppressed by feedback:</span>
+      <span class="font-mono font-bold text-on-surface ml-0.5">6</span>
+    </div>
+  </div>
+  <button class="flex items-center gap-1 text-primary hover:text-primary-fixed font-label-code-sm text-label-code-sm transition-colors cursor-pointer" type="button">
+    <span class="">View changes</span>
+    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+  </button>
+</div>
+<!-- Operational Filter Console Card -->
+<div class="p-space-md rounded-xl bg-surface-container-low shadow-sm flex flex-col gap-space-md mb-space-md">
+<!-- Top Filter Line: Omnisearch & Quick Status Segment -->
+<div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-md">
+<!-- High Precision Search Bar -->
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg pointer-events-none">search</span>
+<input class="w-full pl-9 pr-12 py-2 rounded-lg bg-surface-container text-on-surface placeholder:text-outline font-label-code-sm text-label-code-sm focus:outline-none focus:bg-surface-container-high" placeholder="Search findings, CVE, CWE, file path, symbol... [ / ]" type="text" value="auth/keys.go, billing/charge">
+<span class="absolute right-3 top-1/2 -translate-y-1/2 px-1.5 py-0.5 rounded bg-surface-container-high text-outline font-label-code-sm text-label-code-sm">/</span>
+</div>
+<!-- Status Tabs Selector -->
+<div class="flex items-center p-1 rounded-lg bg-surface-container overflow-x-auto text-nowrap">
+<button class="px-3 py-1 rounded bg-surface-container-high text-on-surface font-label-code-sm text-label-code-sm font-medium" type="button">
+          Open <span class="ml-1 text-on-surface-variant font-mono">112</span>
+</button>
+<button class="px-3 py-1 rounded text-on-surface-variant hover:text-on-surface font-label-code-sm text-label-code-sm transition-colors" type="button">
+          Fixed <span class="ml-1 text-outline font-mono">8</span>
+</button>
+<button class="px-3 py-1 rounded text-on-surface-variant hover:text-on-surface font-label-code-sm text-label-code-sm transition-colors" type="button">
+          False Positive <span class="ml-1 text-outline font-mono">5</span>
+</button>
+<button class="px-3 py-1 rounded text-on-surface-variant hover:text-on-surface font-label-code-sm text-label-code-sm transition-colors" type="button">
+          Accepted <span class="ml-1 text-outline font-mono">3</span>
+</button>
+</div>
+</div>
+<!-- Bottom Filter Line: Multi-select Severity, Categories, Engine Origin, and Reset Indicator -->
+<div class="flex flex-wrap items-center justify-between gap-space-md pt-space-xs">
+<div class="flex flex-wrap items-center gap-space-sm">
+<!-- Severity Multi-select Chips -->
+<span class="font-label-code-sm text-label-code-sm uppercase text-outline mr-1">Severity:</span>
+<button class="px-2.5 py-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface font-label-code-sm text-label-code-sm transition-colors" type="button">
+          All <span class="font-mono ml-0.5">128</span>
+</button>
+<!-- CRITICAL Active Chip -->
+<button class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-error-container text-on-error-container font-label-code-sm text-label-code-sm font-medium shadow-sm" type="button">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="">CRITICAL</span>
+<span class="font-mono text-on-error-container ml-0.5">14</span>
+<span class="material-symbols-outlined text-xs">close</span>
+</button>
+<!-- HIGH Active Chip -->
+<button class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-tertiary-container/20 text-tertiary font-label-code-sm text-label-code-sm font-medium shadow-sm" type="button">
+<span class="w-2 h-2 rounded-full bg-tertiary-container"></span>
+<span class="">HIGH</span>
+<span class="font-mono text-tertiary ml-0.5">28</span>
+<span class="material-symbols-outlined text-xs">close</span>
+</button>
+<!-- MEDIUM Inactive Chip -->
+<button class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface font-label-code-sm text-label-code-sm transition-colors" type="button">
+<span class="w-2 h-2 rounded-full bg-tertiary/70"></span>
+<span class="">MEDIUM</span>
+<span class="font-mono text-outline ml-0.5">42</span>
+</button>
+<!-- LOW Inactive Chip -->
+<button class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface font-label-code-sm text-label-code-sm transition-colors" type="button">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="">LOW</span>
+<span class="font-mono text-outline ml-0.5">44</span>
+</button>
+<span class="text-outline mx-1">|</span>
+<!-- OWASP Category Selector Dropdown -->
+<div class="relative inline-flex items-center">
+<select class="appearance-none bg-surface-container text-on-surface font-label-code-sm text-label-code-sm pl-3 pr-8 py-1 rounded focus:outline-none focus:bg-surface-container-high cursor-pointer">
+<option>OWASP: All Top 10 (2025)</option>
+<option>A01: Broken Access Control</option>
+<option>A02: Cryptographic Failures</option>
+<option>A03: Injection</option>
+<option>A04: Insecure Design</option>
+<option>A05: Security Misconfiguration</option>
+<option>A06: Vulnerable Components</option>
+<option>A07: Identification &amp; Auth</option>
+<option>A08: Software &amp; Data Integrity</option>
+<option>A09: Logging &amp; Monitoring</option>
+<option>A10: SSRF</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 pointer-events-none text-on-surface-variant text-base">expand_more</span>
+</div>
+<!-- Detection Origin Selector Dropdown -->
+<div class="relative inline-flex items-center">
+<select class="appearance-none bg-surface-container text-on-surface font-label-code-sm text-label-code-sm pl-3 pr-8 py-1 rounded focus:outline-none focus:bg-surface-container-high cursor-pointer">
+<option>Source: All Detection Engines</option>
+<option>Rule (SAST Deterministic)</option>
+<option>ML Heuristic (ZeroSentinel AI)</option>
+<option>Novel ML Only</option>
+<option>Both (Rule + ML Consensus)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 pointer-events-none text-on-surface-variant text-base">expand_more</span>
+</div>
+</div>
+<!-- Clear Filters Active State CTA -->
+<div class="flex items-center gap-2"><button class="flex items-center gap-2 px-2.5 py-1 rounded bg-surface-container-high text-on-surface font-label-code-sm text-label-code-sm border-surface-container-highest cursor-pointer hover:bg-surface-bright transition-colors mr-2" type="button" title="Toggle suppressed findings visibility">
+  <span class="relative inline-flex items-center h-4 w-7 rounded-full bg-primary/20">
+    <span class="w-3 h-3 rounded-full bg-primary ml-3.5 transition-all shadow-sm"></span>
+  </span>
+  <span class="font-medium">Show suppressed</span>
+  <span class="font-mono text-outline">(6)</span>
+</button>
+<button class="flex items-center gap-1 text-primary hover:text-primary-fixed font-label-code-sm text-label-code-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-sm">filter_alt_off</span>
+<span class="">Clear filters (2 active)</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Docked Bulk Action Triage Bar (Visible when rows selected) -->
+<div class="flex items-center justify-between p-space-sm px-space-md rounded-xl bg-surface-container-high text-on-surface shadow-md mb-space-sm transition-all animate-fadeIn" id="bulk-action-bar">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-headline-sm text-headline-sm font-semibold text-on-surface" id="selected-count-label">3 findings selected</span>
+</div>
+<div class="h-4 w-px bg-surface-container-highest"></div>
+<!-- State Transition Bulk Buttons -->
+<div class="flex items-center gap-1.5 flex-wrap">
+<button class="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container text-on-surface hover:bg-surface-bright font-label-code-sm text-label-code-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-sm text-primary">check_circle</span>
+<span class="">Mark fixed</span>
+</button>
+<button class="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container text-on-surface hover:bg-surface-bright font-label-code-sm text-label-code-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-sm text-error">flag</span>
+<span class="">Mark False positive</span>
+</button>
+<button class="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container text-on-surface hover:bg-surface-bright font-label-code-sm text-label-code-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-sm text-tertiary">task_alt</span>
+<span class="">Mark Accepted</span>
+</button>
+<button class="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container text-on-surface hover:bg-surface-bright font-label-code-sm text-label-code-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">restart_alt</span>
+<span class="">Reopen</span>
+</button>
+</div>
+</div>
+<!-- Selection Controls -->
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-on-surface font-label-code-sm text-label-code-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-sm">download</span>
+<span class="">Export selected (SARIF/JSON)</span>
+</button>
+<button class="text-outline hover:text-on-surface font-label-code-sm text-label-code-sm underline cursor-pointer" id="deselect-all-btn" type="button">
+        Deselect all
+      </button>
+</div>
+</div>
+<!-- Primary Dense SecOps Telemetry Table Container -->
+<div class="w-full rounded-xl bg-surface-container-low shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-md text-body-md whitespace-nowrap">
+<!-- Table Column Headers -->
+<thead>
+<tr class="bg-surface-container text-on-surface-variant font-label-code-sm text-label-code-sm uppercase tracking-wider select-none">
+<th class="w-10 px-4 py-3 text-center">
+<input class="w-4 h-4 rounded bg-surface-container-high text-primary focus:ring-0 cursor-pointer accent-[#00dc82]" id="select-all-findings" type="checkbox">
+</th>
+<th class="px-3 py-3 font-medium">Severity</th>
+<th class="px-4 py-3 font-medium">Finding Title &amp; Summary</th>
+<th class="px-4 py-3 font-medium">File : Line</th>
+<th class="px-3 py-3 font-medium">CWE</th>
+<th class="px-3 py-3 font-medium">OWASP Top 10</th>
+<th class="px-3 py-3 font-medium">Engine Origin</th>
+<th class="px-3 py-3 font-medium text-right">Risk Score</th>
+<th class="px-3 py-3 font-medium text-center">Status</th>
+<th class="w-10 px-3 py-3 text-center"><span class="sr-only">Actions</span></th>
+</tr>
+</thead>
+<!-- Table Row Entries -->
+<tbody class="divide-y divide-transparent font-body-sm text-body-sm">
+<!-- ROW 1 (Selected) -->
+<tr class="hover:bg-surface-container/50 transition-colors group bg-surface-container/60">
+<td class="px-4 py-2.5 text-center">
+<input checked="" class="finding-row-checkbox w-4 h-4 rounded bg-surface-container-high text-primary cursor-pointer accent-[#00dc82]" type="checkbox">
+</td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-error-container text-on-error-container font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+<span class="">CRIT</span>
+<span class="font-mono">9.8</span>
+</span>
+</td>
+<td class="px-4 py-2.5 max-w-sm">
+<div class="flex flex-col min-w-0">
+<span class="text-on-surface font-headline-sm text-headline-sm font-medium truncate group-hover:text-primary transition-colors cursor-pointer">
+                  Unsanitized SQL concatenation in payment gateway
+                </span>
+<span class="text-on-surface-variant font-label-code-sm text-label-code-sm truncate font-mono">
+                  query := fmt.Sprintf("SELECT * FROM charges WHERE id='%s'", chargeID)
+                </span>
+</div>
+</td>
+<td class="px-4 py-2.5 font-label-code-sm text-label-code-sm font-mono text-on-surface">
+<span class="text-on-surface-variant">services/billing/</span><span class="text-on-surface font-semibold">charge.go:142</span>
+</td>
+<td class="px-3 py-2.5 font-label-code-sm text-label-code-sm font-mono">
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface">CWE-89</span>
+</td>
+<td class="px-3 py-2.5 text-on-surface-variant font-body-sm text-body-sm">
+              A03: Injection
+            </td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-code-sm text-label-code-sm font-mono">
+<span class="material-symbols-outlined text-xs">rule</span>
+<span class="">Rule (SAST-HIGH-CONF)</span>
+</span>
+</td>
+<td class="px-3 py-2.5 text-right font-label-code-sm text-label-code-sm font-mono font-bold text-error">
+              9.8
+            </td>
+<td class="px-3 py-2.5 text-center">
+<span class="px-2 py-0.5 rounded bg-surface-container text-error font-label-code-sm text-label-code-sm font-medium">
+                Open
+              </span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" title="Inspect finding" type="button">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- ROW 2 (Selected - Novel ML) -->
+<tr class="hover:bg-surface-container/50 transition-colors group bg-surface-container/60">
+<td class="px-4 py-2.5 text-center">
+<input checked="" class="finding-row-checkbox w-4 h-4 rounded bg-surface-container-high text-primary cursor-pointer accent-[#00dc82]" type="checkbox">
+</td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-error-container text-on-error-container font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+<span class="">CRIT</span>
+<span class="font-mono">9.7</span>
+</span>
+</td>
+<td class="px-4 py-2.5 max-w-sm"><div class="flex flex-col min-w-0">
+  <div class="flex items-center gap-2 truncate">
+    <span class="text-on-surface font-headline-sm text-headline-sm font-medium truncate group-hover:text-primary transition-colors cursor-pointer">
+      Hardcoded Private Key in Production Seed routine
+    </span>
+    <span class="inline-flex items-center gap-1 px-1.5 py-0.2 rounded bg-surface-container-high text-tertiary font-label-code-sm text-label-code-sm font-mono shrink-0" title="ML score adjusted via feedback tuning">
+      <span class="material-symbols-outlined text-xs text-primary">trending_down</span>
+      <span class="">0.91 → 0.34</span>
+    </span>
+  </div>
+  <span class="text-on-surface-variant font-label-code-sm text-label-code-sm truncate font-mono">
+    const defaultSigningPem = "-----BEGIN RSA PRIVATE KEY-----MIIEow..."
+  </span>
+</div></td>
+<td class="px-4 py-2.5 font-label-code-sm text-label-code-sm font-mono text-on-surface">
+<span class="text-on-surface-variant">services/auth/</span><span class="text-on-surface font-semibold">keys.go:88</span>
+</td>
+<td class="px-3 py-2.5 font-label-code-sm text-label-code-sm font-mono">
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface">CWE-798</span>
+</td>
+<td class="px-3 py-2.5 text-on-surface-variant font-body-sm text-body-sm">
+              A02: Cryptographic Failures
+            </td>
+<td class="px-3 py-2.5">
+<!-- Distinct Novel ML Badge -->
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-primary-container text-on-primary-container font-label-code-sm text-label-code-sm font-semibold shadow-sm">
+<span class="material-symbols-outlined text-xs">auto_awesome</span>
+<span class="">Novel</span>
+<span class="font-mono font-normal opacity-90">[ML]</span>
+</span>
+</td>
+<td class="px-3 py-2.5 text-right font-label-code-sm text-label-code-sm font-mono font-bold text-error">
+              9.7
+            </td>
+<td class="px-3 py-2.5 text-center">
+<span class="px-2 py-0.5 rounded bg-surface-container text-error font-label-code-sm text-label-code-sm font-medium">
+                Open
+              </span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" title="Inspect finding" type="button">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- ROW 3 (Selected - Consensus Both) -->
+<tr class="hover:bg-surface-container/50 transition-colors group bg-surface-container/60">
+<td class="px-4 py-2.5 text-center">
+<input checked="" class="finding-row-checkbox w-4 h-4 rounded bg-surface-container-high text-primary cursor-pointer accent-[#00dc82]" type="checkbox">
+</td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-error-container text-on-error-container font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+<span class="">CRIT</span>
+<span class="font-mono">9.4</span>
+</span>
+</td>
+<td class="px-4 py-2.5 max-w-sm">
+<div class="flex flex-col min-w-0">
+<span class="text-on-surface font-headline-sm text-headline-sm font-medium truncate group-hover:text-primary transition-colors cursor-pointer">
+                  Remote Code Execution via Deserialization in RPC transport
+                </span>
+<span class="text-on-surface-variant font-label-code-sm text-label-code-sm truncate font-mono">
+                  data = pickle.loads(request.raw_body)
+                </span>
+</div>
+</td>
+<td class="px-4 py-2.5 font-label-code-sm text-label-code-sm font-mono text-on-surface">
+<span class="text-on-surface-variant">lib/transport/</span><span class="text-on-surface font-semibold">serializer.py:42</span>
+</td>
+<td class="px-3 py-2.5 font-label-code-sm text-label-code-sm font-mono">
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface">CWE-502</span>
+</td>
+<td class="px-3 py-2.5 text-on-surface-variant font-body-sm text-body-sm">
+              A08: Software &amp; Data Integrity
+            </td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container text-on-surface font-label-code-sm text-label-code-sm font-mono">
+<span class="material-symbols-outlined text-xs text-primary">verified</span>
+<span class="">Rule + ML Consensus</span>
+</span>
+</td>
+<td class="px-3 py-2.5 text-right font-label-code-sm text-label-code-sm font-mono font-bold text-error">
+              9.4
+            </td>
+<td class="px-3 py-2.5 text-center">
+<span class="px-2 py-0.5 rounded bg-surface-container text-error font-label-code-sm text-label-code-sm font-medium">
+                Open
+              </span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" title="Inspect finding" type="button">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- ROW 4 (Unchecked - Novel ML) -->
+<tr class="hover:bg-surface-container/50 transition-colors group opacity-50 bg-surface-container-lowest/90">
+  <td class="px-4 py-2.5 text-center">
+    <input class="finding-row-checkbox w-4 h-4 rounded bg-surface-container-high text-primary cursor-pointer accent-[#00dc82]" type="checkbox">
+  </td>
+  <td class="px-3 py-2.5">
+    <div class="flex flex-col gap-0.5">
+      <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-code-sm text-label-code-sm font-semibold line-through">
+        <span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+        <span class="">HIGH</span>
+        <span class="font-mono">8.5</span>
+      </span>
+    </div>
+  </td>
+  <td class="px-4 py-2.5 max-w-sm">
+    <div class="flex flex-col min-w-0">
+      <div class="flex items-center gap-2 truncate">
+        <span class="text-on-surface-variant font-headline-sm text-headline-sm font-medium truncate line-through">
+          Potential SSRF in test fixture webhook emulator
+        </span>
+        <span class="inline-flex items-center gap-1 px-1.5 py-0.2 rounded bg-tertiary-container/20 text-tertiary font-label-code-sm text-label-code-sm font-mono shrink-0" title="ML risk score adapted by engineer suppression">
+          <span class="material-symbols-outlined text-xs text-primary">trending_down</span>
+          <span class="">0.88 → 0.12</span>
+        </span>
+      </div>
+      <span class="text-outline font-label-code-sm text-label-code-sm truncate font-mono">
+        http.Post(mockEndpoint, "application/json", payload) // testenv only
+      </span>
+    </div>
+  </td>
+  <td class="px-4 py-2.5 font-label-code-sm text-label-code-sm font-mono text-outline">
+    <span class="">tests/mocks/</span><span class="font-semibold">webhook_sim.go:44</span>
+  </td>
+  <td class="px-3 py-2.5 font-label-code-sm text-label-code-sm font-mono">
+    <span class="px-1.5 py-0.5 rounded bg-surface-container text-outline">CWE-918</span>
+  </td>
+  <td class="px-3 py-2.5 text-outline font-body-sm text-body-sm">
+    A10: SSRF
+  </td>
+  <td class="px-3 py-2.5">
+    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container text-outline font-label-code-sm text-label-code-sm font-mono">
+      <span class="material-symbols-outlined text-xs">tune</span>
+      <span class="">ML Feedback Tuned</span>
+    </span>
+  </td>
+  <td class="px-3 py-2.5 text-right font-label-code-sm text-label-code-sm font-mono font-medium text-outline line-through">
+    8.5
+  </td>
+  <td class="px-3 py-2.5 text-center">
+    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high text-tertiary font-label-code-sm text-label-code-sm font-medium shadow-sm">
+      <span class="material-symbols-outlined text-xs text-tertiary-container">tune</span>
+      <span class="">Suppressed by feedback</span>
+    </span>
+  </td>
+  <td class="px-3 py-2.5 text-center">
+    <button class="p-1 rounded hover:bg-surface-container text-outline hover:text-on-surface transition-colors" title="View feedback suppression rationale" type="button">
+      <span class="material-symbols-outlined text-lg">info</span>
+    </button>
+  </td>
+</tr><tr class="hover:bg-surface-container/50 transition-colors group">
+<td class="px-4 py-2.5 text-center">
+<input class="finding-row-checkbox w-4 h-4 rounded bg-surface-container-high text-primary cursor-pointer accent-[#00dc82]" type="checkbox">
+</td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-tertiary-container/20 text-tertiary font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+<span class="">HIGH</span>
+<span class="font-mono">8.9</span>
+</span>
+</td>
+<td class="px-4 py-2.5 max-w-sm">
+<div class="flex flex-col min-w-0">
+<span class="text-on-surface font-headline-sm text-headline-sm font-medium truncate group-hover:text-primary transition-colors cursor-pointer">
+                  Broken Object Level Authorization (BOLA) in invoice endpoint
+                </span>
+<span class="text-on-surface-variant font-label-code-sm text-label-code-sm truncate font-mono">
+                  let invoice = Invoice::find(path_param_id).await?; // missing tenant_id check
+                </span>
+</div>
+</td>
+<td class="px-4 py-2.5 font-label-code-sm text-label-code-sm font-mono text-on-surface">
+<span class="text-on-surface-variant">api/v1/</span><span class="text-on-surface font-semibold">billing.rs:115</span>
+</td>
+<td class="px-3 py-2.5 font-label-code-sm text-label-code-sm font-mono">
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface">CWE-285</span>
+</td>
+<td class="px-3 py-2.5 text-on-surface-variant font-body-sm text-body-sm">
+              A01: Broken Access Control
+            </td>
+<td class="px-3 py-2.5">
+<!-- Distinct Novel ML Badge -->
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-primary-container text-on-primary-container font-label-code-sm text-label-code-sm font-semibold shadow-sm">
+<span class="material-symbols-outlined text-xs">auto_awesome</span>
+<span class="">Novel</span>
+<span class="font-mono font-normal opacity-90">[ML]</span>
+</span>
+</td>
+<td class="px-3 py-2.5 text-right font-label-code-sm text-label-code-sm font-mono font-bold text-tertiary-container">
+              8.9
+            </td>
+<td class="px-3 py-2.5 text-center">
+<span class="px-2 py-0.5 rounded bg-surface-container text-error font-label-code-sm text-label-code-sm font-medium">
+                Open
+              </span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" title="Inspect finding" type="button">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- ROW 5 (Unchecked) -->
+<tr class="hover:bg-surface-container/50 transition-colors group">
+<td class="px-4 py-2.5 text-center">
+<input class="finding-row-checkbox w-4 h-4 rounded bg-surface-container-high text-primary cursor-pointer accent-[#00dc82]" type="checkbox">
+</td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-tertiary-container/20 text-tertiary font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+<span class="">HIGH</span>
+<span class="font-mono">8.7</span>
+</span>
+</td>
+<td class="px-4 py-2.5 max-w-sm">
+<div class="flex flex-col min-w-0">
+<span class="text-on-surface font-headline-sm text-headline-sm font-medium truncate group-hover:text-primary transition-colors cursor-pointer">
+                  Cross-Tenant Authorization token validation bypass
+                </span>
+<span class="text-on-surface-variant font-label-code-sm text-label-code-sm truncate font-mono">
+                  if ctx.Header("X-Tenant-Override") != "" { ctx.SetTenant(...) }
+                </span>
+</div>
+</td>
+<td class="px-4 py-2.5 font-label-code-sm text-label-code-sm font-mono text-on-surface">
+<span class="text-on-surface-variant">pkg/middleware/</span><span class="text-on-surface font-semibold">tenant_rbac.go:63</span>
+</td>
+<td class="px-3 py-2.5 font-label-code-sm text-label-code-sm font-mono">
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface">CWE-285</span>
+</td>
+<td class="px-3 py-2.5 text-on-surface-variant font-body-sm text-body-sm">
+              A01: Broken Access Control
+            </td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container text-on-surface font-label-code-sm text-label-code-sm font-mono">
+<span class="material-symbols-outlined text-xs text-primary">verified</span>
+<span class="">Rule + ML Consensus</span>
+</span>
+</td>
+<td class="px-3 py-2.5 text-right font-label-code-sm text-label-code-sm font-mono font-bold text-tertiary-container">
+              8.7
+            </td>
+<td class="px-3 py-2.5 text-center">
+<span class="px-2 py-0.5 rounded bg-surface-container text-error font-label-code-sm text-label-code-sm font-medium">
+                Open
+              </span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" title="Inspect finding" type="button">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- ROW 6 (Unchecked - Rule SAST) -->
+<tr class="hover:bg-surface-container/50 transition-colors group">
+<td class="px-4 py-2.5 text-center">
+<input class="finding-row-checkbox w-4 h-4 rounded bg-surface-container-high text-primary cursor-pointer accent-[#00dc82]" type="checkbox">
+</td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-tertiary-container/20 text-tertiary font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+<span class="">HIGH</span>
+<span class="font-mono">8.4</span>
+</span>
+</td>
+<td class="px-4 py-2.5 max-w-sm">
+<div class="flex flex-col min-w-0">
+<span class="text-on-surface font-headline-sm text-headline-sm font-medium truncate group-hover:text-primary transition-colors cursor-pointer">
+                  SSRF vulnerability in webhook callback dispatcher
+                </span>
+<span class="text-on-surface-variant font-label-code-sm text-label-code-sm truncate font-mono">
+                  reqwest::Client::new().post(&amp;target_url).send().await
+                </span>
+</div>
+</td>
+<td class="px-4 py-2.5 font-label-code-sm text-label-code-sm font-mono text-on-surface">
+<span class="text-on-surface-variant">src/webhooks/</span><span class="text-on-surface font-semibold">dispatcher.rs:214</span>
+</td>
+<td class="px-3 py-2.5 font-label-code-sm text-label-code-sm font-mono">
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface">CWE-918</span>
+</td>
+<td class="px-3 py-2.5 text-on-surface-variant font-body-sm text-body-sm">
+              A10: SSRF
+            </td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-code-sm text-label-code-sm font-mono">
+<span class="material-symbols-outlined text-xs">rule</span>
+<span class="">Rule (SAST)</span>
+</span>
+</td>
+<td class="px-3 py-2.5 text-right font-label-code-sm text-label-code-sm font-mono font-bold text-tertiary-container">
+              8.4
+            </td>
+<td class="px-3 py-2.5 text-center">
+<span class="px-2 py-0.5 rounded bg-surface-container text-error font-label-code-sm text-label-code-sm font-medium">
+                Open
+              </span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" title="Inspect finding" type="button">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- ROW 7 (Unchecked - Novel ML) -->
+<tr class="hover:bg-surface-container/50 transition-colors group">
+<td class="px-4 py-2.5 text-center">
+<input class="finding-row-checkbox w-4 h-4 rounded bg-surface-container-high text-primary cursor-pointer accent-[#00dc82]" type="checkbox">
+</td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-tertiary-container/20 text-tertiary font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+<span class="">HIGH</span>
+<span class="font-mono">8.1</span>
+</span>
+</td>
+<td class="px-4 py-2.5 max-w-sm">
+<div class="flex flex-col min-w-0">
+<span class="text-on-surface font-headline-sm text-headline-sm font-medium truncate group-hover:text-primary transition-colors cursor-pointer">
+                  Unvalidated Redirect in OAuth Callback handler
+                </span>
+<span class="text-on-surface-variant font-label-code-sm text-label-code-sm truncate font-mono">
+                  http.Redirect(w, r, r.URL.Query().Get("next"), http.StatusFound)
+                </span>
+</div>
+</td>
+<td class="px-4 py-2.5 font-label-code-sm text-label-code-sm font-mono text-on-surface">
+<span class="text-on-surface-variant">handlers/</span><span class="text-on-surface font-semibold">oauth.go:204</span>
+</td>
+<td class="px-3 py-2.5 font-label-code-sm text-label-code-sm font-mono">
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface">CWE-601</span>
+</td>
+<td class="px-3 py-2.5 text-on-surface-variant font-body-sm text-body-sm">
+              A01: Broken Access Control
+            </td>
+<td class="px-3 py-2.5">
+<!-- Distinct Novel ML Badge -->
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-primary-container text-on-primary-container font-label-code-sm text-label-code-sm font-semibold shadow-sm">
+<span class="material-symbols-outlined text-xs">auto_awesome</span>
+<span class="">Novel</span>
+<span class="font-mono font-normal opacity-90">[ML]</span>
+</span>
+</td>
+<td class="px-3 py-2.5 text-right font-label-code-sm text-label-code-sm font-mono font-bold text-tertiary-container">
+              8.1
+            </td>
+<td class="px-3 py-2.5 text-center">
+<span class="px-2 py-0.5 rounded bg-surface-container text-error font-label-code-sm text-label-code-sm font-medium">
+                Open
+              </span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" title="Inspect finding" type="button">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- ROW 8 (Unchecked - Accepted Status) -->
+<tr class="hover:bg-surface-container/50 transition-colors group">
+<td class="px-4 py-2.5 text-center">
+<input class="finding-row-checkbox w-4 h-4 rounded bg-surface-container-high text-primary cursor-pointer accent-[#00dc82]" type="checkbox">
+</td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-tertiary-container/20 text-tertiary font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+<span class="">HIGH</span>
+<span class="font-mono">7.9</span>
+</span>
+</td>
+<td class="px-4 py-2.5 max-w-sm">
+<div class="flex flex-col min-w-0">
+<span class="text-on-surface font-headline-sm text-headline-sm font-medium truncate group-hover:text-primary transition-colors cursor-pointer">
+                  Weak JWT Secret Verification algorithm confusion
+                </span>
+<span class="text-on-surface-variant font-label-code-sm text-label-code-sm truncate font-mono">
+                  jwt.Parse(tokenStr, func(t) { return []byte(pubKey), nil })
+                </span>
+</div>
+</td>
+<td class="px-4 py-2.5 font-label-code-sm text-label-code-sm font-mono text-on-surface">
+<span class="text-on-surface-variant">internal/crypto/</span><span class="text-on-surface font-semibold">jwt.go:94</span>
+</td>
+<td class="px-3 py-2.5 font-label-code-sm text-label-code-sm font-mono">
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface">CWE-327</span>
+</td>
+<td class="px-3 py-2.5 text-on-surface-variant font-body-sm text-body-sm">
+              A02: Cryptographic Failures
+            </td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container text-on-surface font-label-code-sm text-label-code-sm font-mono">
+<span class="material-symbols-outlined text-xs text-primary">verified</span>
+<span class="">Rule + ML Consensus</span>
+</span>
+</td>
+<td class="px-3 py-2.5 text-right font-label-code-sm text-label-code-sm font-mono font-bold text-tertiary">
+              7.9
+            </td>
+<td class="px-3 py-2.5 text-center">
+<span class="px-2 py-0.5 rounded bg-surface-container text-tertiary font-label-code-sm text-label-code-sm font-medium">
+                Accepted
+              </span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" title="Inspect finding" type="button">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- ROW 9 (Unchecked - False Positive Status) -->
+<tr class="hover:bg-surface-container/50 transition-colors group">
+<td class="px-4 py-2.5 text-center">
+<input class="finding-row-checkbox w-4 h-4 rounded bg-surface-container-high text-primary cursor-pointer accent-[#00dc82]" type="checkbox">
+</td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-tertiary/15 text-tertiary font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="">MED</span>
+<span class="font-mono">6.8</span>
+</span>
+</td>
+<td class="px-4 py-2.5 max-w-sm">
+<div class="flex flex-col min-w-0">
+<span class="text-on-surface font-headline-sm text-headline-sm font-medium truncate group-hover:text-primary transition-colors cursor-pointer">
+                  Permissive CORS Wildcard Policy with credentials enabled
+                </span>
+<span class="text-on-surface-variant font-label-code-sm text-label-code-sm truncate font-mono">
+                  allow_origin: "*" / allow_credentials: true
+                </span>
+</div>
+</td>
+<td class="px-4 py-2.5 font-label-code-sm text-label-code-sm font-mono text-on-surface">
+<span class="text-on-surface-variant">config/</span><span class="text-on-surface font-semibold">gateway.yaml:14</span>
+</td>
+<td class="px-3 py-2.5 font-label-code-sm text-label-code-sm font-mono">
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface">CWE-942</span>
+</td>
+<td class="px-3 py-2.5 text-on-surface-variant font-body-sm text-body-sm">
+              A05: Security Misconfig
+            </td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-code-sm text-label-code-sm font-mono">
+<span class="material-symbols-outlined text-xs">rule</span>
+<span class="">Rule (SEC-CORS)</span>
+</span>
+</td>
+<td class="px-3 py-2.5 text-right font-label-code-sm text-label-code-sm font-mono font-bold text-tertiary">
+              6.8
+            </td>
+<td class="px-3 py-2.5 text-center">
+<span class="px-2 py-0.5 rounded bg-surface-container text-outline font-label-code-sm text-label-code-sm font-medium">
+                False Positive
+              </span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" title="Inspect finding" type="button">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- ROW 10 (Unchecked - Novel ML) -->
+<tr class="hover:bg-surface-container/50 transition-colors group">
+<td class="px-4 py-2.5 text-center">
+<input class="finding-row-checkbox w-4 h-4 rounded bg-surface-container-high text-primary cursor-pointer accent-[#00dc82]" type="checkbox">
+</td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-tertiary/15 text-tertiary font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="">MED</span>
+<span class="font-mono">6.5</span>
+</span>
+</td>
+<td class="px-4 py-2.5 max-w-sm">
+<div class="flex flex-col min-w-0">
+<span class="text-on-surface font-headline-sm text-headline-sm font-medium truncate group-hover:text-primary transition-colors cursor-pointer">
+                  Memory Buffer Exposure in CGo Binding wrapper
+                </span>
+<span class="text-on-surface-variant font-label-code-sm text-label-code-sm truncate font-mono">
+                  return C.GoBytes(unsafe.Pointer(ptr), C.int(len))
+                </span>
+</div>
+</td>
+<td class="px-4 py-2.5 font-label-code-sm text-label-code-sm font-mono text-on-surface">
+<span class="text-on-surface-variant">pkg/native/</span><span class="text-on-surface font-semibold">compress.go:39</span>
+</td>
+<td class="px-3 py-2.5 font-label-code-sm text-label-code-sm font-mono">
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface">CWE-119</span>
+</td>
+<td class="px-3 py-2.5 text-on-surface-variant font-body-sm text-body-sm">
+              A06: Vulnerable Comps
+            </td>
+<td class="px-3 py-2.5">
+<!-- Distinct Novel ML Badge -->
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-primary-container text-on-primary-container font-label-code-sm text-label-code-sm font-semibold shadow-sm">
+<span class="material-symbols-outlined text-xs">auto_awesome</span>
+<span class="">Novel</span>
+<span class="font-mono font-normal opacity-90">[ML]</span>
+</span>
+</td>
+<td class="px-3 py-2.5 text-right font-label-code-sm text-label-code-sm font-mono font-bold text-tertiary">
+              6.5
+            </td>
+<td class="px-3 py-2.5 text-center">
+<span class="px-2 py-0.5 rounded bg-surface-container text-error font-label-code-sm text-label-code-sm font-medium">
+                Open
+              </span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" title="Inspect finding" type="button">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- ROW 11 (Unchecked - Low) -->
+<tr class="hover:bg-surface-container/50 transition-colors group">
+<td class="px-4 py-2.5 text-center">
+<input class="finding-row-checkbox w-4 h-4 rounded bg-surface-container-high text-primary cursor-pointer accent-[#00dc82]" type="checkbox">
+</td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-secondary/15 text-secondary font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="">LOW</span>
+<span class="font-mono">4.2</span>
+</span>
+</td>
+<td class="px-4 py-2.5 max-w-sm">
+<div class="flex flex-col min-w-0">
+<span class="text-on-surface font-headline-sm text-headline-sm font-medium truncate group-hover:text-primary transition-colors cursor-pointer">
+                  Verbose stack trace exposed in production error response
+                </span>
+<span class="text-on-surface-variant font-label-code-sm text-label-code-sm truncate font-mono">
+                  json.NewEncoder(w).Encode(map[string]any{"debug": debug.Stack()})
+                </span>
+</div>
+</td>
+<td class="px-4 py-2.5 font-label-code-sm text-label-code-sm font-mono text-on-surface">
+<span class="text-on-surface-variant">api/handlers/</span><span class="text-on-surface font-semibold">errors.go:52</span>
+</td>
+<td class="px-3 py-2.5 font-label-code-sm text-label-code-sm font-mono">
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface">CWE-209</span>
+</td>
+<td class="px-3 py-2.5 text-on-surface-variant font-body-sm text-body-sm">
+              A05: Security Misconfig
+            </td>
+<td class="px-3 py-2.5">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-code-sm text-label-code-sm font-mono">
+<span class="material-symbols-outlined text-xs">rule</span>
+<span class="">Rule (LINT)</span>
+</span>
+</td>
+<td class="px-3 py-2.5 text-right font-label-code-sm text-label-code-sm font-mono font-bold text-secondary">
+              4.2
+            </td>
+<td class="px-3 py-2.5 text-center">
+<span class="px-2 py-0.5 rounded bg-surface-container text-error font-label-code-sm text-label-code-sm font-medium">
+                Open
+              </span>
+</td>
+<td class="px-3 py-2.5 text-center">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" title="Inspect finding" type="button">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Pagination & Precision Density Bar -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-md p-space-sm px-space-md bg-surface-container text-on-surface-variant font-label-code-sm text-label-code-sm">
+<!-- Left Count Indicator -->
+<div class="flex items-center gap-2">
+<span class="">Showing</span>
+<span class="font-mono text-on-surface font-semibold">1-50</span>
+<span class="">of</span>
+<span class="font-mono text-on-surface font-semibold">128</span>
+<span class="">findings</span>
+</div>
+<!-- Center Per Page Selector -->
+<div class="flex items-center gap-2">
+<span class="">Rows:</span>
+<div class="relative inline-flex items-center">
+<select class="appearance-none bg-surface-container-high text-on-surface font-label-code-sm text-label-code-sm pl-2 pr-6 py-1 rounded focus:outline-none cursor-pointer">
+<option selected="">50 per page</option>
+<option>100 per page</option>
+<option>250 per page</option>
+<option>All per page</option>
+</select>
+<span class="material-symbols-outlined absolute right-1 pointer-events-none text-on-surface-variant text-sm">arrow_drop_down</span>
+</div>
+</div>
+<!-- Right Pagination Controls -->
+<div class="flex items-center gap-1.5">
+<button class="p-1 rounded bg-surface-container-low text-outline opacity-50 cursor-not-allowed" disabled="" title="Previous page" type="button">
+<span class="material-symbols-outlined text-base">chevron_left</span>
+</button>
+<!-- Page 1 (Active Emerald Indicator) -->
+<button class="px-2.5 py-1 rounded bg-primary-container text-on-primary-container font-mono font-bold shadow-sm" type="button">
+          1
+        </button>
+<button class="px-2.5 py-1 rounded bg-surface-container-high text-on-surface hover:bg-surface-bright font-mono transition-colors" type="button">
+          2
+        </button>
+<button class="px-2.5 py-1 rounded bg-surface-container-high text-on-surface hover:bg-surface-bright font-mono transition-colors" type="button">
+          3
+        </button>
+<button class="p-1 rounded bg-surface-container-high hover:bg-surface-bright text-on-surface transition-colors" title="Next page" type="button">
+<span class="material-symbols-outlined text-base">chevron_right</span>
+</button>
+<div class="hidden md:flex items-center gap-1.5 ml-2 pl-2 border-l border-surface-container-highest">
+<span class="text-outline text-xs">Jump:</span>
+<input class="w-8 text-center py-0.5 rounded bg-surface-container-low text-on-surface font-mono text-xs focus:outline-none" placeholder="pg" type="text" value="1">
+</div>
+</div>
+</div>
+</div>
+<!-- Deep Inspection Auxiliary Panel Snippet Drawer Indicator -->
+<div class="mt-space-md p-space-md rounded-xl bg-surface-container-low shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-xl">terminal</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm font-semibold text-on-surface truncate">
+            Quick Diagnostic Hook: services/auth/keys.go:88
+          </span>
+<span class="px-1.5 py-0.2 rounded bg-primary-container text-on-primary-container font-label-code-sm text-label-code-sm font-bold">
+            NOVEL ML
+          </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">
+          AI heuristics detected an entropy violation matching an RSA Private Key block used in static build initialization.
+        </p>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<button class="flex items-center gap-1.5 px-space-md py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-headline-sm text-headline-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-base text-primary">auto_fix_high</span>
+<span class="">Generate AI Remediation</span>
+</button>
+<button class="flex items-center gap-1 px-space-sm py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" title="Expand Full Drawer" type="button">
+<span class="material-symbols-outlined text-lg">open_in_new</span>
+</button>
+</div>
+</div>
+</div></main></div>
+
+</body></html>

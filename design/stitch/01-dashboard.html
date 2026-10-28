@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"secondary":"#adc6ff","on-background":"#dfe2ee","on-tertiary":"#472a00","secondary-fixed-dim":"#adc6ff","on-primary":"#00391d","secondary-fixed":"#d8e2ff","surface-tint":"#1ce388","secondary-container":"#0566d9","inverse-on-surface":"#2c3039","tertiary-fixed-dim":"#ffb95f","background":"#0f131c","surface-variant":"#31353e","surface-container-lowest":"#0a0e16","inverse-primary":"#006d3e","error-container":"#93000a","tertiary-fixed":"#ffddb8","on-tertiary-fixed":"#2a1700","outline":"#859587","on-secondary-fixed":"#001a42","surface-container":"#1c2028","error":"#ffb4ab","tertiary":"#ffd5a5","primary-fixed":"#59ffa4","on-secondary-container":"#e6ecff","surface":"#0f131c","surface-bright":"#353942","on-tertiary-container":"#6f4500","on-secondary":"#002e6a","on-error-container":"#ffdad6","on-surface":"#dfe2ee","primary":"#45f99c","on-primary-fixed-variant":"#00522d","surface-dim":"#0f131c","on-primary-fixed":"#00210f","on-error":"#690005","on-tertiary-fixed-variant":"#653e00","surface-container-high":"#262a33","outline-variant":"#3c4a3f","on-surface-variant":"#bacbbc","surface-container-low":"#181c24","primary-fixed-dim":"#1ce388","surface-container-highest":"#31353e","tertiary-container":"#ffb044","on-primary-container":"#005b32","primary-container":"#00dc82","inverse-surface":"#dfe2ee","on-secondary-fixed-variant":"#004395"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"gutter-desktop":"1.5rem","space-sm":"0.5rem","space-xl":"2rem","margin":"1rem","space-lg":"1.5rem","space-xs":"0.25rem","margin-desktop":"2rem","gutter":"1rem","space-md":"1rem"},fontFamily:{"headline-md":["Inter"],"headline-xl":["Inter"],"label-code-lg":["JetBrains Mono"],"label-code-md":["JetBrains Mono"],"body-sm":["Inter"],"headline-sm":["Inter"],"body-lg":["Inter"],"body-md":["Inter"],"label-code-sm":["JetBrains Mono"],"headline-lg":["Inter"]},fontSize:{"headline-md":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"-0.015em","fontWeight":"600"}],"headline-xl":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.025em","fontWeight":"600"}],"label-code-lg":["0.875rem",{"lineHeight":"1.375rem","letterSpacing":"-0.01em","fontWeight":"500"}],"label-code-md":["0.75rem",{"lineHeight":"1.125rem","letterSpacing":"0em","fontWeight":"500"}],"body-sm":["0.75rem",{"lineHeight":"1.125rem","letterSpacing":"0.01em","fontWeight":"400"}],"headline-sm":["1rem",{"lineHeight":"1.5rem","letterSpacing":"-0.01em","fontWeight":"600"}],"body-lg":["1rem",{"lineHeight":"1.625rem","letterSpacing":"-0.005em","fontWeight":"400"}],"body-md":["0.875rem",{"lineHeight":"1.375rem","letterSpacing":"0em","fontWeight":"400"}],"label-code-sm":["0.6875rem",{"lineHeight":"1rem","letterSpacing":"0.025em","fontWeight":"600"}],"headline-lg":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.02em","fontWeight":"600"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="flex flex-col"><div class="h-16 px-space-md flex items-center justify-between bg-surface-container-low"><div class="flex items-center gap-space-sm"><img alt="ZeroSentinel Shield Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Wed_pUB1ykxQPnPqBFw2H__EJZZBtbqdpQuesl9qt2Uy1Uos5IU9_4t174YvXz7ZY5-MiZ0cc9tWGC92nMoesrWFrLDH0aDrfzFXQG7nb_UE3w84ktxEtYaGW4rv2kjr5RPG0T-JyhB0AKcHRgd9vYIg6S1UtKw40qEB0uxRn_0I03VJ5LsFM_FRITJu9PXQhLI-uyxdYxtxnJIbYNfPqFxizkvAezQj4PnnPiinoM"/><span class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">ZeroSentinel</span></div><span class="font-label-code-sm text-label-code-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-primary font-medium">v2.4-secops</span></div><nav class="px-space-sm pt-space-md flex flex-col gap-1" data-active-classes="bg-surface-container-high text-primary font-medium rounded-lg"><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-2 transition-colors bg-surface-container-high text-primary font-medium rounded-lg" data-path="dashboard" href="#"><span class="material-symbols-outlined text-lg">dashboard</span><span>Dashboard</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="new-scan" href="#"><span class="material-symbols-outlined text-lg">radar</span><span>New Scan</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="findings" href="#"><span class="material-symbols-outlined text-lg">shield_with_house</span><span>Findings</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="reports" href="#"><span class="material-symbols-outlined text-lg">description</span><span>Reports</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="model-governance" href="#"><span class="material-symbols-outlined text-lg">smart_toy</span><span>Model</span></a></nav></div><div class="p-space-sm flex flex-col gap-space-sm"><div class="p-space-sm rounded-lg bg-surface-container flex flex-col gap-1"><div class="flex items-center justify-between text-on-surface-variant"><span class="font-label-code-sm text-label-code-sm uppercase">Engine</span><div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span class="font-label-code-sm text-label-code-sm text-primary">Healthy</span></div></div><div class="flex items-center justify-between text-on-surface-variant"><span class="font-label-code-sm text-label-code-sm uppercase">Ruleset</span><span class="font-label-code-sm text-label-code-sm text-on-surface font-mono">v2025.2</span></div></div><div class="p-space-xs rounded-lg bg-surface-container-high flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDd1wTG-Xk7cx2bfNAeiu7zfylQP8FTb7HT91lDZaAmSvivlifJgVlKQ_d4mROvs7EVsKBycmveRKg5926u2Ptf6QVw7zNmshZKi3gWqqt7Fb_3uAjpDcb1C23RjF0bleYyNQ9q4LMB2ZQO-Y8hSTZQwBcM1m-hFAoh8An_fPXKQwvNNnooQq38yZ_f8WolZHFMI2EBkYuvxaKdQ1UhMMDN0WjY13OvLs9XZ6m66uY"/><div class="flex flex-col min-w-0"><span class="font-body-sm text-body-sm font-medium text-on-surface truncate">SecOps Lead</span><span class="font-label-code-sm text-label-code-sm text-on-surface-variant truncate">sec-ops@sentinel</span></div></div><span class="material-symbols-outlined text-on-surface-variant text-base cursor-pointer hover:text-on-surface">unfold_more</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.3)] z-40 flex items-center justify-between px-space-lg gap-space-md"><div class="flex items-center gap-space-md flex-1 max-w-2xl"><div class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface cursor-pointer"><span class="material-symbols-outlined text-base text-primary">source_environment</span><span class="font-label-code-sm text-label-code-sm text-on-surface font-medium truncate max-w-[200px]">production-monorepo / main</span><span class="material-symbols-outlined text-sm">expand_more</span></div><div class="relative flex-1"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg pointer-events-none">search</span><input class="w-full pl-9 pr-space-md py-1.5 rounded-lg bg-surface-container text-on-surface placeholder:text-outline font-label-code-sm text-label-code-sm focus:outline-none focus:bg-surface-container-high" placeholder="Search repos, CVEs, findings, rules... [Cmd + K]" type="text"/></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-2 px-space-sm py-1 rounded bg-surface-container-low"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span></span><span class="font-label-code-sm text-label-code-sm text-on-surface font-medium">Scan: Continuous</span></div><button class="flex items-center gap-1.5 px-space-md py-1.5 rounded-lg bg-primary-container text-on-primary-container font-headline-sm text-headline-sm font-semibold hover:bg-primary transition-colors" type="button"><span class="material-symbols-outlined text-lg">add</span><span>New scan</span></button></div></header><main class="relative pt-16 w-full px-gutter-desktop bg-background min-h-screen"><div class="flex flex-col w-full pb- space-xl text-on-surface">
+<!-- CONTEXT & REPOSITORY SUB-HEADER BAR -->
+<header class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md py-space-md mb-space-lg">
+<div class="flex flex-col gap-1.5 min-w-0">
+<div class="flex flex-wrap items-center gap-space-sm">
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Security Posture Overview</h1>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-high text-on-surface">
+<span class="material-symbols-outlined text-xs text-primary">token</span>
+<span class="font-label-code-sm text-label-code-sm text-primary font-mono select-all">core-payment-gateway@sha256:7f3a9</span>
+</div>
+<div class="flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-code-sm text-label-code-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span>Last scanned 18m ago</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Continuous telemetry scan across static binaries, dynamic endpoints, and ML rule heuristics.</p>
+</div>
+<!-- QUICK FILTERS & EXPORT ACTIONS -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="relative">
+<select class="appearance-none bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm px-3 py-1.5 pr-8 rounded focus:outline-none cursor-pointer">
+<option>Last 7 Days</option>
+<option>Last 24 Hours</option>
+<option>Last 30 Days</option>
+<option>Quarter to Date</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-sm text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+<div class="relative">
+<select class="appearance-none bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm px-3 py-1.5 pr-8 rounded focus:outline-none cursor-pointer">
+<option>Branch: main</option>
+<option>Branch: release/v2.9</option>
+<option>Branch: staging</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-sm text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+<div class="relative">
+<select class="appearance-none bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm px-3 py-1.5 pr-8 rounded focus:outline-none cursor-pointer">
+<option>Target: All Targets</option>
+<option>Target: Payment Engine</option>
+<option>Target: Auth Subsystem</option>
+<option>Target: DB Connector</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-sm text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+<div class="h-6 w-px bg-surface-variant mx-1 hidden sm:block"></div>
+<button class="p-1.5 rounded bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center" title="Export SARIF / JSON" type="button">
+<span class="material-symbols-outlined text-lg">file_download</span>
+</button>
+<button class="p-1.5 rounded bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center" title="Scan Policy Settings" type="button">
+<span class="material-symbols-outlined text-lg">tune</span>
+</button>
+</div>
+</header>
+<!-- 5 ROW KPI METRIC CARDS -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-space-lg">
+<!-- KPI 1: TOTAL FINDINGS -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+<span class="font-body-sm text-body-sm font-medium tracking-wide uppercase">Total findings</span>
+<span class="material-symbols-outlined text-base">analytics</span>
+</div>
+<div>
+<div class="font-label-code-lg text-2xl font-bold font-mono text-on-surface tracking-tight">1,284</div>
+<div class="flex items-center gap-1.5 mt-1 font-body-sm text-body-sm text-error">
+<span class="material-symbols-outlined text-xs">arrow_upward</span>
+<span>+34 from last commit</span>
+</div>
+</div>
+<div class="mt-space-sm pt-space-xs text-on-surface-variant font-label-code-sm text-label-code-sm">
+        across 42,910 LOC
+      </div>
+</div>
+<!-- KPI 2: CRITICAL -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-body-sm text-body-sm font-medium tracking-wide uppercase text-on-surface-variant">Critical findings</span>
+<span class="material-symbols-outlined text-base text-error">emergency_home</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-error-container text-error font-label-code-sm text-label-code-sm font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+            CRITICAL 14
+          </span>
+</div>
+<div class="font-label-code-lg text-2xl font-bold font-mono text-error mt-1 tracking-tight">14</div>
+</div>
+<div class="mt-space-sm pt-space-xs text-on-surface-variant font-label-code-sm text-label-code-sm">
+        11 SAST, 3 Secrets
+      </div>
+</div>
+<!-- KPI 3: HIGH -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-body-sm text-body-sm font-medium tracking-wide uppercase text-on-surface-variant">High severity</span>
+<span class="material-symbols-outlined text-base text-tertiary-container">warning</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-tertiary-fixed-dim/20 text-tertiary-container font-label-code-sm text-label-code-sm font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+            HIGH 68
+          </span>
+</div>
+<div class="font-label-code-lg text-2xl font-bold font-mono text-tertiary mt-1 tracking-tight">68</div>
+</div>
+<div class="mt-space-sm pt-space-xs text-on-surface-variant font-label-code-sm text-label-code-sm">
+        42 SAST, 26 SCA/Dep
+      </div>
+</div>
+<!-- KPI 4: NOVEL ML -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-body-sm text-body-sm font-medium tracking-wide uppercase text-on-surface-variant">Novel ML Findings</span>
+<span class="material-symbols-outlined text-base text-primary">psychology</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-primary font-label-code-sm text-label-code-sm font-medium">
+            ML Zero-Day Heuristic
+          </span>
+</div>
+<div class="font-label-code-lg text-2xl font-bold font-mono text-primary mt-1 tracking-tight">19</div>
+</div>
+<div class="mt-space-sm pt-space-xs text-on-surface-variant font-label-code-sm text-label-code-sm">
+        Zero false-positives confirmed
+      </div>
+</div>
+<!-- KPI 5: LAST SCAN RISK SCORE -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-body-sm text-body-sm font-medium tracking-wide uppercase text-on-surface-variant">Risk Score Index</span>
+<span class="material-symbols-outlined text-base text-secondary">speed</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-error-container/60 text-error font-label-code-sm text-label-code-sm font-semibold tracking-wide">
+            ELEVATED RISK
+          </span>
+</div>
+<div class="font-label-code-lg text-2xl font-bold font-mono text-on-surface mt-1 tracking-tight">
+          7.8 <span class="text-sm font-normal text-on-surface-variant">/ 10</span>
+</div>
+</div>
+<div class="mt-space-sm pt-space-xs text-error font-label-code-sm text-label-code-sm">
+        +0.4 vs baseline commit
+      </div>
+</div>
+</section>
+<!-- ANALYTICS VISUALIZATION SECTION: SEVERITY DONUT & OWASP BARS -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg mb-space-lg">
+<!-- SEVERITY DONUT CHART PANEL (COL 5) -->
+<div class="lg:col-span-5 bg-surface-container-low p-space-lg rounded-xl flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between mb-space-md">
+<div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Findings by Severity</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Breakdown across deterministic rule triggers</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-lg">pie_chart</span>
+</div>
+<!-- DONUT VISUALIZATION -->
+<div class="relative flex items-center justify-center my-4">
+<svg class="w-52 h-52 -rotate-90 transform" viewbox="0 0 160 160">
+<!-- Background track -->
+<circle cx="80" cy="80" fill="transparent" r="62" stroke="#1c2028" stroke-width="16"></circle>
+<!-- Low: 790 (61.5%) -> dasharray: 239.5, 389.5 -->
+<circle cx="80" cy="80" fill="transparent" r="62" stroke="#0566d9" stroke-dasharray="239.5 389.5" stroke-dashoffset="0" stroke-width="16"></circle>
+<!-- Medium: 412 (32.1%) -> dasharray: 125, 389.5 -> offset: -239.5 -->
+<circle cx="80" cy="80" fill="transparent" r="62" stroke="#ffb044" stroke-dasharray="125 389.5" stroke-dashoffset="-239.5" stroke-width="16"></circle>
+<!-- High: 68 (5.3%) -> dasharray: 20.6, 389.5 -> offset: -364.5 -->
+<circle cx="80" cy="80" fill="transparent" r="62" stroke="#ffb4ab" stroke-dasharray="20.6 389.5" stroke-dashoffset="-364.5" stroke-width="16"></circle>
+<!-- Critical: 14 (1.1%) -> dasharray: 4.4, 389.5 -> offset: -385.1 -->
+<circle cx="80" cy="80" fill="transparent" r="62" stroke="#93000a" stroke-dasharray="5 389.5" stroke-dashoffset="-385.1" stroke-width="16"></circle>
+</svg>
+<div class="absolute flex flex-col items-center justify-center text-center">
+<span class="font-label-code-lg text-2xl font-bold font-mono text-on-surface">1,284</span>
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant uppercase tracking-wider">Total</span>
+</div>
+</div>
+<!-- LEGEND WITH METRICS -->
+<div class="grid grid-cols-2 gap-space-sm pt-space-sm">
+<div class="flex items-center justify-between p-2 rounded bg-surface-container">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-error"></span>
+<span class="font-label-code-sm text-label-code-sm font-semibold text-on-surface">CRITICAL</span>
+</div>
+<div class="font-label-code-sm text-label-code-sm font-mono text-on-surface">14 <span class="text-on-surface-variant font-normal">(1.1%)</span></div>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-surface-container">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary-container"></span>
+<span class="font-label-code-sm text-label-code-sm font-semibold text-on-surface">HIGH</span>
+</div>
+<div class="font-label-code-sm text-label-code-sm font-mono text-on-surface">68 <span class="text-on-surface-variant font-normal">(5.3%)</span></div>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-surface-container">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="font-label-code-sm text-label-code-sm font-semibold text-on-surface">MEDIUM</span>
+</div>
+<div class="font-label-code-sm text-label-code-sm font-mono text-on-surface">412 <span class="text-on-surface-variant font-normal">(32.1%)</span></div>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-surface-container">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary-container"></span>
+<span class="font-label-code-sm text-label-code-sm font-semibold text-on-surface">LOW</span>
+</div>
+<div class="font-label-code-sm text-label-code-sm font-mono text-on-surface">790 <span class="text-on-surface-variant font-normal">(61.5%)</span></div>
+</div>
+</div>
+</div>
+<!-- OWASP TOP 10 VISUALIZATION PANEL (COL 7) -->
+<div class="lg:col-span-7 bg-surface-container-low p-space-lg rounded-xl flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between mb-space-md">
+<div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Findings by OWASP Top 10 2025</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Classified security exposures ranked by frequency</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant font-mono">Total mapped: 1,059</span>
+</div>
+</div>
+<!-- HORIZONTAL BARS -->
+<div class="flex flex-col gap-3.5 my-auto">
+<!-- Item 1 -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between font-body-sm text-body-sm">
+<div class="flex items-center gap-2 truncate">
+<span class="font-label-code-sm text-label-code-sm font-semibold text-primary font-mono">A01</span>
+<span class="truncate text-on-surface">Broken Access Control</span>
+</div>
+<span class="font-label-code-sm text-label-code-sm font-mono font-medium text-on-surface ml-2">312</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full rounded-full bg-primary" style="width: 85%;"></div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between font-body-sm text-body-sm">
+<div class="flex items-center gap-2 truncate">
+<span class="font-label-code-sm text-label-code-sm font-semibold text-primary font-mono">A03</span>
+<span class="truncate text-on-surface">Injection (SQL/Command/Prompt)</span>
+</div>
+<span class="font-label-code-sm text-label-code-sm font-mono font-medium text-on-surface ml-2">248</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full rounded-full bg-primary" style="width: 68%;"></div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between font-body-sm text-body-sm">
+<div class="flex items-center gap-2 truncate">
+<span class="font-label-code-sm text-label-code-sm font-semibold text-primary font-mono">A02</span>
+<span class="truncate text-on-surface">Cryptographic Failures</span>
+</div>
+<span class="font-label-code-sm text-label-code-sm font-mono font-medium text-on-surface ml-2">189</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full rounded-full bg-primary" style="width: 52%;"></div>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between font-body-sm text-body-sm">
+<div class="flex items-center gap-2 truncate">
+<span class="font-label-code-sm text-label-code-sm font-semibold text-primary font-mono">A07</span>
+<span class="truncate text-on-surface">Identification &amp; Auth Failures</span>
+</div>
+<span class="font-label-code-sm text-label-code-sm font-mono font-medium text-on-surface ml-2">142</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full rounded-full bg-primary" style="width: 39%;"></div>
+</div>
+</div>
+<!-- Item 5 -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between font-body-sm text-body-sm">
+<div class="flex items-center gap-2 truncate">
+<span class="font-label-code-sm text-label-code-sm font-semibold text-primary font-mono">A05</span>
+<span class="truncate text-on-surface">Security Misconfiguration</span>
+</div>
+<span class="font-label-code-sm text-label-code-sm font-mono font-medium text-on-surface ml-2">96</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full rounded-full bg-primary" style="width: 26%;"></div>
+</div>
+</div>
+<!-- Item 6 -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between font-body-sm text-body-sm">
+<div class="flex items-center gap-2 truncate">
+<span class="font-label-code-sm text-label-code-sm font-semibold text-primary font-mono">A08</span>
+<span class="truncate text-on-surface">Software &amp; Data Integrity Failures</span>
+</div>
+<span class="font-label-code-sm text-label-code-sm font-mono font-medium text-on-surface ml-2">64</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full rounded-full bg-primary" style="width: 18%;"></div>
+</div>
+</div>
+<!-- Item 7 -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between font-body-sm text-body-sm">
+<div class="flex items-center gap-2 truncate">
+<span class="font-label-code-sm text-label-code-sm font-semibold text-primary font-mono">A10</span>
+<span class="truncate text-on-surface">Server-Side Request Forgery (SSRF)</span>
+</div>
+<span class="font-label-code-sm text-label-code-sm font-mono font-medium text-on-surface ml-2">38</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full rounded-full bg-primary" style="width: 10%;"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- LOWER SPLIT SECTION: RECENT SCANS TABLE & TOP RISKS LIST -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- RECENT SCANS TABLE (COL 7) -->
+<div class="lg:col-span-7 bg-surface-container-low p-space-lg rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="flex items-center justify-between mb-space-md">
+<div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Recent Scans</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Continuous CI/CD pipeline triggers and scheduled audit jobs</p>
+</div>
+<a class="font-body-sm text-body-sm text-primary hover:underline flex items-center gap-1 font-medium" href="#">
+<span>View all scans</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+<div class="overflow-x-auto -mx-space-lg px-space-lg">
+<table class="w-full text-left font-body-sm text-body-sm border-collapse">
+<thead>
+<tr class="text-on-surface-variant bg-surface-container font-label-code-sm text-label-code-sm uppercase tracking-wider">
+<th class="py-2.5 px-3 rounded-l">Name / Commit</th>
+<th class="py-2.5 px-3">Date</th>
+<th class="py-2.5 px-3">Files</th>
+<th class="py-2.5 px-3">Findings</th>
+<th class="py-2.5 px-3">Score</th>
+<th class="py-2.5 px-3 rounded-r text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-variant/40">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="py-3 px-3">
+<div class="font-medium text-on-surface truncate max-w-[170px]" title="feat(auth): add jwt rotation">feat(auth): add jwt rotation</div>
+<div class="font-mono text-on-surface-variant font-label-code-sm text-label-code-sm">commit 9a8c1f</div>
+</td>
+<td class="py-3 px-3 text-on-surface-variant whitespace-nowrap">Today, 14:28</td>
+<td class="py-3 px-3 font-mono text-on-surface-variant whitespace-nowrap">842 files</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="text-error font-medium">4 Crit</span> · <span class="text-tertiary">12 High</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="px-1.5 py-0.5 rounded font-mono font-label-code-sm text-label-code-sm bg-error-container text-error font-semibold">8.2</span>
+</td>
+<td class="py-3 px-3 text-right whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-high text-primary font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> COMPLETED
+                </span>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="py-3 px-3">
+<div class="font-medium text-on-surface truncate max-w-[170px]" title="fix(api): rate-limiting bypass">fix(api): rate-limiting bypass</div>
+<div class="font-mono text-on-surface-variant font-label-code-sm text-label-code-sm">commit 3e4b7c</div>
+</td>
+<td class="py-3 px-3 text-on-surface-variant whitespace-nowrap">Today, 10:15</td>
+<td class="py-3 px-3 font-mono text-on-surface-variant whitespace-nowrap">119 files</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="text-on-surface-variant">0 Crit</span> · <span class="text-tertiary">2 High</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="px-1.5 py-0.5 rounded font-mono font-label-code-sm text-label-code-sm bg-surface-container-high text-on-surface">4.1</span>
+</td>
+<td class="py-3 px-3 text-right whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-high text-tertiary font-label-code-sm text-label-code-sm font-semibold">
+<span class="material-symbols-outlined text-xs animate-spin">progress_activity</span> IN PROGRESS
+                </span>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="py-3 px-3">
+<div class="font-medium text-on-surface truncate max-w-[170px]" title="merge: release-v2.9.0">merge: release-v2.9.0</div>
+<div class="font-mono text-on-surface-variant font-label-code-sm text-label-code-sm">commit 8f11d2</div>
+</td>
+<td class="py-3 px-3 text-on-surface-variant whitespace-nowrap">Yesterday, 22:40</td>
+<td class="py-3 px-3 font-mono text-on-surface-variant whitespace-nowrap">3,410 files</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="text-error font-medium">14 Crit</span> · <span class="text-tertiary">68 High</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="px-1.5 py-0.5 rounded font-mono font-label-code-sm text-label-code-sm bg-error-container text-error font-semibold">7.8</span>
+</td>
+<td class="py-3 px-3 text-right whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-high text-primary font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> COMPLETED
+                </span>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="py-3 px-3">
+<div class="font-medium text-on-surface truncate max-w-[170px]" title="daily-nightly-scheduled">daily-nightly-scheduled</div>
+<div class="font-mono text-on-surface-variant font-label-code-sm text-label-code-sm">main-cron</div>
+</td>
+<td class="py-3 px-3 text-on-surface-variant whitespace-nowrap">Yesterday, 04:00</td>
+<td class="py-3 px-3 font-mono text-on-surface-variant whitespace-nowrap">4,980 files</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="text-error font-medium">11 Crit</span> · <span class="text-tertiary">59 High</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="px-1.5 py-0.5 rounded font-mono font-label-code-sm text-label-code-sm bg-error-container text-error font-semibold">7.4</span>
+</td>
+<td class="py-3 px-3 text-right whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-high text-primary font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> COMPLETED
+                </span>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="py-3 px-3">
+<div class="font-medium text-on-surface truncate max-w-[170px]" title="refactor(db): pooling driver">refactor(db): pooling driver</div>
+<div class="font-mono text-on-surface-variant font-label-code-sm text-label-code-sm">commit 1c02ab</div>
+</td>
+<td class="py-3 px-3 text-on-surface-variant whitespace-nowrap">2 days ago</td>
+<td class="py-3 px-3 font-mono text-on-surface-variant whitespace-nowrap">64 files</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="text-on-surface-variant">0 Crit · 0 High</span>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="px-1.5 py-0.5 rounded font-mono font-label-code-sm text-label-code-sm bg-surface-container-high text-primary font-semibold">1.2</span>
+</td>
+<td class="py-3 px-3 text-right whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high text-primary font-label-code-sm text-label-code-sm font-semibold">
+<span class="material-symbols-outlined text-xs">verified_user</span> CLEAN
+                </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- TOP RISKS / HIGHEST SCORING FINDINGS (COL 5) -->
+<div class="lg:col-span-5 bg-surface-container-low p-space-lg rounded-xl shadow-sm flex flex-col">
+<div class="flex items-center justify-between mb-space-md">
+<div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Top Risks</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Highest-scoring findings requiring immediate remediation</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-lg">crisis_alert</span>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Risk 1 -->
+<article class="p-space-sm rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors flex flex-col gap-1.5">
+<div class="flex items-center justify-between gap-2">
+<span class="px-2 py-0.5 rounded bg-error-container text-error font-label-code-sm text-label-code-sm font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span> [CRITICAL]
+            </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-lowest font-mono font-label-code-sm text-label-code-sm font-bold text-error">
+              9.8 <span class="font-normal text-on-surface-variant">/ 10</span>
+</span>
+</div>
+<h3 class="font-headline-sm text-sm font-semibold text-on-surface line-clamp-1">
+            Unsanitized SQL concatenation in payment gateway hook
+          </h3>
+<div class="flex items-center justify-between text-on-surface-variant font-label-code-sm text-label-code-sm">
+<span class="font-mono text-on-surface-variant truncate max-w-[200px]" title="services/billing/charge.go:142">services/billing/charge.go:142</span>
+<span class="font-mono text-outline">CWE-89 · SAST-HIGH-CONF</span>
+</div>
+</article>
+<!-- Risk 2 -->
+<article class="p-space-sm rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors flex flex-col gap-1.5">
+<div class="flex items-center justify-between gap-2">
+<span class="px-2 py-0.5 rounded bg-error-container text-error font-label-code-sm text-label-code-sm font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span> [CRITICAL]
+            </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-lowest font-mono font-label-code-sm text-label-code-sm font-bold text-error">
+              9.6 <span class="font-normal text-on-surface-variant">/ 10</span>
+</span>
+</div>
+<h3 class="font-headline-sm text-sm font-semibold text-on-surface line-clamp-1">
+            AWS Secret Access Key hardcoded in test fixture configuration
+          </h3>
+<div class="flex items-center justify-between text-on-surface-variant font-label-code-sm text-label-code-sm">
+<span class="font-mono text-on-surface-variant truncate max-w-[200px]" title="deploy/fixtures/test_credentials.json:28">deploy/fixtures/test_credentials.json:28</span>
+<span class="font-mono text-primary font-medium">CWE-798 · ML-HEURISTIC-NOVEL</span>
+</div>
+</article>
+<!-- Risk 3 -->
+<article class="p-space-sm rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors flex flex-col gap-1.5">
+<div class="flex items-center justify-between gap-2">
+<span class="px-2 py-0.5 rounded bg-error-container text-error font-label-code-sm text-label-code-sm font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span> [CRITICAL]
+            </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-lowest font-mono font-label-code-sm text-label-code-sm font-bold text-error">
+              9.3 <span class="font-normal text-on-surface-variant">/ 10</span>
+</span>
+</div>
+<h3 class="font-headline-sm text-sm font-semibold text-on-surface line-clamp-1">
+            Remote Code Execution via insecure YAML deserialization
+          </h3>
+<div class="flex items-center justify-between text-on-surface-variant font-label-code-sm text-label-code-sm">
+<span class="font-mono text-on-surface-variant truncate max-w-[200px]" title="internal/parser/config_loader.py:87">internal/parser/config_loader.py:87</span>
+<span class="font-mono text-outline">CWE-502 · CVE-2024-41110</span>
+</div>
+</article>
+<!-- Risk 4 -->
+<article class="p-space-sm rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors flex flex-col gap-1.5">
+<div class="flex items-center justify-between gap-2">
+<span class="px-2 py-0.5 rounded bg-tertiary-fixed-dim/20 text-tertiary-container font-label-code-sm text-label-code-sm font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span> [HIGH]
+            </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-lowest font-mono font-label-code-sm text-label-code-sm font-bold text-tertiary">
+              8.7 <span class="font-normal text-on-surface-variant">/ 10</span>
+</span>
+</div>
+<h3 class="font-headline-sm text-sm font-semibold text-on-surface line-clamp-1">
+            Cross-Tenant Authorization token validation bypass
+          </h3>
+<div class="flex items-center justify-between text-on-surface-variant font-label-code-sm text-label-code-sm">
+<span class="font-mono text-on-surface-variant truncate max-w-[200px]" title="pkg/middleware/tenant_rbac.ts:63">pkg/middleware/tenant_rbac.ts:63</span>
+<span class="font-mono text-primary font-medium">CWE-285 · ML-HEURISTIC-NOVEL</span>
+</div>
+</article>
+<!-- Risk 5 -->
+<article class="p-space-sm rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors flex flex-col gap-1.5">
+<div class="flex items-center justify-between gap-2">
+<span class="px-2 py-0.5 rounded bg-tertiary-fixed-dim/20 text-tertiary-container font-label-code-sm text-label-code-sm font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span> [HIGH]
+            </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-lowest font-mono font-label-code-sm text-label-code-sm font-bold text-tertiary">
+              8.4 <span class="font-normal text-on-surface-variant">/ 10</span>
+</span>
+</div>
+<h3 class="font-headline-sm text-sm font-semibold text-on-surface line-clamp-1">
+            SSRF vulnerability in webhook callback dispatcher
+          </h3>
+<div class="flex items-center justify-between text-on-surface-variant font-label-code-sm text-label-code-sm">
+<span class="font-mono text-on-surface-variant truncate max-w-[200px]" title="src/webhooks/dispatcher.rs:215">src/webhooks/dispatcher.rs:215</span>
+<span class="font-mono text-outline">CWE-918 · SAST</span>
+</div>
+</article>
+</div>
+</div>
+</section>
+</div></main></div></body></html>
