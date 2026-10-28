@@ -38,3 +38,7 @@ htmlcov/
 *.swp
 .DS_Store
 Thumbs.db
+
+# Locks & Temporary Files
+*.lock
+*.tmp

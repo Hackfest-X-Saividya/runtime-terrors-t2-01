@@ -199,12 +199,14 @@ class Detector:
             X_sparse=X[0],
             status=status,
             base_score=base_score,
-            func_name=func_name
+            func_name=func_name,
+            cwe_id=cwe_id
         )
 
-        # Persist updated RL state
+        # Persist updated RL state atomically
         rl_state_file = self.artifacts_path / "rl_state.json"
-        self.feedback_learner.save(rl_state_file)
+        persisted = self.feedback_learner.save(rl_state_file)
+        feedback_record["persisted"] = persisted
 
         return feedback_record
 
