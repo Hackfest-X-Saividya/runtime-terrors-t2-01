@@ -1,12 +1,34 @@
-# Python
-__pycache__/
+# Python & Virtual Environments
+.venv/
+venv/
+ENV/
+env/
 *.py[cod]
-*$py.class
-*.so
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
 .Python
+*.so
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Node & Frontend
+node_modules/
+.npm/
+.yarn/
+frontend/dist/
+frontend/build/
+
+# Distribution / Packaging
 build/
-develop-eggs/
 dist/
+develop-eggs/
 downloads/
 eggs/
 .eggs/
@@ -21,29 +43,31 @@ share/python-wheels/
 .installed.cfg
 *.egg
 
-# Virtual Environments
-.venv/
-env/
-venv/
-ENV/
-
-# Testing & Coverage
+# Testing & Quality
 .pytest_cache/
 .coverage
 htmlcov/
+.mypy_cache/
+.ruff_cache/
 
-# Editor & OS
-.vscode/
+# IDE & OS
 .idea/
+.vscode/
 *.swp
+*.swo
+*~
 .DS_Store
 Thumbs.db
 
-# Locks & Temporary Files
-*.lock
-*.tmp
+# ZeroSentinel Temporary Files & Reports
+backend/temp/
+backend/reports/
+/reports/
+*.html
+*.pdf
 
-# RL State
+# RL Feedback & Model State (User-generated online learning state)
 rl_state.json
 **/rl_state.json
 *.lock
+*.tmp

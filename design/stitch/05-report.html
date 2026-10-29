@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"secondary":"#adc6ff","on-background":"#dfe2ee","on-tertiary":"#472a00","secondary-fixed-dim":"#adc6ff","on-primary":"#00391d","secondary-fixed":"#d8e2ff","surface-tint":"#1ce388","secondary-container":"#0566d9","inverse-on-surface":"#2c3039","tertiary-fixed-dim":"#ffb95f","background":"#0f131c","surface-variant":"#31353e","surface-container-lowest":"#0a0e16","inverse-primary":"#006d3e","error-container":"#93000a","tertiary-fixed":"#ffddb8","on-tertiary-fixed":"#2a1700","outline":"#859587","on-secondary-fixed":"#001a42","surface-container":"#1c2028","error":"#ffb4ab","tertiary":"#ffd5a5","primary-fixed":"#59ffa4","on-secondary-container":"#e6ecff","surface":"#0f131c","surface-bright":"#353942","on-tertiary-container":"#6f4500","on-secondary":"#002e6a","on-error-container":"#ffdad6","on-surface":"#dfe2ee","primary":"#45f99c","on-primary-fixed-variant":"#00522d","surface-dim":"#0f131c","on-primary-fixed":"#00210f","on-error":"#690005","on-tertiary-fixed-variant":"#653e00","surface-container-high":"#262a33","outline-variant":"#3c4a3f","on-surface-variant":"#bacbbc","surface-container-low":"#181c24","primary-fixed-dim":"#1ce388","surface-container-highest":"#31353e","tertiary-container":"#ffb044","on-primary-container":"#005b32","primary-container":"#00dc82","inverse-surface":"#dfe2ee","on-secondary-fixed-variant":"#004395"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"gutter-desktop":"1.5rem","space-sm":"0.5rem","space-xl":"2rem","margin":"1rem","space-lg":"1.5rem","space-xs":"0.25rem","margin-desktop":"2rem","gutter":"1rem","space-md":"1rem"},fontFamily:{"headline-md":["Inter"],"headline-xl":["Inter"],"label-code-lg":["JetBrains Mono"],"label-code-md":["JetBrains Mono"],"body-sm":["Inter"],"headline-sm":["Inter"],"body-lg":["Inter"],"body-md":["Inter"],"label-code-sm":["JetBrains Mono"],"headline-lg":["Inter"]},fontSize:{"headline-md":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"-0.015em","fontWeight":"600"}],"headline-xl":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.025em","fontWeight":"600"}],"label-code-lg":["0.875rem",{"lineHeight":"1.375rem","letterSpacing":"-0.01em","fontWeight":"500"}],"label-code-md":["0.75rem",{"lineHeight":"1.125rem","letterSpacing":"0em","fontWeight":"500"}],"body-sm":["0.75rem",{"lineHeight":"1.125rem","letterSpacing":"0.01em","fontWeight":"400"}],"headline-sm":["1rem",{"lineHeight":"1.5rem","letterSpacing":"-0.01em","fontWeight":"600"}],"body-lg":["1rem",{"lineHeight":"1.625rem","letterSpacing":"-0.005em","fontWeight":"400"}],"body-md":["0.875rem",{"lineHeight":"1.375rem","letterSpacing":"0em","fontWeight":"400"}],"label-code-sm":["0.6875rem",{"lineHeight":"1rem","letterSpacing":"0.025em","fontWeight":"600"}],"headline-lg":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.02em","fontWeight":"600"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="flex flex-col"><div class="h-16 px-space-md flex items-center justify-between bg-surface-container-low"><div class="flex items-center gap-space-sm"><img alt="ZeroSentinel Shield Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Wed_pUB1ykxQPnPqBFw2H__EJZZBtbqdpQuesl9qt2Uy1Uos5IU9_4t174YvXz7ZY5-MiZ0cc9tWGC92nMoesrWFrLDH0aDrfzFXQG7nb_UE3w84ktxEtYaGW4rv2kjr5RPG0T-JyhB0AKcHRgd9vYIg6S1UtKw40qEB0uxRn_0I03VJ5LsFM_FRITJu9PXQhLI-uyxdYxtxnJIbYNfPqFxizkvAezQj4PnnPiinoM"/><span class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">ZeroSentinel</span></div><span class="font-label-code-sm text-label-code-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-primary font-medium">v2.4-secops</span></div><nav class="px-space-sm pt-space-md flex flex-col gap-1" data-active-classes="bg-surface-container-high text-primary font-medium rounded-lg"><a class="px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="dashboard" href="#">Dashboard</a><a class="px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="new-scan" href="#">New Scan</a><a class="px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="findings" href="#">Findings</a><a class="px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="reports" href="#">Reports</a><a class="px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="model" href="#">Model</a></nav></div><div class="p-space-sm flex flex-col gap-space-sm"><div class="p-space-sm rounded-lg bg-surface-container flex flex-col gap-1"><div class="flex items-center justify-between text-on-surface-variant"><span class="font-label-code-sm text-label-code-sm uppercase">Engine</span><div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span class="font-label-code-sm text-label-code-sm text-primary">Healthy</span></div></div><div class="flex items-center justify-between text-on-surface-variant"><span class="font-label-code-sm text-label-code-sm uppercase">Ruleset</span><span class="font-label-code-sm text-label-code-sm text-on-surface font-mono">v2025.2</span></div></div><div class="p-space-xs rounded-lg bg-surface-container-high flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDd1wTG-Xk7cx2bfNAeiu7zfylQP8FTb7HT91lDZaAmSvivlifJgVlKQ_d4mROvs7EVsKBycmveRKg5926u2Ptf6QVw7zNmshZKi3gWqqt7Fb_3uAjpDcb1C23RjF0bleYyNQ9q4LMB2ZQO-Y8hSTZQwBcM1m-hFAoh8An_fPXKQwvNNnooQq38yZ_f8WolZHFMI2EBkYuvxaKdQ1UhMMDN0WjY13OvLs9XZ6m66uY"/><div class="flex flex-col min-w-0"><span class="font-body-sm text-body-sm font-medium text-on-surface truncate">SecOps Lead</span><span class="font-label-code-sm text-label-code-sm text-on-surface-variant truncate">sec-ops@sentinel</span></div></div><span class="material-symbols-outlined text-on-surface-variant text-base cursor-pointer hover:text-on-surface">unfold_more</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.3)] z-40 flex items-center justify-between px-space-lg gap-space-md"><div class="flex items-center gap-space-md flex-1 max-w-2xl"><div class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface cursor-pointer"><span class="material-symbols-outlined text-base text-primary">source_environment</span><span class="font-label-code-sm text-label-code-sm text-on-surface font-medium truncate max-w-[200px]">production-monorepo / main</span><span class="material-symbols-outlined text-sm">expand_more</span></div><div class="relative flex-1"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg pointer-events-none">search</span><input class="w-full pl-9 pr-space-md py-1.5 rounded-lg bg-surface-container text-on-surface placeholder:text-outline font-label-code-sm text-label-code-sm focus:outline-none focus:bg-surface-container-high" placeholder="Search repos, CVEs, findings, rules... [Cmd + K]" type="text"/></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-2 px-space-sm py-1 rounded bg-surface-container-low"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span></span><span class="font-label-code-sm text-label-code-sm text-on-surface font-medium">Scan: Continuous</span></div><button class="flex items-center gap-1.5 px-space-md py-1.5 rounded-lg bg-primary-container text-on-primary-container font-headline-sm text-headline-sm font-semibold hover:bg-primary transition-colors" type="button"><span class="material-symbols-outlined text-lg">add</span><span>New scan</span></button></div></header><main class="relative pt-16 w-full px-gutter-desktop bg-background min-h-screen"><div class="flex flex-col w-full">
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const navLinks = document.querySelectorAll("aside nav a");
+      navLinks.forEach((link) => {
+        if (link.getAttribute("data-path") === "reports") {
+          link.classList.add("bg-surface-container-high", "text-primary", "font-medium");
+          link.classList.remove("text-on-surface-variant");
+        } else {
+          link.classList.remove("bg-surface-container-high", "text-primary", "font-medium");
+        }
+      });
+    });
+  </script>
+<!-- Top Executive Workspace Header & Control Strip -->
+<section class="py-space-lg flex flex-col gap-space-md">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-space-xs font-label-code-sm text-label-code-sm text-on-surface-variant uppercase tracking-wider">
+<span class="hover:text-primary cursor-pointer transition-colors">Audit Telemetry</span>
+<span>/</span>
+<span class="text-primary font-semibold">Compliance &amp; Risk Reports</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight font-bold">Security Audit Reports</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+          Generate, preview, and export cryptographically verifiable compliance documentation and executive security digests.
+        </p>
+</div>
+<!-- Action Utilities -->
+<div class="flex items-center flex-wrap gap-2.5">
+<button class="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-all duration-150 font-label-code-md text-label-code-md shadow-sm" onclick="window.print()">
+<span class="material-symbols-outlined text-lg">print</span>
+<span>Print Doc</span>
+</button>
+<button class="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-all duration-150 font-label-code-md text-label-code-md shadow-sm">
+<span class="material-symbols-outlined text-lg">code</span>
+<span>HTML Export</span>
+</button>
+<button class="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-all duration-150 font-label-code-md text-label-code-md shadow-sm">
+<span class="material-symbols-outlined text-lg">tune</span>
+<span>Settings</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary-container text-on-primary-container hover:bg-primary font-headline-sm text-headline-sm font-semibold transition-all duration-150 shadow-md">
+<span class="material-symbols-outlined text-lg">picture_as_pdf</span>
+<span>Download Signed PDF</span>
+</button>
+</div>
+</div>
+<!-- Scan Scope Selector & Live Telemetry Strip -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-md p-space-md bg-surface-container-low rounded-xl shadow-sm">
+<!-- Dropdown Scan Selector -->
+<div class="xl:col-span-5 flex flex-col justify-center">
+<label class="font-label-code-sm text-label-code-sm uppercase tracking-wider text-outline mb-1.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">verified</span>
+          Target Baseline Archive
+        </label>
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container cursor-pointer hover:bg-surface-container-high transition-colors group">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="material-symbols-outlined text-primary text-xl">folder_zip</span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-label-code-md text-label-code-md font-semibold text-on-surface truncate">auth-service-v2.1.zip</span>
+<span class="font-label-code-sm text-label-code-sm px-1.5 py-0.2 rounded bg-surface-container-highest text-secondary font-mono">branch:main</span>
+</div>
+<span class="font-label-code-sm text-label-code-sm text-outline truncate">May 18, 2025 · 14:28 UTC · Commit SHA: 8a4f91b7</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface text-xl">unfold_more</span>
+</div>
+</div>
+<!-- Quick Metrics Ribbon -->
+<div class="xl:col-span-7 flex flex-wrap items-center justify-between gap-space-md pl-0 xl:pl-space-md xl:border-l xl:border-surface-container-highest">
+<!-- Aggregated Risk Score Pill -->
+<div class="flex items-center gap-3">
+<div class="flex flex-col">
+<span class="font-label-code-sm text-label-code-sm text-outline uppercase tracking-wider">Aggregated Risk Index</span>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="px-2 py-0.5 rounded bg-error-container text-on-error-container font-label-code-md text-label-code-md font-bold flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+                8.4 / 10 · HIGH RISK
+              </span>
+</div>
+</div>
+</div>
+<!-- Severity Distribution Matrix -->
+<div class="flex flex-col">
+<span class="font-label-code-sm text-label-code-sm text-outline uppercase tracking-wider">Triage Breakdown</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="px-2 py-0.5 rounded bg-error-container/60 text-error font-label-code-sm text-label-code-sm font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span> 14 CRIT
+            </span>
+<span class="px-2 py-0.5 rounded bg-tertiary-container/30 text-tertiary font-label-code-sm text-label-code-sm font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> 28 HIGH
+            </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface font-label-code-sm text-label-code-sm font-semibold">
+              42 MED
+            </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-label-code-sm text-label-code-sm">
+              44 LOW
+            </span>
+</div>
+</div>
+<!-- Total Scope Counters -->
+<div class="flex items-center gap-4">
+<div class="flex flex-col text-right">
+<span class="font-label-code-sm text-label-code-sm text-outline uppercase tracking-wider">Total Flaws</span>
+<span class="font-headline-md text-headline-md font-bold text-on-surface">128</span>
+</div>
+<div class="h-8 w-px bg-surface-container-highest"></div>
+<div class="flex flex-col text-right">
+<span class="font-label-code-sm text-label-code-sm text-outline uppercase tracking-wider">Lead Audit</span>
+<span class="font-label-code-sm text-label-code-sm text-primary font-mono">SecOps Lead</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Document Canvas Wrapper -->
+<section class="py-space-xl flex justify-center w-full bg-surface-container-lowest/80 rounded-2xl shadow-inner mb-space-xl">
+<!-- Printable Paper Sheet (Authentic Light / Professional Archival Rendering) -->
+<article class="w-full max-w-4xl bg-white text-[#0f172a] shadow-2xl rounded-sm p-8 md:p-14 select-text font-body-md transition-all">
+<!-- Report Header & Watermark Section -->
+<header class="border-b-2 border-[#e2e8f0] pb-6 mb-8 flex flex-col gap-6">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-[#0f172a] flex items-center justify-center text-[#45f99c]">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-xl font-bold tracking-tight text-[#0f172a] font-headline-md">ZeroSentinel</span>
+<span class="text-xs px-2 py-0.5 rounded bg-[#f1f5f9] text-[#475569] font-mono font-medium">SecOps Compliance Suite</span>
+</div>
+<p class="text-xs text-[#64748b] tracking-wider uppercase font-mono mt-0.5">Automated Codebase Static &amp; Heuristic Verification</p>
+</div>
+</div>
+<div class="text-right flex flex-col items-end">
+<span class="text-[11px] font-mono font-bold tracking-widest text-[#dc2626] bg-[#fef2f2] px-2.5 py-1 rounded">
+              STRICTLY CONFIDENTIAL // SECOPS COMPLIANCE
+            </span>
+<span class="text-xs text-[#64748b] font-mono mt-1">REPORT ID: #ZSR-2025-0518-84</span>
+</div>
+</div>
+<!-- Meta Dossier Matrix -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded bg-[#f8fafc] border border-[#e2e8f0] text-xs">
+<div>
+<span class="text-[#64748b] uppercase font-mono tracking-wider text-[10px] block">Target Ingestion</span>
+<span class="font-semibold text-[#0f172a] font-mono truncate block mt-0.5">auth-service-v2.1.zip</span>
+</div>
+<div>
+<span class="text-[#64748b] uppercase font-mono tracking-wider text-[10px] block">Execution Timestamp</span>
+<span class="font-semibold text-[#0f172a] font-mono block mt-0.5">2025-05-18 · 14:28:44 UTC</span>
+</div>
+<div>
+<span class="text-[#64748b] uppercase font-mono tracking-wider text-[10px] block">Assessment Lead</span>
+<span class="font-semibold text-[#0f172a] font-mono block mt-0.5">sec-ops@sentinel (Lead)</span>
+</div>
+<div>
+<span class="text-[#64748b] uppercase font-mono tracking-wider text-[10px] block">Engine Release</span>
+<span class="font-semibold text-[#006d3e] font-mono block mt-0.5">v2.4-secops [Ruleset 2025.2]</span>
+</div>
+</div>
+</header>
+<!-- Section: Executive Summary -->
+<section class="mb-8">
+<div class="flex items-center gap-2 mb-3">
+<span class="w-2.5 h-2.5 bg-[#0f172a] rounded-sm"></span>
+<h2 class="text-base font-bold uppercase tracking-wider text-[#0f172a] font-headline-sm">1. Executive Risk Posture &amp; Scope</h2>
+</div>
+<p class="text-sm leading-relaxed text-[#334155] mb-4">
+          This comprehensive audit dossier encapsulates static analysis (SAST), software composition analysis (SCA), and ML-driven heuristic zero-day discovery conducted over repository branch <code class="font-mono text-[#0f172a] bg-[#f1f5f9] px-1 py-0.5 rounded">auth-service-v2.1 (SHA: 8a4f91b7)</code>. The overall software posture exhibits an aggravated risk factor of <strong class="text-[#dc2626]">8.4 / 10 (HIGH RISK)</strong>. ZeroSentinel detected <strong class="text-[#0f172a]">14 Critical blockers</strong> that impose a strict negative gating condition prior to deployment to staging or production runtime. Additionally, <strong class="text-[#b45309]">19 Novel heuristic zero-day paths</strong> were highlighted by the dynamic behavioral inference engine requiring architectural remediation.
+        </p>
+<!-- Executive Highlight Callout Box -->
+<div class="p-4 rounded-md bg-[#fff1f2] border-l-4 border-[#e11d48] text-xs text-[#881337] flex items-start gap-3">
+<span class="material-symbols-outlined text-[#e11d48] text-lg mt-0.5 shrink-0">emergency_home</span>
+<div class="leading-relaxed">
+<strong class="font-semibold">Release Blocker Enforced:</strong> Automated gate compliance pipeline failed with non-zero exit code due to raw SQL injection vectors in transactional payment pathways and unencrypted asymmetric keys present in deployment manifests. Immediate triage is mandated per SecOps Governance SLA Tier 1 (24-Hour window).
+          </div>
+</div>
+</section>
+<!-- Section: Key Audit Metrics Grid -->
+<section class="mb-8">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+<div class="p-3.5 bg-[#f8fafc] border border-[#e2e8f0] rounded">
+<span class="text-[10px] font-mono uppercase text-[#64748b] block">CVSS Aggregated Index</span>
+<span class="text-2xl font-bold font-mono text-[#dc2626] block mt-1">8.4<span class="text-xs text-[#94a3b8] font-normal"> / 10</span></span>
+<span class="text-[11px] text-[#dc2626] font-medium mt-0.5 block">High Risk Tier</span>
+</div>
+<div class="p-3.5 bg-[#f8fafc] border border-[#e2e8f0] rounded">
+<span class="text-[10px] font-mono uppercase text-[#64748b] block">Total Unresolved Flaws</span>
+<span class="text-2xl font-bold font-mono text-[#0f172a] block mt-1">128</span>
+<span class="text-[11px] text-[#64748b] mt-0.5 block">Across 64,820 LOC</span>
+</div>
+<div class="p-3.5 bg-[#f8fafc] border border-[#e2e8f0] rounded">
+<span class="text-[10px] font-mono uppercase text-[#64748b] block">Est. Remediation Time</span>
+<span class="text-2xl font-bold font-mono text-[#0f172a] block mt-1">3.5<span class="text-xs text-[#94a3b8] font-normal"> hrs</span></span>
+<span class="text-[11px] text-[#059669] font-medium mt-0.5 block">Automated AST Patches</span>
+</div>
+<div class="p-3.5 bg-[#f8fafc] border border-[#e2e8f0] rounded">
+<span class="text-[10px] font-mono uppercase text-[#64748b] block">Zero-Day/ML Heuristics</span>
+<span class="text-2xl font-bold font-mono text-[#d97706] block mt-1">19</span>
+<span class="text-[11px] text-[#b45309] font-medium mt-0.5 block">High Confidence Model</span>
+</div>
+</div>
+</section>
+<!-- Section: Severity Distribution Table -->
+<section class="mb-8">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 bg-[#0f172a] rounded-sm"></span>
+<h2 class="text-base font-bold uppercase tracking-wider text-[#0f172a] font-headline-sm">2. Severity Distribution &amp; Remediation SLAs</h2>
+</div>
+<span class="text-xs text-[#64748b] font-mono">100% Code Coverage</span>
+</div>
+<div class="overflow-hidden border border-[#cbd5e1] rounded">
+<table class="w-full text-left text-xs font-mono border-collapse">
+<thead>
+<tr class="bg-[#f1f5f9] text-[#475569] border-b border-[#cbd5e1]">
+<th class="py-2.5 px-3 uppercase">Severity Level</th>
+<th class="py-2.5 px-3 uppercase text-right">Count</th>
+<th class="py-2.5 px-3 uppercase text-right">Percentage</th>
+<th class="py-2.5 px-3 uppercase">SLA Resolution Window</th>
+<th class="py-2.5 px-3 uppercase">Gate Policy Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#e2e8f0] text-[#1e293b]">
+<tr class="hover:bg-[#fff1f2] transition-colors">
+<td class="py-2.5 px-3 font-semibold text-[#dc2626] flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#dc2626]"></span> CRITICAL
+                </td>
+<td class="py-2.5 px-3 text-right font-bold">14</td>
+<td class="py-2.5 px-3 text-right text-[#64748b]">10.9%</td>
+<td class="py-2.5 px-3 text-[#dc2626] font-semibold">24 Hours (Immediate)</td>
+<td class="py-2.5 px-3">
+<span class="px-2 py-0.5 rounded text-[10px] bg-[#fee2e2] text-[#991b1b] font-bold">BLOCKING</span>
+</td>
+</tr>
+<tr class="hover:bg-[#fffbeb] transition-colors">
+<td class="py-2.5 px-3 font-semibold text-[#d97706] flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#d97706]"></span> HIGH
+                </td>
+<td class="py-2.5 px-3 text-right font-bold">28</td>
+<td class="py-2.5 px-3 text-right text-[#64748b]">21.9%</td>
+<td class="py-2.5 px-3">72 Hours</td>
+<td class="py-2.5 px-3">
+<span class="px-2 py-0.5 rounded text-[10px] bg-[#fef3c7] text-[#92400e] font-bold">WARN GATED</span>
+</td>
+</tr>
+<tr class="hover:bg-[#f8fafc] transition-colors">
+<td class="py-2.5 px-3 font-semibold text-[#2563eb] flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#2563eb]"></span> MEDIUM
+                </td>
+<td class="py-2.5 px-3 text-right font-bold">42</td>
+<td class="py-2.5 px-3 text-right text-[#64748b]">32.8%</td>
+<td class="py-2.5 px-3">14 Calendar Days</td>
+<td class="py-2.5 px-3">
+<span class="px-2 py-0.5 rounded text-[10px] bg-[#e2e8f0] text-[#334155]">ADVISORY</span>
+</td>
+</tr>
+<tr class="hover:bg-[#f8fafc] transition-colors">
+<td class="py-2.5 px-3 font-semibold text-[#475569] flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#94a3b8]"></span> LOW
+                </td>
+<td class="py-2.5 px-3 text-right font-bold">44</td>
+<td class="py-2.5 px-3 text-right text-[#64748b]">34.4%</td>
+<td class="py-2.5 px-3">30 Calendar Days</td>
+<td class="py-2.5 px-3">
+<span class="px-2 py-0.5 rounded text-[10px] bg-[#f1f5f9] text-[#64748b]">LOGGED</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Section: OWASP Top 10 (2025 Standard) Breakdown -->
+<section class="mb-8">
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2.5 h-2.5 bg-[#0f172a] rounded-sm"></span>
+<h2 class="text-base font-bold uppercase tracking-wider text-[#0f172a] font-headline-sm">3. OWASP Top 10 (2025 Standard) Categorization</h2>
+</div>
+<div class="border border-[#cbd5e1] rounded overflow-hidden">
+<table class="w-full text-left text-xs font-mono">
+<thead>
+<tr class="bg-[#f1f5f9] text-[#475569] border-b border-[#cbd5e1]">
+<th class="py-2 px-3">OWASP Category Classification</th>
+<th class="py-2 px-3 text-right">Occurrence Density</th>
+<th class="py-2 px-3">Relative Risk Vector</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#e2e8f0] text-[#334155]">
+<tr>
+<td class="py-2 px-3 font-medium text-[#0f172a]">A01:2025 - Broken Access Control</td>
+<td class="py-2 px-3 text-right font-bold">312 instances</td>
+<td class="py-2 px-3">
+<div class="w-full bg-[#e2e8f0] h-2 rounded-full overflow-hidden">
+<div class="bg-[#dc2626] h-full" style="width: 78%"></div>
+</div>
+</td>
+</tr>
+<tr>
+<td class="py-2 px-3 font-medium text-[#0f172a]">A03:2025 - Injection Flaws (SQLi / Command / AST)</td>
+<td class="py-2 px-3 text-right font-bold">248 instances</td>
+<td class="py-2 px-3">
+<div class="w-full bg-[#e2e8f0] h-2 rounded-full overflow-hidden">
+<div class="bg-[#e11d48] h-full" style="width: 62%"></div>
+</div>
+</td>
+</tr>
+<tr>
+<td class="py-2 px-3 font-medium text-[#0f172a]">A02:2025 - Cryptographic &amp; Key Seed Failures</td>
+<td class="py-2 px-3 text-right font-bold">189 instances</td>
+<td class="py-2 px-3">
+<div class="w-full bg-[#e2e8f0] h-2 rounded-full overflow-hidden">
+<div class="bg-[#d97706] h-full" style="width: 48%"></div>
+</div>
+</td>
+</tr>
+<tr>
+<td class="py-2 px-3 font-medium text-[#0f172a]">A07:2025 - Identification and Authentication Flaws</td>
+<td class="py-2 px-3 text-right font-bold">94 instances</td>
+<td class="py-2 px-3">
+<div class="w-full bg-[#e2e8f0] h-2 rounded-full overflow-hidden">
+<div class="bg-[#2563eb] h-full" style="width: 25%"></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Section: Priority Findings & Actionable Remediations -->
+<section class="mb-8">
+<div class="flex items-center gap-2 mb-4">
+<span class="w-2.5 h-2.5 bg-[#0f172a] rounded-sm"></span>
+<h2 class="text-base font-bold uppercase tracking-wider text-[#0f172a] font-headline-sm">4. Priority Critical Findings &amp; AST Remediation Plans</h2>
+</div>
+<div class="flex flex-col gap-6">
+<!-- Finding 1 -->
+<div class="p-4 rounded border border-[#cbd5e1] bg-[#ffffff] flex flex-col gap-3">
+<div class="flex flex-wrap items-center justify-between gap-2 border-b border-[#f1f5f9] pb-2">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-bold font-mono bg-[#fee2e2] text-[#991b1b] border border-[#fca5a5]">
+                  CRITICAL 9.8
+                </span>
+<h3 class="text-xs font-bold text-[#0f172a] font-mono">
+                  CWE-89: Unsanitized SQL Concatenation in Payment Gateway
+                </h3>
+</div>
+<span class="text-xs font-mono text-[#64748b]">services/billing/charge.go:142</span>
+</div>
+<p class="text-xs text-[#475569] leading-relaxed">
+<strong>Risk Context:</strong> Untrusted user input via <code class="bg-[#f1f5f9] text-[#0f172a] px-1 rounded font-mono">r.URL.Query().Get("account_id")</code> is interpolated straight into raw relational queries without statement preparation. Allows full database exfiltration and unauthorized balance modifications.
+            </p>
+<!-- Code Comparison Block -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px] font-mono">
+<div class="p-2.5 rounded bg-[#fef2f2] border border-[#fecaca]">
+<span class="text-[#991b1b] font-bold block mb-1">✕ Vulnerable Source AST (Line 142)</span>
+<pre class="overflow-x-auto text-[#7f1d1d]"><code>query := fmt.Sprintf(
+  "SELECT * FROM ledgers WHERE acct = '%s'",
+  acctID)
+rows, err := db.Query(query)</code></pre>
+</div>
+<div class="p-2.5 rounded bg-[#f0fdf4] border border-[#bbf7d0]">
+<span class="text-[#166534] font-bold block mb-1">✓ Automated Fix (Parameterized Statement)</span>
+<pre class="overflow-x-auto text-[#14532d]"><code>query := "SELECT * FROM ledgers WHERE acct = $1"
+rows, err := db.QueryContext(ctx, query, acctID)
+if err != nil { return nil, err }</code></pre>
+</div>
+</div>
+</div>
+<!-- Finding 2 -->
+<div class="p-4 rounded border border-[#cbd5e1] bg-[#ffffff] flex flex-col gap-3">
+<div class="flex flex-wrap items-center justify-between gap-2 border-b border-[#f1f5f9] pb-2">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-bold font-mono bg-[#fee2e2] text-[#991b1b] border border-[#fca5a5]">
+                  CRITICAL 9.7
+                </span>
+<h3 class="text-xs font-bold text-[#0f172a] font-mono">
+                  CWE-798: Hardcoded RSA Private Key in Production Seed
+                </h3>
+</div>
+<span class="text-xs font-mono text-[#64748b]">services/auth/keys.go:88</span>
+</div>
+<p class="text-xs text-[#475569] leading-relaxed">
+<strong>Risk Context:</strong> An unencrypted RSA 4096-bit private key literal was identified embedded in token signing initialization code. Allows complete forgery of authentication bearer claims and administrative tenant takeover across staging and production clusters.
+            </p>
+<div class="p-3 rounded bg-[#f8fafc] border border-[#e2e8f0] text-xs">
+<span class="text-[#0f172a] font-semibold block mb-1">Recommended Remediation Pathway:</span>
+<p class="text-[#475569] text-[11px] leading-relaxed">
+                Immediately revoke exposed key ID <code class="font-mono bg-[#e2e8f0] px-1 py-0.5 rounded text-[#0f172a]">kid_prod_rsa_9941a</code> via PKI CA. Refactor token validator to source dynamic credentials at runtime using the HashiCorp Vault SDK or AWS KMS Secrets Driver via managed IAM role bindings.
+              </p>
+</div>
+</div>
+<!-- Finding 3 -->
+<div class="p-4 rounded border border-[#cbd5e1] bg-[#ffffff] flex flex-col gap-3">
+<div class="flex flex-wrap items-center justify-between gap-2 border-b border-[#f1f5f9] pb-2">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-bold font-mono bg-[#fee2e2] text-[#991b1b] border border-[#fca5a5]">
+                  CRITICAL 9.4
+                </span>
+<h3 class="text-xs font-bold text-[#0f172a] font-mono">
+                  CWE-502: Remote Code Execution via Insecure Deserialization
+                </h3>
+<span class="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-[#fef3c7] text-[#92400e]">NOVEL ML HEURISTIC</span>
+</div>
+<span class="text-xs font-mono text-[#64748b]">lib/transport/serializer.py:42</span>
+</div>
+<p class="text-xs text-[#475569] leading-relaxed">
+<strong>Risk Context:</strong> Unauthenticated RPC socket payload is passed directly to arbitrary object deserializer without cryptographic hash signature verification. ZeroSentinel dynamic symbolic evaluation confirmed arbitrary shell payload spawning capabilities on POSIX targets.
+            </p>
+<div class="p-3 rounded bg-[#f8fafc] border border-[#e2e8f0] text-xs">
+<span class="text-[#0f172a] font-semibold block mb-1">Engine AST Patch:</span>
+<p class="text-[#475569] text-[11px] font-mono leading-relaxed">
+                Replace unsafe binary unpacking with strictly typed schema validation using Protocol Buffers v3 / CBOR with deterministic schema enforce guards.
+              </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Cryptographic Attestation & Audit Sign-Off -->
+<footer class="border-t-2 border-[#e2e8f0] pt-6 mt-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+<!-- Signature Block 1 -->
+<div class="flex flex-col">
+<span class="text-[10px] font-mono uppercase text-[#64748b] tracking-wider mb-2">Automated Audit Sign-Off</span>
+<div class="border-b border-[#94a3b8] pb-1 font-serif italic text-base text-[#1e293b]">
+              Alexander Wright, Lead SecOps Architect
+            </div>
+<span class="text-[11px] font-mono text-[#64748b] mt-1">Identity Verified: Sentinel MFA-9182</span>
+</div>
+<!-- Cryptographic Seal / Checksum -->
+<div class="flex flex-col">
+<span class="text-[10px] font-mono uppercase text-[#64748b] tracking-wider mb-1">Document SHA-256 Digest</span>
+<div class="p-2 rounded bg-[#f1f5f9] border border-[#cbd5e1] font-mono text-[9px] text-[#334155] break-all leading-tight">
+              8a4f91b7d12f45ea88542039ab6c0ef49734dca95831f2495b68241e3a479899
+            </div>
+<span class="text-[10px] text-[#059669] font-mono font-medium mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">verified_user</span> Tamper-Evident Ledger Anchor
+            </span>
+</div>
+<!-- Audit Seal & Stamp -->
+<div class="flex items-center justify-start md:justify-end gap-3">
+<div class="w-14 h-14 rounded-full border-2 border-dashed border-[#006d3e] flex flex-col items-center justify-center text-center p-1 text-[#006d3e]">
+<span class="text-[7px] font-mono font-bold leading-none uppercase">SecOps</span>
+<span class="material-symbols-outlined text-base my-0.5">verified</span>
+<span class="text-[6px] font-mono uppercase tracking-tighter">VERIFIED</span>
+</div>
+<div class="flex flex-col text-left">
+<span class="text-[10px] font-bold font-mono text-[#0f172a]">ZeroSentinel Engine</span>
+<span class="text-[9px] text-[#64748b] font-mono">Build 2025.05.18-PROD</span>
+<span class="text-[9px] text-[#64748b] font-mono">ISO/IEC 27001 &amp; SOC2 Type II</span>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-[#f1f5f9] flex items-center justify-between text-[10px] text-[#94a3b8] font-mono">
+<span>ZeroSentinel Autonomous Risk Platform</span>
+<span>Page 1 of 1 · Verified Telemetry Artifact</span>
+</div>
+</footer>
+</article>
+</section>
+</div></main></div></body></html>

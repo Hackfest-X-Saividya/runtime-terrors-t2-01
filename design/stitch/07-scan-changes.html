@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"secondary":"#adc6ff","on-background":"#dfe2ee","on-tertiary":"#472a00","secondary-fixed-dim":"#adc6ff","on-primary":"#00391d","secondary-fixed":"#d8e2ff","surface-tint":"#1ce388","secondary-container":"#0566d9","inverse-on-surface":"#2c3039","tertiary-fixed-dim":"#ffb95f","background":"#0f131c","surface-variant":"#31353e","surface-container-lowest":"#0a0e16","inverse-primary":"#006d3e","error-container":"#93000a","tertiary-fixed":"#ffddb8","on-tertiary-fixed":"#2a1700","outline":"#859587","on-secondary-fixed":"#001a42","surface-container":"#1c2028","error":"#ffb4ab","tertiary":"#ffd5a5","primary-fixed":"#59ffa4","on-secondary-container":"#e6ecff","surface":"#0f131c","surface-bright":"#353942","on-tertiary-container":"#6f4500","on-secondary":"#002e6a","on-error-container":"#ffdad6","on-surface":"#dfe2ee","primary":"#45f99c","on-primary-fixed-variant":"#00522d","surface-dim":"#0f131c","on-primary-fixed":"#00210f","on-error":"#690005","on-tertiary-fixed-variant":"#653e00","surface-container-high":"#262a33","outline-variant":"#3c4a3f","on-surface-variant":"#bacbbc","surface-container-low":"#181c24","primary-fixed-dim":"#1ce388","surface-container-highest":"#31353e","tertiary-container":"#ffb044","on-primary-container":"#005b32","primary-container":"#00dc82","inverse-surface":"#dfe2ee","on-secondary-fixed-variant":"#004395"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"gutter-desktop":"1.5rem","space-sm":"0.5rem","space-xl":"2rem","margin":"1rem","space-lg":"1.5rem","space-xs":"0.25rem","margin-desktop":"2rem","gutter":"1rem","space-md":"1rem"},fontFamily:{"headline-md":["Inter"],"headline-xl":["Inter"],"label-code-lg":["JetBrains Mono"],"label-code-md":["JetBrains Mono"],"body-sm":["Inter"],"headline-sm":["Inter"],"body-lg":["Inter"],"body-md":["Inter"],"label-code-sm":["JetBrains Mono"],"headline-lg":["Inter"]},fontSize:{"headline-md":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"-0.015em","fontWeight":"600"}],"headline-xl":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.025em","fontWeight":"600"}],"label-code-lg":["0.875rem",{"lineHeight":"1.375rem","letterSpacing":"-0.01em","fontWeight":"500"}],"label-code-md":["0.75rem",{"lineHeight":"1.125rem","letterSpacing":"0em","fontWeight":"500"}],"body-sm":["0.75rem",{"lineHeight":"1.125rem","letterSpacing":"0.01em","fontWeight":"400"}],"headline-sm":["1rem",{"lineHeight":"1.5rem","letterSpacing":"-0.01em","fontWeight":"600"}],"body-lg":["1rem",{"lineHeight":"1.625rem","letterSpacing":"-0.005em","fontWeight":"400"}],"body-md":["0.875rem",{"lineHeight":"1.375rem","letterSpacing":"0em","fontWeight":"400"}],"label-code-sm":["0.6875rem",{"lineHeight":"1rem","letterSpacing":"0.025em","fontWeight":"600"}],"headline-lg":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.02em","fontWeight":"600"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="flex flex-col"><div class="h-16 px-space-md flex items-center justify-between bg-surface-container-low"><div class="flex items-center gap-space-sm"><img alt="ZeroSentinel Shield Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Wed_pUB1ykxQPnPqBFw2H__EJZZBtbqdpQuesl9qt2Uy1Uos5IU9_4t174YvXz7ZY5-MiZ0cc9tWGC92nMoesrWFrLDH0aDrfzFXQG7nb_UE3w84ktxEtYaGW4rv2kjr5RPG0T-JyhB0AKcHRgd9vYIg6S1UtKw40qEB0uxRn_0I03VJ5LsFM_FRITJu9PXQhLI-uyxdYxtxnJIbYNfPqFxizkvAezQj4PnnPiinoM"/><span class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">ZeroSentinel</span></div><span class="font-label-code-sm text-label-code-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-primary font-medium">v2.4-secops</span></div><nav class="px-space-sm pt-space-md flex flex-col gap-1" data-active-classes="bg-surface-container-high text-primary font-medium rounded-lg"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="dashboard" href="#"><span class="material-symbols-outlined text-lg">dashboard</span><span>Dashboard</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="new-scan" href="#"><span class="material-symbols-outlined text-lg">radar</span><span>New Scan</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="findings" href="#"><span class="material-symbols-outlined text-lg">shield_with_house</span><span>Findings</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="reports" href="#"><span class="material-symbols-outlined text-lg">description</span><span>Reports</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="model-governance" href="#"><span class="material-symbols-outlined text-lg">smart_toy</span><span>Model</span></a></nav></div><div class="p-space-sm flex flex-col gap-space-sm"><div class="p-space-sm rounded-lg bg-surface-container flex flex-col gap-1"><div class="flex items-center justify-between text-on-surface-variant"><span class="font-label-code-sm text-label-code-sm uppercase">Engine</span><div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span class="font-label-code-sm text-label-code-sm text-primary">Healthy</span></div></div><div class="flex items-center justify-between text-on-surface-variant"><span class="font-label-code-sm text-label-code-sm uppercase">Ruleset</span><span class="font-label-code-sm text-label-code-sm text-on-surface font-mono">v2025.2</span></div></div><div class="p-space-xs rounded-lg bg-surface-container-high flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDd1wTG-Xk7cx2bfNAeiu7zfylQP8FTb7HT91lDZaAmSvivlifJgVlKQ_d4mROvs7EVsKBycmveRKg5926u2Ptf6QVw7zNmshZKi3gWqqt7Fb_3uAjpDcb1C23RjF0bleYyNQ9q4LMB2ZQO-Y8hSTZQwBcM1m-hFAoh8An_fPXKQwvNNnooQq38yZ_f8WolZHFMI2EBkYuvxaKdQ1UhMMDN0WjY13OvLs9XZ6m66uY"/><div class="flex flex-col min-w-0"><span class="font-body-sm text-body-sm font-medium text-on-surface truncate">SecOps Lead</span><span class="font-label-code-sm text-label-code-sm text-on-surface-variant truncate">sec-ops@sentinel</span></div></div><span class="material-symbols-outlined text-on-surface-variant text-base cursor-pointer hover:text-on-surface">unfold_more</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.3)] z-40 flex items-center justify-between px-space-lg gap-space-md"><div class="flex items-center gap-space-md flex-1 max-w-2xl"><div class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface cursor-pointer"><span class="material-symbols-outlined text-base text-primary">source_environment</span><span class="font-label-code-sm text-label-code-sm text-on-surface font-medium truncate max-w-[200px]">production-monorepo / main</span><span class="material-symbols-outlined text-sm">expand_more</span></div><div class="relative flex-1"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg pointer-events-none">search</span><input class="w-full pl-9 pr-space-md py-1.5 rounded-lg bg-surface-container text-on-surface placeholder:text-outline font-label-code-sm text-label-code-sm focus:outline-none focus:bg-surface-container-high" placeholder="Search repos, CVEs, findings, rules... [Cmd + K]" type="text"/></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-2 px-space-sm py-1 rounded bg-surface-container-low"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span></span><span class="font-label-code-sm text-label-code-sm text-on-surface font-medium">Scan: Continuous</span></div><button class="flex items-center gap-1.5 px-space-md py-1.5 rounded-lg bg-primary-container text-on-primary-container font-headline-sm text-headline-sm font-semibold hover:bg-primary transition-colors" type="button"><span class="material-symbols-outlined text-lg">add</span><span>New scan</span></button></div></header><main class="relative pt-16 w-full px-gutter-desktop bg-background min-h-screen"><div class="flex flex-col w-full pb-16 space-y-space-lg">
+<!-- Sub-header & Action Bar -->
+<div class="flex flex-col gap-space-md pt-space-md">
+<!-- Breadcrumb & Telemetry Marker -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-2 font-label-code-sm text-label-code-sm text-on-surface-variant">
+<span class="text-primary font-semibold tracking-wider">SECOPS TELEMETRY</span>
+<span class="text-outline">/</span>
+<span>SCANS</span>
+<span class="text-outline">/</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface font-mono">manual-audit-auth-service-2025-05-18</span>
+<span class="text-outline">/</span>
+<span class="text-secondary font-medium">Scan changes</span>
+</div>
+<div class="flex items-center gap-space-xs font-label-code-sm text-label-code-sm text-on-surface-variant bg-surface-container px-2.5 py-1 rounded">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span>DELTA ENGINE: HYPER-INDEX ACTIVE</span>
+</div>
+</div>
+<!-- Title & Controls Row -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex flex-col gap-0.5">
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight font-bold">
+          Scan Changes &amp; Delta Telemetry
+        </h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Differential analysis across ast-fingerprints, neural vulnerability ranking, and human-in-the-loop triaging.
+        </p>
+</div>
+<!-- Action buttons & comparison selection -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<!-- Baseline Switcher Dropdown -->
+<div class="relative flex items-center bg-surface-container hover:bg-surface-container-high transition-colors rounded-lg px-3 py-2 cursor-pointer shadow-sm">
+<span class="material-symbols-outlined text-sm text-on-surface-variant mr-2">compare_arrows</span>
+<div class="flex flex-col text-left">
+<span class="font-label-code-sm text-[0.625rem] text-on-surface-variant uppercase tracking-wider leading-none">Baseline Target</span>
+<span class="font-label-code-sm text-label-code-sm text-on-surface font-semibold">Compared with scan #7841 (2 days ago)</span>
+</div>
+<span class="material-symbols-outlined text-sm text-on-surface-variant ml-3">expand_more</span>
+</div>
+<!-- Export Delta -->
+<button class="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors font-headline-sm text-body-md font-medium shadow-sm" type="button">
+<span class="material-symbols-outlined text-base">download</span>
+<span>Export Delta</span>
+</button>
+<!-- Re-scan Button -->
+<button class="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-on-primary font-headline-sm text-body-md font-semibold hover:bg-primary-fixed-dim transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-base">autorenew</span>
+<span>Re-scan</span>
+</button>
+</div>
+</div>
+</div>
+<!-- KPI / Delta Badges Strip -->
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-space-sm">
+<!-- Card 1: Total Changes -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col justify-between shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-body-sm text-body-sm">Total Changes</span>
+<span class="material-symbols-outlined text-base text-secondary">tune</span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl font-bold text-on-surface font-mono">29</span>
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant">delta nodes</span>
+</div>
+<div class="mt-2 w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full w-full"></div>
+</div>
+</div>
+<!-- Card 2: New Findings -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col justify-between shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-body-sm text-body-sm">New Findings</span>
+<span class="material-symbols-outlined text-base text-error">notification_important</span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl font-bold text-error font-mono">+14</span>
+<span class="font-label-code-sm text-label-code-sm text-error px-1.5 py-0.5 rounded bg-error-container/40">Critical Shift</span>
+</div>
+<div class="mt-2 w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
+<div class="bg-error h-full rounded-full w-[48%]"></div>
+</div>
+</div>
+<!-- Card 3: Resolved Findings -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col justify-between shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-body-sm text-body-sm">Resolved Findings</span>
+<span class="material-symbols-outlined text-base text-primary">verified</span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl font-bold text-primary font-mono">-9</span>
+<span class="font-label-code-sm text-label-code-sm text-primary px-1.5 py-0.5 rounded bg-primary-container/20">Remediated</span>
+</div>
+<div class="mt-2 w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full w-[31%]"></div>
+</div>
+</div>
+<!-- Card 4: Suppressed by Feedback -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col justify-between shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-body-sm text-body-sm">Suppressed / RLHF</span>
+<span class="material-symbols-outlined text-base text-secondary">model_training</span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl font-bold text-secondary font-mono">6</span>
+<span class="font-label-code-sm text-label-code-sm text-secondary px-1.5 py-0.5 rounded bg-secondary-container/40">Feedback Loop</span>
+</div>
+<div class="mt-2 w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full w-[21%]"></div>
+</div>
+</div>
+<!-- Card 5: Net Risk Delta -->
+<div class="col-span-2 md:col-span-1 bg-surface-container-low p-space-md rounded-xl flex flex-col justify-between shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-body-sm text-body-sm">Net Risk Score Delta</span>
+<span class="material-symbols-outlined text-base text-primary">trending_down</span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl font-bold text-on-surface font-mono">8.4</span>
+<span class="font-label-code-sm text-label-code-sm text-primary font-semibold font-mono">-0.5 (was 8.9)</span>
+</div>
+<div class="mt-2 flex items-center justify-between font-label-code-sm text-[0.625rem] text-on-surface-variant">
+<span>Prev: 8.9</span>
+<span class="text-primary font-bold">5.6% NET MITIGATION</span>
+</div>
+</div>
+</div>
+<!-- SECTION 1: NEW FINDINGS -->
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between px-space-xs">
+<div class="flex items-center gap-space-sm">
+<div class="w-2.5 h-2.5 rounded-full bg-error animate-ping"></div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">
+          New Findings
+        </h2>
+<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-code-sm text-label-code-sm font-bold">
+          14 Unseen In Baseline
+        </span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-label-code-sm text-label-code-sm">
+<span class="hidden md:inline">Showing 3 of 14 prioritized items</span>
+<button class="text-primary hover:underline flex items-center gap-1 font-medium" type="button">
+          View all 14 <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- List Container -->
+<div class="flex flex-col gap-2">
+<!-- Row 1: CRIT 9.7 -->
+<div class="bg-surface-container-low hover:bg-surface-container transition-colors rounded-xl p-space-md shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-md flex-1 min-w-0">
+<!-- Severity Badge -->
+<div class="shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded bg-error-container text-on-error-container font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+<span>CRIT 9.7</span>
+</div>
+<div class="flex flex-col gap-1 min-w-0 flex-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">
+                Hardcoded RSA Private Key with Unrestricted Auth Extraction
+              </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code-sm text-label-code-sm">
+                CWE-798
+              </span>
+<span class="px-2 py-0.5 rounded bg-primary-container/20 text-primary font-label-code-sm text-label-code-sm flex items-center gap-1 font-medium">
+<span class="material-symbols-outlined text-xs">auto_awesome</span>
+                Novel ML
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1">
+              Cryptographic signing material embedded in static struct. Accessible via internal debug reflection endpoint without scope check.
+            </p>
+<div class="flex items-center gap-3 pt-0.5 font-label-code-sm text-label-code-sm text-on-surface-variant">
+<div class="flex items-center gap-1 text-secondary font-mono">
+<span class="material-symbols-outlined text-xs">description</span>
+<span>services/auth/keys.go:88</span>
+</div>
+<span class="text-outline">•</span>
+<span>Commit: <span class="font-mono text-on-surface">d98fa21</span></span>
+<span class="text-outline">•</span>
+<span>Introduced by: <span class="text-on-surface">d.vance@security</span></span>
+</div>
+</div>
+</div>
+<!-- Right Meta & Score Delta -->
+<div class="shrink-0 flex items-center justify-between lg:justify-end gap-space-lg">
+<div class="flex flex-col items-end">
+<span class="px-2 py-0.5 rounded bg-error-container/60 text-on-error-container font-label-code-sm text-label-code-sm font-bold font-mono">
+              +9.7 NEW
+            </span>
+<span class="font-label-code-sm text-[0.625rem] text-on-surface-variant mt-0.5">Exploitability: HIGH</span>
+</div>
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-highest text-on-surface transition-colors" title="Investigate finding" type="button">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Row 2: HIGH 8.6 -->
+<div class="bg-surface-container-low hover:bg-surface-container transition-colors rounded-xl p-space-md shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-md flex-1 min-w-0">
+<!-- Severity Badge -->
+<div class="shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded bg-tertiary-container/30 text-tertiary font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+<span>HIGH 8.6</span>
+</div>
+<div class="flex flex-col gap-1 min-w-0 flex-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">
+                Idempotency Bypass Leading to Unverified Ledger State Alteration
+              </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code-sm text-label-code-sm">
+                CWE-362
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1">
+              Race condition inside charge token validation allowing repeated replay invocations within 200ms latency windows.
+            </p>
+<div class="flex items-center gap-3 pt-0.5 font-label-code-sm text-label-code-sm text-on-surface-variant">
+<div class="flex items-center gap-1 text-secondary font-mono">
+<span class="material-symbols-outlined text-xs">description</span>
+<span>services/billing/charge.go:142</span>
+</div>
+<span class="text-outline">•</span>
+<span>Commit: <span class="font-mono text-on-surface">3f880c1</span></span>
+<span class="text-outline">•</span>
+<span>Introduced by: <span class="text-on-surface">k.tanaka@fintech</span></span>
+</div>
+</div>
+</div>
+<div class="shrink-0 flex items-center justify-between lg:justify-end gap-space-lg">
+<div class="flex flex-col items-end">
+<span class="px-2 py-0.5 rounded bg-tertiary-container/20 text-tertiary font-label-code-sm text-label-code-sm font-bold font-mono">
+              +8.6 NEW
+            </span>
+<span class="font-label-code-sm text-[0.625rem] text-on-surface-variant mt-0.5">Exploitability: MED</span>
+</div>
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-highest text-on-surface transition-colors" title="Investigate finding" type="button">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Row 3: MED 6.5 -->
+<div class="bg-surface-container-low hover:bg-surface-container transition-colors rounded-xl p-space-md shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-md flex-1 min-w-0">
+<div class="shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-highest text-on-surface font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+<span>MED 6.5</span>
+</div>
+<div class="flex flex-col gap-1 min-w-0 flex-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">
+                Weak Entropy on Session Cookie Generation Under Distributed Load
+              </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code-sm text-label-code-sm">
+                CWE-330
+              </span>
+<span class="px-2 py-0.5 rounded bg-primary-container/20 text-primary font-label-code-sm text-label-code-sm flex items-center gap-1 font-medium">
+<span class="material-symbols-outlined text-xs">auto_awesome</span>
+                Novel ML
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1">
+              Fallback pseudo-random generator instantiated when OS system entropy reservoir dips below threshold.
+            </p>
+<div class="flex items-center gap-3 pt-0.5 font-label-code-sm text-label-code-sm text-on-surface-variant">
+<div class="flex items-center gap-1 text-secondary font-mono">
+<span class="material-symbols-outlined text-xs">description</span>
+<span>pkg/crypto/session_seed.go:51</span>
+</div>
+<span class="text-outline">•</span>
+<span>Commit: <span class="font-mono text-on-surface">a449e0b</span></span>
+<span class="text-outline">•</span>
+<span>Introduced by: <span class="text-on-surface">bot-deps-upgrade</span></span>
+</div>
+</div>
+</div>
+<div class="shrink-0 flex items-center justify-between lg:justify-end gap-space-lg">
+<div class="flex flex-col items-end">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface font-label-code-sm text-label-code-sm font-bold font-mono">
+              +6.5 NEW
+            </span>
+<span class="font-label-code-sm text-[0.625rem] text-on-surface-variant mt-0.5">Exploitability: LOW</span>
+</div>
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-highest text-on-surface transition-colors" title="Investigate finding" type="button">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 2: SUPPRESSED BY FEEDBACK -->
+<div class="flex flex-col gap-space-sm pt-space-sm">
+<div class="flex items-center justify-between px-space-xs">
+<div class="flex items-center gap-space-sm">
+<div class="w-2.5 h-2.5 rounded-full bg-secondary"></div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">
+          Suppressed by Feedback
+        </h2>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container/40 text-on-secondary-container font-label-code-sm text-label-code-sm font-bold">
+          6 Downweighted via Active Learning
+        </span>
+</div>
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant">
+        Model confidence threshold updated (+0.18 accuracy)
+      </span>
+</div>
+<!-- Cards container -->
+<div class="flex flex-col gap-2">
+<!-- Suppressed Item 1 -->
+<div class="bg-surface-container-low hover:bg-surface-container transition-colors rounded-xl p-space-md shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-space-md opacity-90">
+<div class="flex items-start gap-space-md flex-1 min-w-0">
+<!-- Muted / Striked Score Pill -->
+<div class="shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-highest text-on-surface-variant font-label-code-sm text-label-code-sm">
+<span class="material-symbols-outlined text-xs text-secondary">check_circle</span>
+<span class="line-through">CRIT 9.1</span>
+<span class="font-bold text-secondary">0.34</span>
+</div>
+<div class="flex flex-col gap-1 min-w-0 flex-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-medium truncate">
+                Unsanitized SQL concatenation in payment gateway
+              </span>
+<!-- Distinct feedback loop badge -->
+<span class="px-2 py-0.5 rounded bg-secondary-container/30 text-secondary font-label-code-sm text-label-code-sm flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-xs">sync_saved_locally</span>
+                Suppressed by feedback
+              </span>
+</div>
+<div class="flex flex-wrap items-center gap-2 mt-0.5">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Reason:</span>
+<span class="font-label-code-sm text-label-code-sm text-on-surface px-1.5 py-0.2 rounded bg-surface-container-high">
+                Input already sanitised via PreparedStmtWrapper (PR #3911)
+              </span>
+</div>
+<div class="flex items-center gap-3 pt-0.5 font-label-code-sm text-label-code-sm text-on-surface-variant">
+<div class="flex items-center gap-1 text-secondary font-mono">
+<span class="material-symbols-outlined text-xs">description</span>
+<span>services/gateway/query_builder.go:304</span>
+</div>
+<span class="text-outline">•</span>
+<span>Triaged by: <span class="text-on-surface">s.miller (Staff AppSec)</span></span>
+</div>
+</div>
+</div>
+<div class="shrink-0 flex items-center justify-between lg:justify-end gap-space-lg">
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1 font-mono font-label-code-sm text-label-code-sm font-semibold">
+<span class="text-on-surface-variant line-through">0.91</span>
+<span class="text-outline">→</span>
+<span class="text-secondary">0.34</span>
+</div>
+<span class="font-label-code-sm text-[0.625rem] text-secondary mt-0.5">Weights adjusted: -62.6%</span>
+</div>
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-highest text-on-surface transition-colors" title="View feedback audit trace" type="button">
+<span class="material-symbols-outlined text-lg">history_edu</span>
+</button>
+</div>
+</div>
+<!-- Suppressed Item 2 -->
+<div class="bg-surface-container-low hover:bg-surface-container transition-colors rounded-xl p-space-md shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-space-md opacity-90">
+<div class="flex items-start gap-space-md flex-1 min-w-0">
+<div class="shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-highest text-on-surface-variant font-label-code-sm text-label-code-sm">
+<span class="material-symbols-outlined text-xs text-secondary">check_circle</span>
+<span class="line-through">HIGH 8.8</span>
+<span class="font-bold text-secondary">0.21</span>
+</div>
+<div class="flex flex-col gap-1 min-w-0 flex-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-medium truncate">
+                SSRF in webhook callback dispatcher
+              </span>
+<span class="px-2 py-0.5 rounded bg-secondary-container/30 text-secondary font-label-code-sm text-label-code-sm flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-xs">sync_saved_locally</span>
+                Suppressed by feedback
+              </span>
+</div>
+<div class="flex flex-wrap items-center gap-2 mt-0.5">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Reason:</span>
+<span class="font-label-code-sm text-label-code-sm text-on-surface px-1.5 py-0.2 rounded bg-surface-container-high">
+                Test or example code / Simulated loopback sandbox only
+              </span>
+</div>
+<div class="flex items-center gap-3 pt-0.5 font-label-code-sm text-label-code-sm text-on-surface-variant">
+<div class="flex items-center gap-1 text-secondary font-mono">
+<span class="material-symbols-outlined text-xs">description</span>
+<span>tests/e2e/mocks/webhook_echo.go:76</span>
+</div>
+<span class="text-outline">•</span>
+<span>Triaged by: <span class="text-on-surface">Auto-Model Retrain #118</span></span>
+</div>
+</div>
+</div>
+<div class="shrink-0 flex items-center justify-between lg:justify-end gap-space-lg">
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1 font-mono font-label-code-sm text-label-code-sm font-semibold">
+<span class="text-on-surface-variant line-through">0.88</span>
+<span class="text-outline">→</span>
+<span class="text-secondary">0.21</span>
+</div>
+<span class="font-label-code-sm text-[0.625rem] text-secondary mt-0.5">Weights adjusted: -76.1%</span>
+</div>
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-highest text-on-surface transition-colors" title="View feedback audit trace" type="button">
+<span class="material-symbols-outlined text-lg">history_edu</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3: STILL OPEN -->
+<div class="flex flex-col gap-space-sm pt-space-sm">
+<div class="flex items-center justify-between px-space-xs">
+<div class="flex items-center gap-space-sm">
+<div class="w-2.5 h-2.5 rounded-full bg-outline"></div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">
+          Still Open
+        </h2>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-code-sm text-label-code-sm font-bold">
+          Active Baseline Legacy Findings
+        </span>
+</div>
+<div class="flex items-center gap-2 font-label-code-sm text-label-code-sm text-on-surface-variant">
+<span>Sort: Severity descending</span>
+</div>
+</div>
+<!-- Still Open Items -->
+<div class="flex flex-col gap-2">
+<!-- Item 1: Open 14d -->
+<div class="bg-surface-container-low hover:bg-surface-container transition-colors rounded-xl p-space-md shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-md flex-1 min-w-0">
+<div class="shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded bg-tertiary-container/30 text-tertiary font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+<span>HIGH 8.5</span>
+</div>
+<div class="flex flex-col gap-1 min-w-0 flex-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">
+                Permissive CORS wildcard with CredentialsFlag enabled
+              </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code-sm text-label-code-sm">
+                CWE-942
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1">
+              Handler sets Access-Control-Allow-Origin: * alongside AllowCredentials: true, exposing authenticated responses to arbitrary origins.
+            </p>
+<div class="flex items-center gap-3 pt-0.5 font-label-code-sm text-label-code-sm text-on-surface-variant">
+<div class="flex items-center gap-1 text-secondary font-mono">
+<span class="material-symbols-outlined text-xs">description</span>
+<span>services/api/middleware/cors.go:29</span>
+</div>
+<span class="text-outline">•</span>
+<span>Ticket: <span class="font-mono text-on-surface">SEC-1402</span></span>
+</div>
+</div>
+</div>
+<div class="shrink-0 flex items-center justify-between lg:justify-end gap-space-lg">
+<div class="flex items-center gap-3">
+<span class="px-2.5 py-1 rounded bg-surface-container-high text-on-surface-variant font-label-code-sm text-label-code-sm font-mono">
+              Unchanged
+            </span>
+<span class="px-2.5 py-1 rounded bg-surface-container-high text-tertiary font-label-code-sm text-label-code-sm font-semibold">
+              Open 14d
+            </span>
+</div>
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-highest text-on-surface transition-colors" title="Manage ongoing finding" type="button">
+<span class="material-symbols-outlined text-lg">more_horiz</span>
+</button>
+</div>
+</div>
+<!-- Item 2: Open 32d with slight drift -->
+<div class="bg-surface-container-low hover:bg-surface-container transition-colors rounded-xl p-space-md shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-md flex-1 min-w-0">
+<div class="shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded bg-tertiary-container/30 text-tertiary font-label-code-sm text-label-code-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+<span>HIGH 8.6</span>
+</div>
+<div class="flex flex-col gap-1 min-w-0 flex-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">
+                Missing Rate Limit on MFA Totp Challenge Handshake
+              </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code-sm text-label-code-sm">
+                CWE-307
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1">
+              Distributed brute-force possible over internal peer grpc mesh due to absent bucket decrement.
+            </p>
+<div class="flex items-center gap-3 pt-0.5 font-label-code-sm text-label-code-sm text-on-surface-variant">
+<div class="flex items-center gap-1 text-secondary font-mono">
+<span class="material-symbols-outlined text-xs">description</span>
+<span>services/auth/mfa/verify.go:193</span>
+</div>
+<span class="text-outline">•</span>
+<span>Ticket: <span class="font-mono text-on-surface">SEC-1289</span></span>
+</div>
+</div>
+</div>
+<div class="shrink-0 flex items-center justify-between lg:justify-end gap-space-lg">
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container-high font-label-code-sm text-label-code-sm font-mono">
+<span class="text-on-surface-variant">0.85</span>
+<span class="text-outline">→</span>
+<span class="text-tertiary font-semibold">0.86</span>
+</div>
+<span class="px-2.5 py-1 rounded bg-surface-container-high text-error font-label-code-sm text-label-code-sm font-semibold">
+              Open 32d
+            </span>
+</div>
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-highest text-on-surface transition-colors" title="Manage ongoing finding" type="button">
+<span class="material-symbols-outlined text-lg">more_horiz</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Telemetry Footprint Context Drawer / Bento Meta Footer -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-sm pt-space-sm">
+<div class="bg-surface-container-low p-space-md rounded-xl flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-xl">commit</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant uppercase">Commit Differential</span>
+<span class="font-body-md text-body-md text-on-surface font-mono truncate">main..audit-branch (42 commits)</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined text-xl">memory</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant uppercase">ML Model Classifier</span>
+<span class="font-body-md text-body-md text-on-surface font-mono truncate">SentinelNeural-v4.1.2-b</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-tertiary shrink-0">
+<span class="material-symbols-outlined text-xl">timer</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant uppercase">Triage Turnaround</span>
+<span class="font-body-md text-body-md text-on-surface font-mono truncate">Avg 4.2h / Delta Resolution</span>
+</div>
+</div>
+</div>
+</div></main></div></body></html>
