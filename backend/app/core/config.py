@@ -56,16 +56,98 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def assemble_db_url(self) -> "Settings":
+        # 1. Sanitize DB_HOST if user provided host with protocol or trailing path/port
+        if self.DB_HOST:
+            clean_host = self.DB_HOST.strip()
+            if clean_host.startswith(("http://", "https://")):
+                clean_host = clean_host.split("://", 1)[1]
+            clean_host = clean_host.split("/")[0]
+            if ":" in clean_host:
+                host_part, port_part = clean_host.split(":", 1)
+                clean_host = host_part
+                try:
+                    self.DB_PORT = int(port_part)
+                except ValueError:
+                    pass
+            # If user passed a bare supabase project ref domain without db. prefix
+            if clean_host.endswith(".supabase.co") and not clean_host.startswith(("db.", "aws-")):
+                clean_host = f"db.{clean_host}"
+            self.DB_HOST = clean_host
+
+        # 2. Check for password and URL-encode special characters
         password = self.SUPABASE_DB_PASSWORD or self.DB_PASSWORD
-        if password:
-            enc_pwd = quote_plus(password)
-            # If user provided password separately or has placeholder/default in DATABASE_URL
-            if "localhost:5432" in self.DATABASE_URL or "YOUR_SUPABASE_PASSWORD" in self.DATABASE_URL:
+        enc_pwd = quote_plus(password) if password else None
+
+        # 3. Detect if DATABASE_URL was set to an HTTP/HTTPS URL (e.g. Supabase Project REST URL)
+        raw_url = self.DATABASE_URL.strip()
+        is_http_url = raw_url.startswith(("http://", "https://"))
+
+        # If DATABASE_URL is an HTTP/HTTPS endpoint:
+        if is_http_url:
+            # Check if it contains a Supabase project reference
+            if ".supabase.co" in raw_url:
+                try:
+                    extracted_ref = raw_url.split("://", 1)[1].split(".supabase.co")[0].split("/")[0]
+                    # If DB_USER is still default or generic postgres, bind project ref
+                    if extracted_ref and (self.DB_USER == "postgres" or self.DB_USER == "postgres.wwrhgsyemoqfnujnxuui"):
+                        self.DB_USER = f"postgres.{extracted_ref}"
+                except Exception:
+                    pass
+
+            if enc_pwd:
+                # Reconstruct proper async PostgreSQL URL from discrete components
                 self.DATABASE_URL = (
                     f"postgresql+asyncpg://{self.DB_USER}:{enc_pwd}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
                 )
-            elif "<password>" in self.DATABASE_URL:
-                self.DATABASE_URL = self.DATABASE_URL.replace("<password>", enc_pwd)
+            else:
+                # HTTP/HTTPS cannot be used as an asyncpg/SQLAlchemy dialect
+                scheme = raw_url.split("://", 1)[0]
+                raise ValueError(
+                    f"Invalid database URL: '{self.DATABASE_URL}'. Scheme '{scheme}' is not a valid SQLAlchemy database dialect. "
+                    "SQLAlchemy requires an async database connection string (e.g. 'postgresql+asyncpg://...'), not an HTTP/HTTPS REST API endpoint. "
+                    "For Supabase, provide a valid connection string in DATABASE_URL or set SUPABASE_DB_PASSWORD along with DB_HOST/DB_USER."
+                )
+
+        # 4. Normalize postgres schemes: postgres:// and postgresql:// -> postgresql+asyncpg://
+        if self.DATABASE_URL.startswith("postgres://"):
+            self.DATABASE_URL = "postgresql+asyncpg://" + self.DATABASE_URL[len("postgres://"):]
+        elif self.DATABASE_URL.startswith("postgresql://") and not self.DATABASE_URL.startswith("postgresql+asyncpg://"):
+            self.DATABASE_URL = "postgresql+asyncpg://" + self.DATABASE_URL[len("postgresql://"):]
+        elif self.DATABASE_URL.startswith("sqlite:///") and not self.DATABASE_URL.startswith("sqlite+aiosqlite:///"):
+            self.DATABASE_URL = "sqlite+aiosqlite:///" + self.DATABASE_URL[len("sqlite:///"):]
+
+        # 5. Substitute password placeholders or rebuild if default localhost placeholder
+        if enc_pwd:
+            placeholders = [
+                "[YOUR-PASSWORD]",
+                "[your-password]",
+                "[PASSWORD]",
+                "[password]",
+                "<password>",
+                "<YOUR_PASSWORD>",
+                "YOUR_SUPABASE_PASSWORD",
+            ]
+            substituted = False
+            for ph in placeholders:
+                if ph in self.DATABASE_URL:
+                    self.DATABASE_URL = self.DATABASE_URL.replace(ph, enc_pwd)
+                    substituted = True
+
+            # If user provided password separately and DATABASE_URL is still local default
+            if not substituted and "localhost:5432" in self.DATABASE_URL:
+                self.DATABASE_URL = (
+                    f"postgresql+asyncpg://{self.DB_USER}:{enc_pwd}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+                )
+
+        # 6. Final scheme validation to fail fast before SQLAlchemy dialect lookup
+        valid_prefixes = ("postgresql+asyncpg://", "sqlite+aiosqlite://")
+        if not self.DATABASE_URL.startswith(valid_prefixes):
+            scheme = self.DATABASE_URL.split("://", 1)[0] if "://" in self.DATABASE_URL else self.DATABASE_URL
+            raise ValueError(
+                f"Unsupported database URL scheme '{scheme}' in '{self.DATABASE_URL}'. "
+                "ZeroSentinel requires an async database dialect: 'postgresql+asyncpg://' or 'sqlite+aiosqlite://'."
+            )
+
         return self
 
 

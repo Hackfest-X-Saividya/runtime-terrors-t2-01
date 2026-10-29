@@ -52,6 +52,7 @@ ZeroSentinel consists of three primary components:
 | `SUPABASE_DB_PASSWORD` | **Yes** | — | Supabase database user password (percent-encoded if special characters) | `s3cur3%23p4ss!` |
 | `DB_SSL` | Optional | `require` | SSL mode for PostgreSQL connection (`require` for Supabase) | `require` |
 | `CORS_ORIGINS` | **Yes** | `http://localhost:5173,http://127.0.0.1:5173` | Comma-separated list or JSON array of permitted frontend origins | `https://zerosentinel.vercel.app,http://localhost:5173` |
+| `PYTHON_VERSION` | Optional | `3.11.9` | Explicit Python runtime pin for Render/cloud build environments | `3.11.9` |
 | `SECRET_KEY` | Optional | `insecure-dev-secret-key-change-in-production` | Secret key for session encryption and signing | `prod-random-64-char-hex-secret` |
 | `ENVIRONMENT` | Optional | `development` | Deployment tier: `development`, `staging`, `production` | `production` |
 | `LOG_LEVEL` | Optional | `INFO` | Python logging severity: `DEBUG`, `INFO`, `WARNING`, `ERROR` | `INFO` |
@@ -143,19 +144,54 @@ The frontend is contained on the `frontend` branch.
 
 ## 5. Backend Deployment (Render / Railway / GCP Cloud Run)
 
-### Recommended: Render Web Service
-1. **Repository & Branch:** Select `https://github.com/Hackfest-X-Saividya/runtime-terrors-t2-01`, branch `Backend`.
-2. **Environment:** Python 3 (or Docker).
-3. **Root Directory:** `.` (or `backend`).
-4. **Build Command:**
-   ```bash
-   pip install --upgrade pip && pip install -r backend/requirements.txt
-   ```
-5. **Start Command:**
-   ```bash
-   uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT --workers 2
-   ```
-6. **Environment Variables:** Add `DATABASE_URL`, `CORS_ORIGINS`, `DB_SSL=require`, `ENVIRONMENT=production`.
+### Troubleshooting: `metadata-generation-failed` on Render
+By default, new Render native Python services default to Python 3.14 (or latest platform default). Under Python 3.14, `pydantic==2.9.2` requires `pydantic-core==2.23.4`, which does not distribute pre-compiled `cp314` binary wheels on PyPI. Pip then falls back to building `pydantic-core` from source via `maturin`, which fails during metadata generation because Render build containers do not include a Rust compiler (`cargo`).
+
+**Resolution:**
+The repository commits runtime version pins:
+- `.python-version` containing `3.11.9`
+- `runtime.txt` containing `python-3.11.9`
+- `render.yaml` declaring `PYTHON_VERSION: 3.11.9`
+
+Under Python 3.11.9, pip downloads official pre-compiled `manylinux` wheels for `pydantic-core==2.23.4` with zero compilation required.
+
+### Render Web Service Setup Steps
+1. **Repository & Branch:**
+   - Repo: `https://github.com/Hackfest-X-Saividya/runtime-terrors-t2-01`
+   - Branch: `Backend`
+2. **Environment & Runtime:**
+   - Runtime: `Python 3`
+   - Python Version: Automatically pinned to `3.11.9` by `.python-version` / `runtime.txt`
+   - Optional explicit override in Dashboard: Add `PYTHON_VERSION` = `3.11.9` under **Environment**
+3. **Build & Start Commands:**
+   - **If Root Directory is `.` (Default):**
+     - Build Command: `pip install --upgrade pip setuptools wheel && pip install -r backend/requirements.txt`
+     - Start Command: `uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT --workers 2`
+   - **If Root Directory is `backend`:**
+     - Build Command: `pip install --upgrade pip setuptools wheel && pip install -r requirements.txt`
+     - Start Command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 2`
+4. **Environment Variables:**
+   - **Database Configuration (Choose Option A or Option B):**
+     - **Option A (Recommended):** Set discrete environment variables:
+       - `SUPABASE_DB_PASSWORD` = `<your-password>` (special characters are automatically URL-encoded)
+       - `DB_HOST` = `aws-0-ap-southeast-1.pooler.supabase.com` (do NOT include `https://`)
+       - `DB_PORT` = `5432`
+       - `DB_USER` = `postgres.wwrhgsyemoqfnujnxuui`
+       - `DB_NAME` = `postgres`
+       - `DB_SSL` = `require`
+     - **Option B (Direct Connection String):**
+       - `DATABASE_URL` = `postgresql+asyncpg://postgres.wwrhgsyemoqfnujnxuui:<ENCODED_PASSWORD>@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres`
+   - **General Application Variables:**
+     - `CORS_ORIGINS` (e.g. `https://zerosentinel.vercel.app,http://localhost:5173`)
+     - `DB_SSL` = `require`
+     - `ENVIRONMENT` = `production`
+
+   > [!WARNING]
+   > **Do NOT use the Supabase Project REST API URL (`https://<project-ref>.supabase.co`) as `DATABASE_URL`:**
+   > SQLAlchemy is an SQL database ORM and cannot connect to HTTP/HTTPS REST API endpoints. Setting an HTTPS URL as `DATABASE_URL` causes `sqlalchemy.exc.NoSuchModuleError: Can't load plugin: sqlalchemy.dialects:https`. Ensure your database URL uses the `postgresql+asyncpg://` scheme.
+
+5. **Trigger Deployment:**
+   - In Render Dashboard, click **Manual Deploy** $\rightarrow$ **Clear build cache & deploy**.
 
 ---
 
