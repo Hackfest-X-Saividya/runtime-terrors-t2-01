@@ -50,3 +50,4 @@ rl_state.json
 **/rl_state.json
 *.lock
 *.tmp
+.vercel
