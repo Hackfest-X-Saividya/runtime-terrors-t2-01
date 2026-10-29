@@ -1,0 +1,149 @@
+import logging
+from typing import Optional
+import uuid
+from fastapi import APIRouter, BackgroundTasks, Depends, Request, status
+from fastapi.responses import JSONResponse
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.database import get_db
+from app.models.finding import Finding
+from app.models.mitigation import Mitigation
+from app.schemas.error import ErrorDetail, ErrorEnvelope
+from app.schemas.finding import (
+    FindingDetailResponse,
+    FindingResponse,
+    FindingUpdateRequest,
+    MitigationDetail,
+)
+from app.services.ml_detector import ml_service
+
+logger = logging.getLogger("zerosentinel.findings")
+
+
+def _safe_dispatch_feedback(
+    code: str,
+    status: str,
+    func_name: str,
+    cwe_id: Optional[str] = None,
+) -> None:
+    """Safe background worker protecting against any unhandled detector/IO exceptions."""
+    try:
+        try:
+            ml_service.feedback(code=code, status=status, func_name=func_name, cwe_id=cwe_id)
+        except TypeError:
+            ml_service.feedback(code=code, status=status, func_name=func_name)
+    except Exception as exc:
+        logger.warning("[FEEDBACK_BACKGROUND] Feedback dispatch failed gracefully: %s", exc)
+
+
+router = APIRouter(prefix="/api", tags=["findings"])
+
+
+@router.get(
+    "/findings/{id}",
+    response_model=FindingDetailResponse,
+    status_code=status.HTTP_200_OK,
+    responses={
+        status.HTTP_200_OK: {"model": FindingDetailResponse},
+        status.HTTP_404_NOT_FOUND: {"model": ErrorEnvelope},
+    },
+)
+async def get_finding(
+    id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Returns details for a single finding, including optional extended catalog mitigation references.
+    """
+    finding_stmt = select(Finding).where(Finding.id == id)
+    result = await db.execute(finding_stmt)
+    finding = result.scalar_one_or_none()
+
+    if not finding:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content=ErrorEnvelope(
+                error=ErrorDetail(
+                    code="FINDING_NOT_FOUND",
+                    message=f"Finding with ID '{id}' was not found.",
+                )
+            ).model_dump(),
+        )
+
+    # Build response with catalog mitigation details if linked
+    mitigation_detail = None
+    if finding.mitigation_id:
+        mit_stmt = select(Mitigation).where(Mitigation.id == finding.mitigation_id)
+        mit_res = await db.execute(mit_stmt)
+        mit = mit_res.scalar_one_or_none()
+        if mit:
+            mitigation_detail = MitigationDetail(
+                id=mit.id,
+                canonical_key=mit.canonical_key,
+                cwe_id=mit.cwe_id,
+                rule_id=mit.rule_id,
+                title=mit.title,
+                remediation_guidance=mit.remediation_guidance,
+                code_diff=mit.code_diff,
+                references_json=mit.references_json,
+                created_at=mit.created_at,
+            )
+
+    resp = FindingDetailResponse.model_validate(finding)
+    if mitigation_detail:
+        resp.mitigation_detail = mitigation_detail
+    return resp
+
+
+@router.patch(
+    "/findings/{id}",
+    response_model=FindingResponse,
+    status_code=status.HTTP_200_OK,
+    responses={
+        status.HTTP_200_OK: {"model": FindingResponse},
+        status.HTTP_404_NOT_FOUND: {"model": ErrorEnvelope},
+    },
+)
+async def update_finding(
+    id: uuid.UUID,
+    payload: FindingUpdateRequest,
+    background_tasks: BackgroundTasks,
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Updates the triage status of an individual finding (open, fixed, false_positive, accepted).
+    Optionally enqueues safe online feedback learning in background tasks.
+    """
+    finding_stmt = select(Finding).where(Finding.id == id)
+    result = await db.execute(finding_stmt)
+    finding = result.scalar_one_or_none()
+
+    if not finding:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content=ErrorEnvelope(
+                error=ErrorDetail(
+                    code="FINDING_NOT_FOUND",
+                    message=f"Finding with ID '{id}' was not found.",
+                )
+            ).model_dump(),
+        )
+
+    previous_status = finding.status
+    finding.status = payload.status
+    await db.commit()
+    await db.refresh(finding)
+
+    # Safe asynchronous feedback learning dispatch
+    # Only dispatched if status actually transitioned, avoiding duplicate feedback runs
+    if finding.status != previous_status and finding.snippet and finding.snippet.strip():
+        background_tasks.add_task(
+            _safe_dispatch_feedback,
+            code=finding.snippet,
+            status=payload.status,
+            func_name=finding.title or "finding",
+            cwe_id=finding.cwe_id,
+        )
+
+    return finding
