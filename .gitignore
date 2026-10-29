@@ -1,0 +1,52 @@
+# Python & Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Distribution / Packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Testing & Quality
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# IDE & OS
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ZeroSentinel Temporary Files & Reports
+backend/temp/
+backend/reports/
+/reports/
+*.html
+*.pdf
+
+# RL Feedback & Model State (User-generated online learning state)
+rl_state.json
+**/rl_state.json
+*.lock
+*.tmp
