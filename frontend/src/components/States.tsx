@@ -37,7 +37,7 @@ export function EmptyState({
 
 function describe(error: unknown): string {
   if (error instanceof ApiError) {
-    if (error.status === 0) return error.message + ' Check that the backend is running, or open the app with ?mock=1.'
+    if (error.status === 0) return error.message + ' Check backend connectivity and CORS configuration, or open the app with ?mock=1.'
     if (error.status === 404) return 'Not found. It may have been removed, or the link is wrong.'
     return error.message
   }

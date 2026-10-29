@@ -25,7 +25,7 @@ export class ApiError extends Error {
   constructor(status: number, path: string, detail: string | null = null) {
     super(
       status === 0
-        ? `Can't reach the API at ${API_URL}.`
+        ? `Can't reach the API at ${API_URL}${detail ? ` (${detail})` : ''}. Check backend status and CORS.`
         : `${path} failed with ${status}${detail ? `: ${detail}` : ''}`,
     )
     this.name = 'ApiError'
@@ -55,8 +55,9 @@ async function send(path: string, init?: RequestInit): Promise<Response> {
   let res: Response
   try {
     res = await fetch(`${API_URL}${path}`, init)
-  } catch {
-    throw new ApiError(0, path)
+  } catch (err: unknown) {
+    const errorMsg = err instanceof Error ? err.message : String(err)
+    throw new ApiError(0, path, errorMsg)
   }
   if (!res.ok) throw new ApiError(res.status, path, await readDetail(res))
   return res

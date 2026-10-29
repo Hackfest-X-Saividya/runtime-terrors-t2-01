@@ -20,7 +20,7 @@ function ApiStatus() {
     },
     checking: { label: 'Checking API', dot: 'bg-outline', text: 'text-on-surface-variant', title: API_URL },
     online: { label: 'API online', dot: 'bg-primary', text: 'text-primary', title: API_URL },
-    offline: { label: 'API offline', dot: 'bg-error', text: 'text-error', title: `${API_URL} is not responding` },
+    offline: { label: 'API offline', dot: 'bg-error', text: 'text-error', title: `${API_URL} is unreachable or blocked by CORS` },
   }[status]
 
   return (
