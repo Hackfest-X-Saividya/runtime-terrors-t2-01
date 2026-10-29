@@ -51,7 +51,8 @@ ZeroSentinel consists of three primary components:
 | `DATABASE_URL` | **Yes** | `sqlite+aiosqlite:///./test.db` | Async PostgreSQL connection string for Supabase | `postgresql+asyncpg://postgres.PROJECT_REF:PASSWORD@aws-0-REGION.pooler.supabase.com:6543/postgres` |
 | `SUPABASE_DB_PASSWORD` | **Yes** | — | Supabase database user password (percent-encoded if special characters) | `s3cur3%23p4ss!` |
 | `DB_SSL` | Optional | `require` | SSL mode for PostgreSQL connection (`require` for Supabase) | `require` |
-| `CORS_ORIGINS` | **Yes** | `http://localhost:5173,http://127.0.0.1:5173` | Comma-separated list or JSON array of permitted frontend origins | `https://zerosentinel.vercel.app,http://localhost:5173` |
+| `CORS_ALLOWED_ORIGINS` | **Yes** | `["https://frontend-eta-brown-70.vercel.app", ...]` | JSON array or comma-separated list of permitted frontend origins | `["https://frontend-eta-brown-70.vercel.app", "http://localhost:5173"]` |
+| `CORS_ORIGINS` | Optional | — | Comma-separated alias for `CORS_ALLOWED_ORIGINS` | `https://frontend-eta-brown-70.vercel.app,http://localhost:5173` |
 | `PYTHON_VERSION` | Optional | `3.11.9` | Explicit Python runtime pin for Render/cloud build environments | `3.11.9` |
 | `SECRET_KEY` | Optional | `insecure-dev-secret-key-change-in-production` | Secret key for session encryption and signing | `prod-random-64-char-hex-secret` |
 | `ENVIRONMENT` | Optional | `development` | Deployment tier: `development`, `staging`, `production` | `production` |

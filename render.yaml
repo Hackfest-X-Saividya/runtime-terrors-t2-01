@@ -13,3 +13,7 @@ services:
         value: production
       - key: DB_SSL
         value: require
+      - key: CORS_ALLOWED_ORIGINS
+        value: '["https://frontend-eta-brown-70.vercel.app","http://localhost:5173","http://localhost:3000"]'
+      - key: CORS_ORIGINS
+        value: https://frontend-eta-brown-70.vercel.app,http://localhost:5173,http://localhost:3000

@@ -1,7 +1,8 @@
+import json
 import os
-from typing import Optional
+from typing import Any, Optional, Union
 from urllib.parse import quote_plus
-from pydantic import model_validator
+from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -41,18 +42,68 @@ class Settings(BaseSettings):
     MAX_REPO_SIZE_BYTES: int = 50 * 1024 * 1024         # 50 MB
 
     # CORS Allowed Origins
-    CORS_ALLOWED_ORIGINS: list[str] = [
+    CORS_ALLOWED_ORIGINS: Union[list[str], str] = [
+        "https://frontend-eta-brown-70.vercel.app",
         "http://localhost:5173",
         "http://127.0.0.1:5173",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
     ]
+    CORS_ORIGINS: Optional[Union[list[str], str]] = None
 
     model_config = SettingsConfigDict(
         env_file=(".env", "backend/.env", "../.env"),
         env_file_encoding="utf-8",
         extra="ignore"
     )
+
+    @field_validator("CORS_ALLOWED_ORIGINS", "CORS_ORIGINS", mode="before")
+    @classmethod
+    def parse_cors_origins_input(cls, v: Any) -> Any:
+        if v is None:
+            return None
+        if isinstance(v, str):
+            clean = v.strip()
+            if clean.startswith("[") and clean.endswith("]"):
+                try:
+                    parsed = json.loads(clean)
+                    if isinstance(parsed, list):
+                        return [str(o).strip().rstrip("/") for o in parsed if str(o).strip()]
+                except Exception:
+                    pass
+            return [o.strip().rstrip("/") for o in clean.split(",") if o.strip()]
+        if isinstance(v, (list, tuple, set)):
+            return [str(o).strip().rstrip("/") for o in v if str(o).strip()]
+        return v
+
+    @model_validator(mode="after")
+    def assemble_cors_origins(self) -> "Settings":
+        origins: list[str] = []
+        if isinstance(self.CORS_ALLOWED_ORIGINS, list):
+            origins.extend(self.CORS_ALLOWED_ORIGINS)
+        elif isinstance(self.CORS_ALLOWED_ORIGINS, str):
+            origins.extend([o.strip() for o in self.CORS_ALLOWED_ORIGINS.split(",") if o.strip()])
+
+        if self.CORS_ORIGINS:
+            if isinstance(self.CORS_ORIGINS, list):
+                origins.extend(self.CORS_ORIGINS)
+            elif isinstance(self.CORS_ORIGINS, str):
+                origins.extend([o.strip() for o in self.CORS_ORIGINS.split(",") if o.strip()])
+
+        # Guarantee the production Vercel frontend origin is always present
+        production_origin = "https://frontend-eta-brown-70.vercel.app"
+        if production_origin not in origins:
+            origins.insert(0, production_origin)
+
+        # Normalize: strip whitespace, remove trailing slashes, deduplicate
+        normalized: list[str] = []
+        for o in origins:
+            clean = str(o).strip().rstrip("/")
+            if clean and clean not in normalized:
+                normalized.append(clean)
+
+        self.CORS_ALLOWED_ORIGINS = normalized
+        return self
 
     @model_validator(mode="after")
     def assemble_db_url(self) -> "Settings":
