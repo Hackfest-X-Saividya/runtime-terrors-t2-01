@@ -1,3 +1,8 @@
+Project: ZeroSentinel, a zero-day vulnerability detection tool built in a 24-hour hackathon (PS-01). Users submit source code (zip, Git URL or pasted code; Python first). Two detectors run: a rule engine (Bandit + Semgrep, each hit mapped to CWE and OWASP Top 10 2025) and an ML model that scores every function's vulnerability risk. A risk engine merges them into findings with severity (critical/high/medium/low), a 0-10 risk score and a mitigation. Findings only the ML catches are marked novel: our zero-day candidates. A React dashboard tracks findings and exports risk reports.
+
+Monorepo: /backend (FastAPI + PostgreSQL), /frontend (React + Vite + Tailwind), /ml (Python detector package). CONTRACT.md defines the finding JSON, REST endpoints and WebSocket messages. Never rename or add contract fields without asking me.
+
+Rules: never execute submitted code; simple working code over clever code; everything runs with docker compose; show a plan before large changes; add a README note for what you build.
 # ZeroSentinel — Shared Project Context & Architecture
 
 ZeroSentinel is an automated source-code vulnerability detection prototype developed for a 24-hour cybersecurity hackathon.

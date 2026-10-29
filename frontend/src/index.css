@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-background font-body-md text-body-md text-on-surface antialiased;
+    overscroll-behavior: none;
+  }
+  /* Visible keyboard focus everywhere; mouse clicks don't show it. */
+  :focus-visible {
+    outline: 2px solid theme('colors.primary');
+    outline-offset: 2px;
+  }
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline-offset: 0;
+  }
+}
+
+/* Material Symbols size follows the surrounding font-size. */
+.material-symbols-outlined {
+  font-size: 1.25em;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* Shiki output inside the code viewer. */
+.code-view pre {
+  margin: 0;
+  background: transparent !important;
+}
+.code-view code {
+  counter-reset: line var(--line-start, 0);
+  display: block;
+}
+.code-view .line {
+  display: inline-block;
+  width: 100%;
+  padding-right: theme('spacing.space-md');
+}
+.code-view .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 3rem;
+  margin-right: theme('spacing.space-md');
+  padding-right: theme('spacing.space-sm');
+  text-align: right;
+  color: theme('colors.outline');
+}
+.code-view .line.hl {
+  background: theme('colors.error-container / 35%');
+  box-shadow: inset 3px 0 0 theme('colors.error');
+}

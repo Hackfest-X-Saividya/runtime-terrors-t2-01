@@ -1,0 +1,436 @@
+<!DOCTYPE html><html class="dark" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"secondary":"#adc6ff","on-background":"#dfe2ee","on-tertiary":"#472a00","secondary-fixed-dim":"#adc6ff","on-primary":"#00391d","secondary-fixed":"#d8e2ff","surface-tint":"#1ce388","secondary-container":"#0566d9","inverse-on-surface":"#2c3039","tertiary-fixed-dim":"#ffb95f","background":"#0f131c","surface-variant":"#31353e","surface-container-lowest":"#0a0e16","inverse-primary":"#006d3e","error-container":"#93000a","tertiary-fixed":"#ffddb8","on-tertiary-fixed":"#2a1700","outline":"#859587","on-secondary-fixed":"#001a42","surface-container":"#1c2028","error":"#ffb4ab","tertiary":"#ffd5a5","primary-fixed":"#59ffa4","on-secondary-container":"#e6ecff","surface":"#0f131c","surface-bright":"#353942","on-tertiary-container":"#6f4500","on-secondary":"#002e6a","on-error-container":"#ffdad6","on-surface":"#dfe2ee","primary":"#45f99c","on-primary-fixed-variant":"#00522d","surface-dim":"#0f131c","on-primary-fixed":"#00210f","on-error":"#690005","on-tertiary-fixed-variant":"#653e00","surface-container-high":"#262a33","outline-variant":"#3c4a3f","on-surface-variant":"#bacbbc","surface-container-low":"#181c24","primary-fixed-dim":"#1ce388","surface-container-highest":"#31353e","tertiary-container":"#ffb044","on-primary-container":"#005b32","primary-container":"#00dc82","inverse-surface":"#dfe2ee","on-secondary-fixed-variant":"#004395"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"gutter-desktop":"1.5rem","space-sm":"0.5rem","space-xl":"2rem","margin":"1rem","space-lg":"1.5rem","space-xs":"0.25rem","margin-desktop":"2rem","gutter":"1rem","space-md":"1rem"},fontFamily:{"headline-md":["Inter"],"headline-xl":["Inter"],"label-code-lg":["JetBrains Mono"],"label-code-md":["JetBrains Mono"],"body-sm":["Inter"],"headline-sm":["Inter"],"body-lg":["Inter"],"body-md":["Inter"],"label-code-sm":["JetBrains Mono"],"headline-lg":["Inter"]},fontSize:{"headline-md":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"-0.015em","fontWeight":"600"}],"headline-xl":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.025em","fontWeight":"600"}],"label-code-lg":["0.875rem",{"lineHeight":"1.375rem","letterSpacing":"-0.01em","fontWeight":"500"}],"label-code-md":["0.75rem",{"lineHeight":"1.125rem","letterSpacing":"0em","fontWeight":"500"}],"body-sm":["0.75rem",{"lineHeight":"1.125rem","letterSpacing":"0.01em","fontWeight":"400"}],"headline-sm":["1rem",{"lineHeight":"1.5rem","letterSpacing":"-0.01em","fontWeight":"600"}],"body-lg":["1rem",{"lineHeight":"1.625rem","letterSpacing":"-0.005em","fontWeight":"400"}],"body-md":["0.875rem",{"lineHeight":"1.375rem","letterSpacing":"0em","fontWeight":"400"}],"label-code-sm":["0.6875rem",{"lineHeight":"1rem","letterSpacing":"0.025em","fontWeight":"600"}],"headline-lg":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.02em","fontWeight":"600"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="flex flex-col"><div class="h-16 px-space-md flex items-center justify-between bg-surface-container-low"><div class="flex items-center gap-space-sm"><img alt="ZeroSentinel Shield Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Wed_pUB1ykxQPnPqBFw2H__EJZZBtbqdpQuesl9qt2Uy1Uos5IU9_4t174YvXz7ZY5-MiZ0cc9tWGC92nMoesrWFrLDH0aDrfzFXQG7nb_UE3w84ktxEtYaGW4rv2kjr5RPG0T-JyhB0AKcHRgd9vYIg6S1UtKw40qEB0uxRn_0I03VJ5LsFM_FRITJu9PXQhLI-uyxdYxtxnJIbYNfPqFxizkvAezQj4PnnPiinoM"><span class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">ZeroSentinel</span></div><span class="font-label-code-sm text-label-code-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-primary font-medium">v2.4-secops</span></div><nav class="px-space-sm pt-space-md flex flex-col gap-1" data-active-classes="bg-surface-container-high text-primary font-medium rounded-lg"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="dashboard" href="#"><span class="material-symbols-outlined text-lg">dashboard</span><span class="">Dashboard</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="new-scan" href="#"><span class="material-symbols-outlined text-lg">radar</span><span class="">New Scan</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="findings" href="#"><span class="material-symbols-outlined text-lg">shield_with_house</span><span class="">Findings</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="reports" href="#"><span class="material-symbols-outlined text-lg">description</span><span class="">Reports</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="model-governance" href="#"><span class="material-symbols-outlined text-lg">smart_toy</span><span class="">Model</span></a></nav></div><div class="p-space-sm flex flex-col gap-space-sm"><div class="p-space-sm rounded-lg bg-surface-container flex flex-col gap-1"><div class="flex items-center justify-between text-on-surface-variant"><span class="font-label-code-sm text-label-code-sm uppercase">Engine</span><div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span class="font-label-code-sm text-label-code-sm text-primary">Healthy</span></div></div><div class="flex items-center justify-between text-on-surface-variant"><span class="font-label-code-sm text-label-code-sm uppercase">Ruleset</span><span class="font-label-code-sm text-label-code-sm text-on-surface font-mono">v2025.2</span></div></div><div class="p-space-xs rounded-lg bg-surface-container-high flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDd1wTG-Xk7cx2bfNAeiu7zfylQP8FTb7HT91lDZaAmSvivlifJgVlKQ_d4mROvs7EVsKBycmveRKg5926u2Ptf6QVw7zNmshZKi3gWqqt7Fb_3uAjpDcb1C23RjF0bleYyNQ9q4LMB2ZQO-Y8hSTZQwBcM1m-hFAoh8An_fPXKQwvNNnooQq38yZ_f8WolZHFMI2EBkYuvxaKdQ1UhMMDN0WjY13OvLs9XZ6m66uY"><div class="flex flex-col min-w-0"><span class="font-body-sm text-body-sm font-medium text-on-surface truncate">SecOps Lead</span><span class="font-label-code-sm text-label-code-sm text-on-surface-variant truncate">sec-ops@sentinel</span></div></div><span class="material-symbols-outlined text-on-surface-variant text-base cursor-pointer hover:text-on-surface">unfold_more</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.3)] z-40 flex items-center justify-between px-space-lg gap-space-md"><div class="flex items-center gap-space-md flex-1 max-w-2xl"><div class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface cursor-pointer"><span class="material-symbols-outlined text-base text-primary">source_environment</span><span class="font-label-code-sm text-label-code-sm text-on-surface font-medium truncate max-w-[200px]">production-monorepo / main</span><span class="material-symbols-outlined text-sm">expand_more</span></div><div class="relative flex-1"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg pointer-events-none">search</span><input class="w-full pl-9 pr-space-md py-1.5 rounded-lg bg-surface-container text-on-surface placeholder:text-outline font-label-code-sm text-label-code-sm focus:outline-none focus:bg-surface-container-high" placeholder="Search repos, CVEs, findings, rules... [Cmd + K]" type="text"></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-2 px-space-sm py-1 rounded bg-surface-container-low"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span></span><span class="font-label-code-sm text-label-code-sm text-on-surface font-medium">Scan: Continuous</span></div><button class="flex items-center gap-1.5 px-space-md py-1.5 rounded-lg bg-primary-container text-on-primary-container font-headline-sm text-headline-sm font-semibold hover:bg-primary transition-colors" type="button"><span class="material-symbols-outlined text-lg">add</span><span class="">New scan</span></button></div></header><main class="relative pt-16 w-full px-gutter-desktop bg-background min-h-screen"><div class="flex flex-col w-full pb-16">
+<!-- Top Navigation & Context Subheader -->
+<div class="flex flex-wrap items-center justify-between gap-space-md py-space-sm mb-space-md">
+<!-- Breadcrumb Context -->
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-code-sm text-label-code-sm min-w-0">
+<span class="flex items-center gap-1 hover:text-on-surface cursor-pointer transition-colors truncate">
+<span class="material-symbols-outlined text-sm text-outline">folder_zip</span>
+<span class="">auth-service-v2.1.zip</span>
+</span>
+<span class="text-outline text-xs">/</span>
+<a class="hover:text-on-surface cursor-pointer transition-colors font-medium" href="#">Findings</a>
+<span class="text-outline text-xs">/</span>
+<span class="text-on-surface font-semibold truncate max-w-md">Unsanitized SQL concatenation in payment gateway (CWE-89)</span>
+</div>
+<!-- Finding Pagination & Quick Navigation -->
+<div class="flex items-center gap-space-sm ml-auto">
+<div class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container text-on-surface-variant font-label-code-sm text-label-code-sm">
+<span class="text-outline">Finding</span>
+<span class="text-on-surface font-semibold">1</span>
+<span class="text-outline">of</span>
+<span class="text-on-surface">128</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="group flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-label-code-sm text-label-code-sm" type="button">
+<span class="material-symbols-outlined text-xs">arrow_back</span>
+<span class="">Previous</span>
+<span class="text-outline text-[10px] group-hover:text-on-surface-variant">`[`</span>
+</button>
+<button class="group flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-label-code-sm text-label-code-sm" type="button">
+<span class="">Next</span>
+<span class="material-symbols-outlined text-xs">arrow_forward</span>
+<span class="text-outline text-[10px] group-hover:text-on-surface-variant">`]`</span>
+</button>
+</div>
+<button class="flex items-center gap-1 px-3 py-1 rounded bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors font-label-code-sm text-label-code-sm font-medium" type="button">
+<span class="material-symbols-outlined text-sm text-outline">list</span>
+<span class="">Back to findings</span>
+</button>
+</div>
+</div>
+<!-- Main Split Layout (60% Left / 40% Right) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- ========================================================================= -->
+<!-- LEFT COLUMN: Code Viewer & Taint Flow (7 cols ~58%)                       -->
+<!-- ========================================================================= -->
+<div class="lg:col-span-7 flex flex-col gap-space-lg min-w-0">
+<!-- Code Inspector Terminal Card -->
+<div class="flex items-center justify-between px-3 py-2 rounded-lg bg-surface-container-low border border-secondary/30 text-xs font-mono text-on-surface-variant shadow-md"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary text-base">info</span><span class="">Score lowered by feedback: <span class="text-secondary font-semibold font-mono">0.91 → 0.34</span> · model v1.2</span></div><span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-secondary text-[10px] font-mono">Feedback Active</span></div><div class="rounded-xl bg-surface-container-low shadow-xl overflow-hidden flex flex-col">
+<!-- Code Toolbar -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm px-space-md py-space-sm bg-surface-container text-on-surface-variant">
+<!-- File Details -->
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="material-symbols-outlined text-sm text-primary">terminal</span>
+<span class="font-label-code-sm text-label-code-sm font-semibold text-on-surface truncate">services/billing/charge.go</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-secondary font-label-code-sm text-[10px]">
+              main@9a8c1f0
+            </span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-label-code-sm text-[10px]">
+              Lines 135–154
+            </span>
+</div>
+<!-- Code Actions -->
+<div class="flex items-center gap-1">
+<button class="p-1.5 rounded hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" title="Copy code snippet" type="button">
+<span class="material-symbols-outlined text-base">content_copy</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" title="Open in GitHub / IDE" type="button">
+<span class="material-symbols-outlined text-base">open_in_new</span>
+</button>
+<button class="px-2 py-1 rounded bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-code-sm text-[11px] transition-colors" title="View Raw source" type="button">
+              Raw
+            </button>
+</div>
+</div>
+<!-- Code Content Canvas -->
+<div class="overflow-x-auto bg-surface-container-lowest p-space-sm font-label-code-sm text-label-code-sm select-text">
+<div class="min-w-[620px] flex flex-col">
+<!-- Line 135 -->
+<div class="flex items-stretch hover:bg-surface-container-low/40">
+<span class="w-12 select-none text-right pr-4 text-outline opacity-60">135</span>
+<span class="text-on-surface-variant"><span class="text-secondary font-medium">func</span> <span class="text-primary font-medium">HandleCharge</span>(ctx context.Context, req ChargeRequest) (*ChargeResult, error) {</span>
+</div>
+<!-- Line 136 -->
+<div class="flex items-stretch hover:bg-surface-container-low/40">
+<span class="w-12 select-none text-right pr-4 text-outline opacity-60">136</span>
+<span class="text-outline pl-4">// Validate payload idempotency token</span>
+</div>
+<!-- Line 137 -->
+<div class="flex items-stretch hover:bg-surface-container-low/40">
+<span class="w-12 select-none text-right pr-4 text-outline opacity-60">137</span>
+<span class="text-on-surface-variant pl-4"><span class="text-secondary font-medium">if</span> req.Token == <span class="text-tertiary">""</span> { <span class="text-secondary font-medium">return</span> nil, ErrInvalidPayload }</span>
+</div>
+<!-- Line 138 -->
+<div class="flex items-stretch hover:bg-surface-container-low/40">
+<span class="w-12 select-none text-right pr-4 text-outline opacity-60">138</span>
+<span class="text-on-surface-variant pl-4">db := storage.GetPrimaryReplica()</span>
+</div>
+<!-- Line 139 -->
+<div class="flex items-stretch hover:bg-surface-container-low/40">
+<span class="w-12 select-none text-right pr-4 text-outline opacity-60">139</span>
+<span class="text-on-surface-variant pl-4"></span>
+</div>
+<!-- Line 140 -->
+<div class="flex items-stretch hover:bg-surface-container-low/40">
+<span class="w-12 select-none text-right pr-4 text-outline opacity-60">140</span>
+<span class="text-outline pl-4">// Fetch account profile and active ledger balance</span>
+</div>
+<!-- VULNERABLE LINE 141 -->
+<div class="flex items-stretch bg-error-container/30 pl-1 border-l-4 border-error">
+<span class="w-11 select-none text-right pr-4 text-error font-semibold flex items-center justify-end gap-1">
+<span class="material-symbols-outlined text-xs text-error">warning</span>
+                141
+              </span>
+<span class="text-on-surface pl-4">
+                query := fmt.Sprintf(<span class="text-error font-semibold">"SELECT id, balance, status FROM charges WHERE acct = '%s'"</span>, req.AccountID)
+              </span>
+</div>
+<!-- VULNERABLE LINE 142 -->
+<div class="flex items-stretch bg-error-container/30 pl-1 border-l-4 border-error">
+<span class="w-11 select-none text-right pr-4 text-error font-semibold flex items-center justify-end gap-1">
+<span class="material-symbols-outlined text-xs text-error">dangerous</span>
+                142
+              </span>
+<span class="text-on-surface pl-4">
+                rows, err := db.QueryContext(ctx, query)
+              </span>
+</div>
+<!-- VULNERABLE LINE 143 -->
+<div class="flex items-stretch bg-error-container/30 pl-1 border-l-4 border-error">
+<span class="w-11 select-none text-right pr-4 text-error font-semibold flex items-center justify-end gap-1">
+<span class="material-symbols-outlined text-xs text-error">report</span>
+                143
+              </span>
+<span class="text-on-surface pl-4">
+<span class="text-secondary font-medium">if</span> err != nil { <span class="text-secondary font-medium">return</span> nil, fmt.Errorf(<span class="text-tertiary">"charge execute failed: %w"</span>, err) }
+              </span>
+</div>
+<!-- INLINE ANNOTATION BLOCK IMMEDIATELY BELOW LINE 143 -->
+<div class="my-2 ml-12 mr-2 p-space-sm rounded-lg bg-surface-container flex flex-col gap-2 shadow-lg">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-error text-on-error font-label-code-sm text-[10px] font-bold tracking-wider">
+                  CRITICAL VULNERABILITY
+                </span>
+<span class="text-on-surface font-semibold text-xs">Direct SQL String Concatenation Detected</span>
+</div>
+<p class="text-on-surface-variant font-body-sm text-body-sm leading-relaxed">
+                Direct string interpolation with <code class="text-error font-mono">fmt.Sprintf</code> passes untrusted parameter <code class="text-on-surface font-mono">req.AccountID</code> directly into the SQL query execution pipeline without prepared-statement escaping. Taint source origins from <code class="text-secondary font-mono">api.HandleCharge(w, r)</code>.
+              </p>
+<div class="p-2 rounded bg-surface-container-lowest font-label-code-sm text-[11px] text-primary flex items-center gap-2 overflow-x-auto">
+<span class="material-symbols-outlined text-xs text-error">leak_add</span>
+<span class="text-error font-semibold">$taint_source</span>
+<span class="text-outline">→</span>
+<span class="text-on-surface font-mono">req.AccountID</span>
+<span class="text-outline">→</span>
+<span class="text-tertiary font-mono">query</span>
+<span class="text-outline">→</span>
+<span class="text-error font-semibold">db.QueryContext() [SINK]</span>
+</div>
+</div>
+<!-- Line 144 -->
+<div class="flex items-stretch hover:bg-surface-container-low/40">
+<span class="w-12 select-none text-right pr-4 text-outline opacity-60">144</span>
+<span class="text-secondary font-medium pl-4">defer</span> <span class="text-on-surface-variant">rows.Close()</span>
+</div>
+<!-- Line 145 -->
+<div class="flex items-stretch hover:bg-surface-container-low/40">
+<span class="w-12 select-none text-right pr-4 text-outline opacity-60">145</span>
+<span class="text-on-surface-variant pl-4"><span class="text-secondary font-medium">for</span> rows.Next() {</span>
+</div>
+<!-- Line 146 -->
+<div class="flex items-stretch hover:bg-surface-container-low/40">
+<span class="w-12 select-none text-right pr-4 text-outline opacity-60">146</span>
+<span class="text-on-surface-variant pl-8"><span class="text-secondary font-medium">var</span> item AccountSnapshot</span>
+</div>
+<!-- Line 147 -->
+<div class="flex items-stretch hover:bg-surface-container-low/40">
+<span class="w-12 select-none text-right pr-4 text-outline opacity-60">147</span>
+<span class="text-on-surface-variant pl-8"><span class="text-secondary font-medium">if</span> err := rows.Scan(&amp;item.ID, &amp;item.Balance, &amp;item.Status); err != nil {</span>
+</div>
+<!-- Line 148 -->
+<div class="flex items-stretch hover:bg-surface-container-low/40">
+<span class="w-12 select-none text-right pr-4 text-outline opacity-60">148</span>
+<span class="text-on-surface-variant pl-12"><span class="text-secondary font-medium">return</span> nil, err</span>
+</div>
+<!-- Line 149 -->
+<div class="flex items-stretch hover:bg-surface-container-low/40">
+<span class="w-12 select-none text-right pr-4 text-outline opacity-60">149</span>
+<span class="text-on-surface-variant pl-8">}</span>
+</div>
+<!-- Line 150 -->
+<div class="flex items-stretch hover:bg-surface-container-low/40">
+<span class="w-12 select-none text-right pr-4 text-outline opacity-60">150</span>
+<span class="text-on-surface-variant pl-4">}</span>
+</div>
+<!-- Line 151 -->
+<div class="flex items-stretch hover:bg-surface-container-low/40">
+<span class="w-12 select-none text-right pr-4 text-outline opacity-60">151</span>
+<span class="text-on-surface-variant pl-4"><span class="text-secondary font-medium">return</span> buildResponse(item), nil</span>
+</div>
+<!-- Line 152 -->
+<div class="flex items-stretch hover:bg-surface-container-low/40">
+<span class="w-12 select-none text-right pr-4 text-outline opacity-60">152</span>
+<span class="text-on-surface-variant">}</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Execution Call Graph / Taint Flow Visualizer -->
+<div class="rounded-xl bg-surface-container-low p-space-md flex flex-col gap-space-md shadow-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-base">account_tree</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Execution Call Graph &amp; Taint Flow</h3>
+</div>
+<span class="font-label-code-sm text-label-code-sm text-primary px-2 py-0.5 rounded bg-surface-container font-mono">AST Deterministic Trace</span>
+</div>
+<div class="flex flex-col gap-space-sm bg-surface-container-lowest p-space-md rounded-lg">
+<!-- Step 1 -->
+<div class="flex items-start gap-space-md">
+<div class="flex flex-col items-center">
+<div class="w-6 h-6 rounded-full bg-error text-on-error flex items-center justify-center font-label-code-sm text-xs font-bold">1</div>
+<div class="w-0.5 h-10 bg-outline-variant my-1"></div>
+</div>
+<div class="flex-1 min-w-0 pb-2">
+<div class="flex items-center gap-2">
+<span class="font-label-code-sm text-label-code-sm text-error font-semibold">Taint Ingress (Source)</span>
+<span class="text-outline text-xs">•</span>
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant">HTTP Request Body</span>
+</div>
+<p class="font-label-code-sm text-xs text-on-surface mt-1 font-mono">
+                req.AccountID <span class="text-outline-variant">&lt;-- Unvalidated parameter from inbound JSON payload</span>
+</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex items-start gap-space-md">
+<div class="flex flex-col items-center">
+<div class="w-6 h-6 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center font-label-code-sm text-xs font-bold">2</div>
+<div class="w-0.5 h-10 bg-outline-variant my-1"></div>
+</div>
+<div class="flex-1 min-w-0 pb-2">
+<div class="flex items-center gap-2">
+<span class="font-label-code-sm text-label-code-sm text-tertiary font-semibold">Variable Propagation</span>
+<span class="text-outline text-xs">•</span>
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant font-mono">charge.go:138</span>
+</div>
+<p class="font-label-code-sm text-xs text-on-surface mt-1 font-mono">
+                fmt.Sprintf("SELECT ... '%s'", req.AccountID) <span class="text-outline-variant">&lt;-- Interpolated into raw query string</span>
+</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex items-start gap-space-md">
+<div class="flex flex-col items-center">
+<div class="w-6 h-6 rounded-full bg-error text-on-error flex items-center justify-center font-label-code-sm text-xs font-bold">3</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-label-code-sm text-label-code-sm text-error font-semibold">Vulnerable Sink</span>
+<span class="text-outline text-xs">•</span>
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant font-mono">charge.go:142</span>
+</div>
+<p class="font-label-code-sm text-xs text-on-surface mt-1 font-mono">
+                db.QueryContext(ctx, query) <span class="text-error font-semibold">&lt;-- Executed on Postgres cluster without sanitation</span>
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- RIGHT COLUMN: Diagnostics, CVSS Gauge, Fix & Triage (5 cols ~42%)          -->
+<!-- ========================================================================= -->
+<div class="lg:col-span-5 flex flex-col gap-space-lg min-w-0">
+<!-- Header & Severity Summary Card -->
+<div class="rounded-xl bg-surface-container-low p-space-md shadow-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-error text-on-error font-label-code-sm text-label-code-sm font-bold tracking-tight">
+<span class="w-1.5 h-1.5 rounded-full bg-on-error animate-pulse"></span>
+<span class="">CRITICAL 9.8 / 10</span>
+</div>
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant">CWE-89</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight leading-snug">
+          Unsanitized SQL concatenation in payment gateway
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+          High-impact SQL injection enables remote attackers to manipulate raw SQL syntax, bypass access boundaries, extract confidential credit ledger records, or execute arbitrary secondary database mutations.
+        </p>
+</div>
+<!-- Risk Score Semi-Circle Gauge Card -->
+<div class="rounded-xl bg-surface-container-low p-space-md shadow-md flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-code-sm text-label-code-sm text-outline uppercase font-semibold">CVSS v3.1 Impact Score</span>
+<span class="font-label-code-sm text-label-code-sm text-error font-bold">Base: 9.8</span>
+</div>
+<div class="flex items-center justify-center py-space-xs">
+<!-- SVG Semi-Circle Gauge -->
+<div class="relative w-56 h-28 flex flex-col items-center justify-end">
+<svg class="w-56 h-28 overflow-visible" viewBox="0 0 200 100">
+<!-- Background Arc -->
+<path class="text-surface-container-highest" d="M 20 90 A 80 80 0 0 1 180 90" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="16"></path>
+<!-- Filled Arc (98% of 251.3 total circumference half = ~246) -->
+<path class="text-error" d="M 20 90 A 80 80 0 0 1 180 90" fill="none" stroke="currentColor" stroke-dasharray="251.3" stroke-dashoffset="5" stroke-linecap="round" stroke-width="16"></path>
+</svg>
+<div class="absolute bottom-1 flex flex-col items-center">
+<span class="font-headline-xl text-headline-xl font-bold text-on-surface leading-none">9.8</span>
+<span class="font-label-code-sm text-[11px] text-error font-semibold tracking-wider uppercase mt-1">Critical Severity</span>
+</div>
+</div>
+</div>
+<div class="px-space-sm py-2 rounded bg-surface-container font-label-code-sm text-[11px] text-on-surface-variant text-center select-all">
+          AV:N / AC:L / PR:N / UI:N / S:U / C:H / I:H / A:H
+        </div>
+</div>
+<!-- Taxonomy & Metadata -->
+<div class="rounded-xl bg-surface-container-low p-space-md shadow-md flex flex-col gap-space-sm">
+<span class="font-label-code-sm text-label-code-sm text-outline uppercase font-semibold">Classification &amp; Target</span>
+<div class="flex flex-col gap-2">
+<a class="flex items-center justify-between p-2 rounded bg-surface-container hover:bg-surface-container-high transition-colors group" href="#">
+<div class="flex flex-col min-w-0">
+<span class="font-label-code-sm text-[10px] text-outline uppercase">Weakness Enumeration</span>
+<span class="font-label-code-sm text-xs text-on-surface group-hover:text-primary transition-colors truncate">
+                CWE-89: SQL Injection Flaw
+              </span>
+</div>
+<span class="material-symbols-outlined text-sm text-outline group-hover:text-on-surface">open_in_new</span>
+</a>
+<a class="flex items-center justify-between p-2 rounded bg-surface-container hover:bg-surface-container-high transition-colors group" href="#">
+<div class="flex flex-col min-w-0">
+<span class="font-label-code-sm text-[10px] text-outline uppercase">OWASP Top 10</span>
+<span class="font-label-code-sm text-xs text-on-surface group-hover:text-primary transition-colors truncate">
+                A03:2025 – Injection Flaws
+              </span>
+</div>
+<span class="material-symbols-outlined text-sm text-outline group-hover:text-on-surface">open_in_new</span>
+</a>
+<div class="flex items-center justify-between p-2 rounded bg-surface-container">
+<div class="flex flex-col">
+<span class="font-label-code-sm text-[10px] text-outline uppercase">Impacted Target Service</span>
+<span class="font-label-code-sm text-xs text-on-surface font-semibold">billing-service (v2.1.0)</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-secondary font-label-code-sm text-[10px]">Active Ingress</span>
+</div>
+</div>
+</div>
+<!-- Detection Attribution Card -->
+<div class="rounded-xl bg-surface-container-low p-space-md shadow-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-code-sm text-label-code-sm text-outline uppercase font-semibold">Detection Attribution</span>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-primary-container text-on-primary-container font-label-code-sm text-[10px] font-semibold">
+<span class="material-symbols-outlined text-xs">verified</span>
+<span class="">Rule + ML Dual Verified</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-space-sm mt-1">
+<div class="p-space-sm rounded bg-surface-container flex flex-col gap-1">
+<span class="font-label-code-sm text-[10px] text-outline">Deterministic Engine</span>
+<span class="font-label-code-sm text-xs text-on-surface font-semibold font-mono">gosec-G201 / B608</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">SQL query format string rule</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container flex flex-col gap-1">
+<span class="font-label-code-sm text-[10px] text-outline">ML Taint Model</span>
+<span class="font-label-code-sm text-xs text-primary font-semibold font-mono">99.4% Confidence</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Novel flow pattern heuristics</span>
+</div>
+</div>
+</div>
+<!-- Recommended Remediation Box with Diff -->
+<div class="rounded-xl bg-surface-container-low p-space-md shadow-md flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base">auto_fix_high</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Recommended Fix</h3>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-primary font-label-code-sm text-[10px]">Zero Breaking Changes</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          Use parameterized prepared statements with positional bind parameters (<code class="text-primary font-mono">$1</code>) instead of formatting strings directly into the SQL query string.
+        </p>
+<!-- Monospace Before / After Diff -->
+<div class="rounded-lg bg-surface-container-lowest overflow-hidden flex flex-col font-label-code-sm text-[11px]">
+<!-- Before (Red) -->
+<div class="p-2.5 bg-error-container/20 flex flex-col gap-1">
+<div class="flex items-center gap-1.5 text-error font-semibold uppercase text-[10px]">
+<span class="material-symbols-outlined text-xs">remove_circle</span>
+<span class="">Before (Vulnerable)</span>
+</div>
+<code class="text-error font-mono pl-3 block">
+              query := fmt.Sprintf("SELECT * FROM charges WHERE acct = '%s'", req.AccountID)
+            </code>
+<code class="text-error font-mono pl-3 block">
+              rows, err := db.QueryContext(ctx, query)
+            </code>
+</div>
+<!-- After (Green) -->
+<div class="p-2.5 bg-surface-container-high/60 flex flex-col gap-1">
+<div class="flex items-center gap-1.5 text-primary font-semibold uppercase text-[10px]">
+<span class="material-symbols-outlined text-xs">add_circle</span>
+<span class="">After (Remediated)</span>
+</div>
+<code class="text-primary font-mono pl-3 block">
+              query := "SELECT * FROM charges WHERE acct = $1"
+            </code>
+<code class="text-primary font-mono pl-3 block">
+              rows, err := db.QueryContext(ctx, query, req.AccountID)
+            </code>
+</div>
+</div>
+<button class="w-full py-2.5 px-space-md rounded-lg bg-primary-container text-on-primary-container hover:bg-primary transition-colors flex items-center justify-center gap-2 font-headline-sm text-headline-sm font-semibold shadow-md" type="button">
+<span class="material-symbols-outlined text-base">merge</span>
+<span class="">Apply 1-Click Pull Request Patch</span>
+</button>
+</div>
+<!-- Triage & Status State Controls -->
+<div class="rounded-xl bg-surface-container-low p-space-md shadow-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Triage &amp; Finding Status</span>
+<span class="material-symbols-outlined text-outline text-base">tune</span>
+</div>
+<!-- 4 Status Toggle Buttons -->
+<div class="relative"><div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1 rounded-lg bg-surface-container-lowest"><button class="py-1.5 px-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container font-label-code-sm text-xs font-medium flex items-center justify-center gap-1 transition-colors" type="button"><span class="">Open</span></button><button class="py-1.5 px-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container font-label-code-sm text-xs font-medium flex items-center justify-center gap-1 transition-colors" type="button"><span class="">Fixed</span></button><button class="py-1.5 px-2 rounded bg-surface-container-high text-primary font-label-code-sm text-xs font-semibold flex items-center justify-center gap-1 shadow-sm transition-all" type="button"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span class="">False positive</span></button><button class="py-1.5 px-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container font-label-code-sm text-xs font-medium flex items-center justify-center gap-1 transition-colors" type="button"><span class="">Accepted</span></button></div><div class="mt-2 p-3.5 rounded-lg bg-surface-container border border-outline-variant/60 shadow-2xl text-xs flex flex-col gap-3 relative"><div class="flex items-center justify-between pb-1 border-b border-outline-variant/30"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-primary text-sm">flag</span><span class="font-label-code-sm text-xs text-on-surface font-semibold">Triage as False Positive</span></div><span class="material-symbols-outlined text-outline hover:text-on-surface text-sm cursor-pointer">close</span></div><div class="flex flex-col gap-1.5"><label class="font-label-code-sm text-[11px] text-on-surface-variant uppercase font-medium">Reason</label><div class="relative"><select class="w-full py-1.5 px-2.5 rounded bg-surface-container-lowest border border-outline-variant text-on-surface font-label-code-sm text-xs focus:outline-none focus:border-primary appearance-none cursor-pointer"><option selected="">Input already sanitised</option><option>Test or example code</option><option>Code unreachable</option><option>Wrong vulnerability type</option><option>Other</option></select><span class="material-symbols-outlined text-outline pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-sm">expand_more</span></div></div><div class="flex flex-col gap-1.5"><label class="font-label-code-sm text-[11px] text-on-surface-variant uppercase font-medium">Triage Note</label><textarea class="w-full p-2 rounded bg-surface-container-lowest border border-outline-variant text-on-surface placeholder:text-outline font-label-code-sm text-xs focus:outline-none focus:border-primary resize-none h-16" placeholder="Add optional triage note / context...">Sanitization middleware validates account_id via regex at route ingress before handler invocation.</textarea></div><label class="flex items-center gap-2 cursor-pointer select-none"><input type="checkbox" checked="" class="rounded bg-surface-container-lowest border-outline-variant text-primary focus:ring-0 w-3.5 h-3.5 accent-[#45f99c] cursor-pointer"><span class="font-label-code-sm text-[11px] text-on-surface">Use this to improve the model</span></label><div class="flex items-center justify-end gap-2 pt-1 border-t border-outline-variant/30"><button type="button" class="px-2.5 py-1 rounded hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-code-sm text-xs transition-colors">Cancel</button><button type="button" class="px-3 py-1 rounded bg-primary-container text-on-primary-container font-label-code-sm text-xs font-semibold hover:bg-primary transition-colors flex items-center gap-1 shadow-sm"><span class="material-symbols-outlined text-xs">check</span><span class="">Confirm</span></button></div></div></div>
+<div class="flex items-center justify-between text-outline font-label-code-sm text-[11px] pt-1">
+<span class="">Discovered 18m ago</span>
+<span class="">Automated CI Scan #7842</span>
+</div>
+</div><div class="rounded-xl bg-surface-container-low p-space-md shadow-md flex flex-col gap-space-sm"><div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-base">rate_review</span><span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Triage Feedback</span></div><span class="px-2 py-0.5 rounded bg-surface-container-highest text-secondary font-label-code-sm text-[10px]">Model Updated</span></div><div class="p-space-sm rounded-lg bg-surface-container flex flex-col gap-2 border border-outline-variant/30"><div class="flex items-center justify-between gap-2"><div class="flex items-center gap-2"><span class="px-2 py-0.5 rounded bg-surface-container-highest text-primary font-label-code-sm text-[10px] font-semibold tracking-wide uppercase">False positive</span><span class="font-label-code-sm text-xs text-on-surface font-medium">Input already sanitised</span></div><span class="material-symbols-outlined text-outline text-xs">history</span></div><p class="font-body-sm text-body-sm text-on-surface-variant font-mono text-[11px] leading-relaxed bg-surface-container-lowest p-2 rounded border border-outline-variant/20">Sanitization middleware validates account_id via regex at route ingress before handler invocation.</p><div class="flex items-center justify-between text-outline font-label-code-sm text-[10px] pt-0.5"><div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span class="">2 hours ago · by <span class="text-on-surface font-mono">sec-ops@sentinel</span></span></div><span class="text-secondary font-mono">weights recalibrated</span></div></div></div>
+</div>
+</div>
+</div></main></div>
+
+</body></html>
